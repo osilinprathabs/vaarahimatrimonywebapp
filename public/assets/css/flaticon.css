@@ -1,0 +1,77 @@
+  /*
+    Flaticon icon font: Flaticon
+    Creation date: 04/08/2020 10:08
+    */
+
+@font-face {
+  font-family: "Flaticon";
+  src: url("../fonts/Flaticon.eot");
+  src: url("../fonts/Flaticon.eot?#iefix") format("embedded-opentype"),
+       url("../fonts/Flaticon.woff2") format("woff2"),
+       url("../fonts/Flaticon.woff") format("woff"),
+       url("../fonts/Flaticon.ttf") format("truetype"),
+       url("../fonts/Flaticon.svg#Flaticon") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+  @font-face {
+    font-family: "Flaticon";
+    src: url("../fonts/Flaticon.svg#Flaticon") format("svg");
+  }
+}
+
+[class^="flaticon-"]:before, [class*=" flaticon-"]:before,
+[class^="flaticon-"]:after, [class*=" flaticon-"]:after {   
+  font-family: Flaticon;
+font-style: normal;
+}
+
+.flaticon-wedding-rings:before { content: "\f100"; }
+.flaticon-church:before { content: "\f101"; }
+.flaticon-fireworks:before { content: "\f102"; }
+.flaticon-just-married:before { content: "\f103"; }
+.flaticon-love-birds:before { content: "\f104"; }
+.flaticon-wedding-rings-1:before { content: "\f105"; }
+.flaticon-wedding-cake:before { content: "\f106"; }
+.flaticon-champagne:before { content: "\f107"; }
+.flaticon-placeholder:before { content: "\f108"; }
+.flaticon-wine:before { content: "\f109"; }
+.flaticon-parents:before { content: "\f10a"; }
+.flaticon-wedding-arch:before { content: "\f10b"; }
+.flaticon-love:before { content: "\f10c"; }
+.flaticon-same-sex-marriage:before { content: "\f10d"; }
+.flaticon-wedding:before { content: "\f10e"; }
+.flaticon-bride:before { content: "\f10f"; }
+.flaticon-wedding-car:before { content: "\f110"; }
+.flaticon-romantic-dinner:before { content: "\f111"; }
+.flaticon-candle:before { content: "\f112"; }
+.flaticon-dinner-table:before { content: "\f113"; }
+.flaticon-dj:before { content: "\f114"; }
+.flaticon-camera:before { content: "\f115"; }
+.flaticon-action-camera:before { content: "\f116"; }
+.flaticon-photographer:before { content: "\f117"; }
+.flaticon-wedding-arch-1:before { content: "\f118"; }
+.flaticon-wedding-arch-2:before { content: "\f119"; }
+.flaticon-balloons:before { content: "\f11a"; }
+.flaticon-ribbon:before { content: "\f11b"; }
+.flaticon-planning:before { content: "\f11c"; }
+.flaticon-clothes:before { content: "\f11d"; }
+.flaticon-bride-1:before { content: "\f11e"; }
+.flaticon-wedding-cake-1:before { content: "\f11f"; }
+.flaticon-wedding-card:before { content: "\f120"; }
+.flaticon-wedding-couple:before { content: "\f121"; }
+.flaticon-couple:before { content: "\f122"; }
+.flaticon-wedding-1:before { content: "\f123"; }
+.flaticon-bride-2:before { content: "\f124"; }
+.flaticon-groom:before { content: "\f125"; }
+.flaticon-gift:before { content: "\f126"; }
+.flaticon-just-married-1:before { content: "\f127"; }
+.flaticon-ring:before { content: "\f128"; }
+.flaticon-wedding-invitation:before { content: "\f129"; }
+.flaticon-camera-1:before { content: "\f12a"; }
+.flaticon-curtains:before { content: "\f12b"; }
+.flaticon-wedding-cake-2:before { content: "\f12c"; }
+.flaticon-church-1:before { content: "\f12d"; }
+.flaticon-menu:before { content: "\f12e"; }

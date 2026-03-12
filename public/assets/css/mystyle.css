@@ -1,0 +1,542 @@
+.featured-icon img
+{
+	width:60px;
+	height:60px;
+}
+.featured-icon-box img
+{
+	width:60px;
+	height:60px;
+}
+.widget_content img
+{
+	border-radius: 10px;
+    margin-bottom: 10px;
+    height: 125px;
+}
+.wel-txt h3
+{
+    font-size: 40px;
+    font-weight: 700;
+    color: #be0978;
+}
+.wel-txt p
+{
+	    font-size: 17px;
+    line-height: 30px;
+}
+.wel-txt
+{
+	margin-top: 90px;
+}
+.wel-back
+{
+	padding-top: 45px;
+    padding-bottom: 50px;
+}
+.ttm-vertical_sep h3
+{
+	text-align: center;
+}
+.ttm-vertical_sep p
+{
+	text-align: center;
+	font-size:17px;
+}
+.site-header-menu-inner
+{
+	background: linear-gradient(135deg, #e00c84 0%,#a90771 50%,#5d0156 100%);
+}
+.home-cta-section h5
+{
+	    margin: 20px 0;
+    text-align: left;
+    font-size: 30px;
+    text-shadow: 0 7px 9px rgb(0 0 0 / 23%);
+    letter-spacing: 0.9px;
+    margin-bottom: 30px;
+    font-weight: 700;
+}
+.home-cta-section p
+{
+	    color: #fff;
+    font-size: 16px;
+    line-height: 29px;
+    margin-top: 10px;
+}
+  #quick-cart-pay {
+   border-radius: 50%;
+   top: 35%;
+   cursor: pointer;
+   display: block;
+   position: fixed;
+   right: 15px;
+   text-decoration: none;
+   z-index: 99;
+  }
+  .tada {
+   -webkit-animation-name: tada;
+   animation-name: tada;
+  }
+  .animated {
+   -webkit-animation-duration: 1s;
+   animation-duration: 1s;
+   -webkit-animation-fill-mode: both;
+   animation-fill-mode: both;
+  }   
+  #quick-cart-pay h6 {
+   color: #121f38;
+   font-weight: 600;
+   background: #fff311;
+   font-size: 14px;
+   padding: 7px 15px;
+   border-radius: 4px;
+   text-transform: uppercase;
+   border: 3px solid #fff;
+  }
+  #quick-cart-pay img
+  {
+   border-radius: 10px;
+   margin-bottom: 5px;
+   height:40px;
+  }
+  .title-header h5
+  {
+  	    color: #f80000;
+  }
+  .search-prof
+  {
+    background-size: cover;
+    background-position: center;
+    padding-bottom: 150px;
+    padding-top: 100px;
+    background-attachment: fixed;
+  }
+.search-prof h3
+{
+	    text-align: center;
+    color: #fff;
+    font-size: 40px;
+}
+.search-prof p
+{
+	text-align: center;
+    color: #fff;
+    font-size: 18px;
+}
+.search-prof label
+{
+  	color: #fff;
+}
+.profile-type {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 1;
+    background-color: #fe9068;
+    width: 36px;
+    height: 36px;
+    padding: 7px 5px;
+    -webkit-border-radius: 100%;
+    -moz-border-radius: 100%;
+    border-radius: 10px;
+    color: #fff;
+    font-weight: 700;
+    text-align: center;
+    -webkti-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.profile-type i {
+    color: #fff;
+}
+.god-logo
+{
+    border-radius: 10px;
+    box-shadow: 0 0 0 6px rgb(222 234 40 / 40%);
+    margin-right: 17px;
+}
+.site-branding
+{
+    text-align:center;
+}
+
+.profession input
+{
+    margin-bottom:12px;
+}
+.profession select
+{
+    margin-bottom:15px;
+}
+
+
+/* Start Horoscope css code  */
+
+.edit_horoscope
+{
+    background-image: url('../images/logo/premium-services-bg.jpg');
+        padding-top: 60px;
+    padding-bottom: 50px;
+}
+.edit_horoscope .table-responsive>.table-bordered 
+{
+    border: 0;
+    background: #fff;
+        height: 75px;
+}
+.edit_horoscope .table-bordered td, .table-bordered th {
+    height: 87px;
+    width: 87px;
+    padding:0px;
+    text-align: center;
+    border-collapse: collapse;
+    border: 2px solid #72035e;
+    font-size: 14px;
+    color: #000000;
+    position: relative;
+    top: 9px;
+}
+.edit_horoscope h4
+{
+    font-size: 20px;
+    line-height: 25px;
+}
+.tblLight tr td {
+    background: #fff;
+    padding: 4px;
+    height: 15px !important;
+}
+.table-bordered {
+    border: 1px solid #dee2e6;
+    margin-bottom: 20px;
+}
+.tblLight  td th
+{
+    height: 15px;
+}
+.tblLight select
+{
+    padding: 0px;
+    line-height: 10px;
+}
+.edit_horoscope .rasi
+{
+    margin-top: 65px !important;
+}
+.edit_horoscope .amsam
+{
+    margin-top: 65px !important;
+}
+/* End Horoscope css code  */
+
+
+/*  Matching Profile Css Code   */
+
+.profile-back
+{
+   padding-top:40px;
+   padding-bottom:40px;
+}
+.profile-box
+{
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 3px 6px 0 rgb(0 0 0 / 10%);
+    margin-bottom: 10px;
+}
+.profile-box img
+{
+    border-radius: 10px;
+    width: 100%;
+    object-fit: cover;
+    height: 220px;
+    margin-bottom: 2px;
+}
+.profile-box h4
+{
+    font-size: 21px;
+    text-align: center;
+    font-weight: 400;
+    margin-bottom: 3px;
+    margin-top: 5px;
+}
+.btn-freeplan
+{
+    background: #20ae1e;
+    border: .125rem solid #20ae1e;
+    padding: 6px 30px;
+    color: #fff;
+    border-radius: 50px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+.btn-freeplan:hover
+{
+    background: #1a9018;
+    border: .125rem solid #1a9018;
+    padding: 6px 30px;
+    color: #fff;
+    border-radius: 50px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+.profile-box h6
+{
+    text-align: center;
+    margin-top: 10px;
+    color: #ff9900;
+    font-size: 15px;
+}
+.profile-box li
+{
+    list-style: none;
+    margin-bottom: 5px;
+    margin-top: 5px;
+}
+.profile-box li i
+{
+    color: #c10979;
+    padding-right: 10px;
+}
+.profile-back .media
+{
+    background: linear-gradient(
+135deg
+, #e00c84 0%,#a90771 50%,#5d0156 100%) !important;
+    padding: 25px 20px 14px;
+    border-radius: 10px;
+    box-shadow: 0 3px 6px 0 rgb(0 0 0 / 10%);
+    margin-bottom: 10px;
+}
+.profile-back .media h3
+{
+    color: #ff9c08;
+    margin-left: 15px;
+    font-size: 56px;
+    padding-top: 10px;
+}
+.profile-back .media h5
+{
+    margin-bottom: 0px;
+    margin-top: 4px !important;
+    color:#fff;
+}
+.profile-back .media .media-body
+{
+    margin-left: 25px;
+}
+.profile-back .media .media-body p
+{
+    margin-bottom: 0px;
+    color: #fff;
+    font-size: 17px;
+}
+.profile-back .media li
+{
+    list-style: none;
+    color: #ff9c08;
+    font-size: 25px;
+}
+.card-box {
+    background: #fff;
+    box-shadow: 0 3px 6px 0 rgb(0 0 0 / 10%);
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+.card-block h2
+{
+    font-size: 23px;
+    margin-bottom: 24px;
+    border-bottom: 1px solid #f5f5f5;
+    line-height: 45px;
+    padding-bottom: 4px;
+}
+.card-block
+{
+    padding-top:13px;
+}
+.card-box img {
+    width: 100%;
+    height: 280px;
+    object-fit: cover;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+}
+.profile-status img
+{
+    position: absolute;
+    top: 17px;
+    right: 40px;
+    height: 30px !important;
+    width: auto;
+}
+.card-block li
+{
+    list-style: none;
+    margin-bottom: 10px;
+}
+.card-block li i
+{
+    color: #ae0773;
+    padding-right: 10px;
+}
+.profile-id
+{
+    color: #20ae1e;
+    padding-left: 10px;
+    border-left: 1px solid #f0f0f0;
+    margin-left: 15px;
+}
+.btn-viewprofile
+{
+        border-radius: 50px;
+    font-size: 16px;
+    background-image: linear-gradient(to right,#fe9068,#FF9068,#FF9068,#fe9068);
+    background-size: 300% 100%;
+    border: .125rem solid #ff9068;
+    padding: 6px 30px;
+    color: #fff;
+}
+.all {
+    font-size: 21px;
+    line-height: 24px;
+    color: #ffffff;
+    margin-top: 13px;
+    background: linear-gradient( 135deg, #e00c84 0%,#a90771 50%,#5d0156 100%) !important;
+    padding: 10px 20px;
+    border-radius: 7px;
+    padding-top: 14px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 18px;
+}
+/* End  Matching Profile Css Code   */
+
+
+/* View Profile Css Code  */
+
+.viewprofile
+{
+        padding-top: 40px;
+    padding-bottom: 10px;
+}
+.card-box2
+{
+    background: #fff;
+    box-shadow: 0 3px 6px 0 rgb(0 0 0 / 10%);
+    border-radius: 10px;
+    padding: 30px 30px;
+    margin-bottom: 20px;
+}
+.contact-prof h3
+{
+    font-size: 28px;
+    margin-bottom: 24px;
+    border-bottom: 1px solid #f5f5f5;
+    line-height: 45px;
+    padding-bottom: 4px;
+    color: #920569;
+}
+.contact-prof
+{
+    padding-bottom: 20px;
+}
+.contact-prof li
+{
+    list-style: none;
+    font-size: 21px;
+    margin-top: 10px;
+
+}
+.contact-prof li i
+{
+        color: #920569;
+    padding-right: 8px;
+}
+.contact-prof .btn-viewfull
+{
+        border-radius: 50px;
+    font-size: 16px;
+    background-image: linear-gradient(to right,#fe9068,#FF9068,#FF9068,#fe9068);
+    background-size: 300% 100%;
+    border: .125rem solid #ff9068;
+    padding: 6px 30px;
+    color: #fff;
+}
+/* End View Profile css code  */
+
+
+
+/*   Basic Search Css Code  */
+
+.base-heading
+{
+  background: linear-gradient(135deg, #e00c84 0%,#a90771 50%,#5d0156 100%) !important;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    padding: 10px 20px;
+    color: #fff;    
+}
+.base-heading h3
+{
+    color: #fff;
+    font-size: 30px;
+    margin-bottom: 0;
+    line-height: 36px;
+}
+.base-heading p
+{
+    margin-bottom:0px;
+}
+.basic_search
+{
+    background: #fff;
+}
+
+/*   End Basic Search Css Code*/
+
+
+/*   Start Advanced Search css Code    */
+
+.edu-eheck
+{
+    overflow-y: scroll;
+    border: 1px solid #ccc;
+    padding-bottom: 17px;
+    height: 200px;
+    padding: 10px 20px;
+}
+
+/*   End Advanced Search css Code    */
+
+
+/*   My Profile Css Code   */
+
+.myprof-details
+{
+    padding: 20px;
+    margin-bottom: 25px;
+    box-shadow: 0 3px 6px 0 rgb(0 0 0 / 10%);
+    background: #fff;
+    border-radius: 10px;
+}
+.myprof-details .btn-myprof 
+{
+    background: linear-gradient( 135deg, #e00c84 0%,#a90771 50%,#5d0156 100%);
+    color: #fff;
+    position: absolute;
+    top: 10px;
+    right: 35px;
+}
+.myprof-details h6
+{
+    font-size:20px;
+}
+.side-list li
+{
+        line-height: 40px;
+    font-size: 16px;
+}
+/*  End My Profile Css Code   */
