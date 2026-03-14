@@ -13,8 +13,10 @@
     .action-button-previous { width: 100px; background: #616161; font-weight: bold; color: white; border: 0 none; border-radius: 0px; cursor: pointer; padding: 10px 5px; margin: 10px 5px }
     .table-bordered td, .table-bordered th { border: 1px solid #000; width: 25%; height: 100px !important; }
     input[type="text"], input[type="password"], input[type="date"], input[type="time"], input[type="number"], input[type="email"], select, textarea {
-        width: 100%; padding: 12px 15px; border: 1px solid #212121; margin-bottom: 10px; border-radius: 3px;
+        width: 100%; padding: 12px 15px; border: 1px solid #212121; margin-bottom: 15px; border-radius: 3px; font-size: 16px;
     }
+    label { font-weight: 600; margin-bottom: 5px; display: block; color: #333; }
+    h4 { color: #a0066e; margin-top: 20px; margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
 </style>
 @endsection
 
@@ -22,90 +24,98 @@
 <section style="background-image: url('{{ asset('assets/images/logo/premium-services-bg.jpg') }}');padding-top: 20px;padding-bottom: 20px;">
     <div class="container" id="grad1">
         <div class="row justify-content-center mt-0">
-            <div class="col-11 col-sm-9 col-md-7 col-lg-10 text-center p-0 mt-3 mb-2">
-                <div class="card">
+            <div class="col-11 col-sm-11 col-md-10 col-lg-10 text-center p-0 mt-3 mb-2">
+                <div class="card shadow">
                     <h2><strong>REGISTER NOW</strong></h2>
-                    <p>Fill all form field to go to next step</p>
+                    <p>Fill all form fields to complete your profile</p>
                     <div class="row">
                         <div class="col-md-12 mx-0">
                             <form id="msform" method="post" action="{{ route('register.details.store') }}" enctype="multipart/form-data">
                                 @csrf
-                                <!-- Fieldset 1: Basic Details -->
+                                
+                                <!-- Step 1: Basic Details -->
                                 <fieldset>
                                     <div class="form-card">
+                                        <h3 class="reg-head">Basic Details / அடிப்படை விவரங்கள்</h3>
                                         <div class="row">
-                                            <div class="col-md-12"><h3 class="reg-head">Basic Details / அடிப்படை விவரங்கள்</h3></div>
                                             <div class="col-lg-6">
-                                                <label>Name / வரன் பெயர் <span style="color:red;">*</span></label>
-                                                <input name="name" type="text" value="{{ $user->name }}" required>
+                                                <label>Name / வரன் பெயர் <span class="text-danger">*</span></label>
+                                                <input name="name" type="text" value="{{ old('name', $user->name) }}" required>
                                             </div>
                                             <div class="col-lg-6">
-                                                <label>Gender / பாலினம் <span style="color:red;">*</span></label>
+                                                <label>Gender / பாலினம் <span class="text-danger">*</span></label>
                                                 <select name="gender" required>
-                                                    <option value="">Gender</option>
-                                                    <option value="Male" {{ $user->gender == 'Male' ? 'selected' : '' }}>Male / ஆண்</option>
-                                                    <option value="Female" {{ $user->gender == 'Female' ? 'selected' : '' }}>Female / பெண்</option>
+                                                    <option value="">Select</option>
+                                                    <option value="Male" {{ old('gender', $user->gender) == 'Male' ? 'selected' : '' }}>Male / ஆண்</option>
+                                                    <option value="Female" {{ old('gender', $user->gender) == 'Female' ? 'selected' : '' }}>Female / பெண்</option>
                                                 </select>
                                             </div>
                                             <div class="col-lg-6">
-                                                <label> Email / மின்னஞ்சல் <span style="color:red;">*</span></label>
-                                                <input name="emailid" type="email" value="{{ $user->emailid }}" required>
+                                                <label>Email / மின்னஞ்சல் <span class="text-danger">*</span></label>
+                                                <input name="emailid" type="email" value="{{ old('emailid', $user->emailid) }}" required>
                                             </div>
                                             <div class="col-lg-6">
-                                                <label> Phone Number / தொலைப்பேசி எண் <span style="color:red;">*</span></label>
+                                                <label>Phone Number / தொலைப்பேசி எண் <span class="text-danger">*</span></label>
                                                 <input name="mobileno" type="text" value="{{ $user->mobileno }}" readonly required>
                                             </div>
                                             <div class="col-lg-6">
-                                                <label>Date of Birth / பிறந்த தேதி <span style="color:red;">*</span> </label>
-                                                <input name="dob" type="date" required>
+                                                <label>Date of Birth / பிறந்த தேதி <span class="text-danger">*</span></label>
+                                                <input name="dob" type="date" value="{{ old('dob') }}" required>
                                             </div>
                                             <div class="col-lg-6">
-                                                <label> Time of Birth / பிறந்த நேரம் <span style="color:red;">*</span> </label>
-                                                <input name="birth_time" type="time" required>
+                                                <label>Time of Birth / பிறந்த நேரம் <span class="text-danger">*</span></label>
+                                                <input name="birth_time" type="time" value="{{ old('birth_time') }}" required>
                                             </div>
                                             <div class="col-lg-6">
-                                                <label> Birth Place / பிறந்த இடம் <span style="color:red;">*</span></label>
-                                                <input name="birth_city" type="text" placeholder="Enter Birth Place" required>
+                                                <label>Birth Place / பிறந்த இடம் <span class="text-danger">*</span></label>
+                                                <input name="birth_city" type="text" value="{{ old('birth_city') }}" placeholder="Enter Birth Place" required>
                                             </div>
                                             <div class="col-lg-6">
-                                                <label> Profile Created For / உருவாக்கிய சுயவிவரம் <span style="color:red;">*</span></label>
+                                                <label>Profile Created For / யாருக்காக <span class="text-danger">*</span></label>
                                                 <select name="onbehalf" required>
                                                     <option value="">Select</option>
                                                     @foreach($onbehalfs as $onbe)
-                                                        <option value="{{ $onbe->id }}" {{ $user->onbehalf == $onbe->id ? 'selected' : '' }}>{{ $onbe->onbehalf }}</option>
+                                                        <option value="{{ $onbe->id }}" {{ old('onbehalf', $user->onbehalf) == $onbe->id ? 'selected' : '' }}>{{ $onbe->onbehalf }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
                                             <div class="col-lg-6">
-                                                <label> Maritial Status / திருமண நிலை <span style="color:red;">*</span></label>
+                                                <label>Marital Status / திருமண நிலை <span class="text-danger">*</span></label>
                                                 <select name="maritalstatus" required>
                                                     <option value="">Select</option>
                                                     @foreach($marital_statuses as $mar)
-                                                        <option value="{{ $mar->marital_status }}">{{ $mar->marital_status }}</option>
+                                                        <option value="{{ $mar->marital_status }}" {{ old('maritalstatus') == $mar->marital_status ? 'selected' : '' }}>{{ $mar->marital_status }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
                                             <div class="col-lg-6">
-                                                <label> Mother Tongue / பேசும் மொழி <span style="color:red;">*</span></label>
+                                                <label>Mother Tongue / தாய்மொழி <span class="text-danger">*</span></label>
                                                 <select name="language" required>
-                                                    <option value="">Select </option>
-                                                    <option value="Kannadam / கன்னடம்">Kannadam / கன்னடம் </option>
-                                                    <option value="Telugu / தெலுங்கு">Telugu / தெலுங்கு</option>
+                                                    <option value="">Select</option>
                                                     <option value="Tamil / தமிழ்">Tamil / தமிழ்</option>
+                                                    <option value="English / ஆங்கிலம்">English / ஆங்கிலம்</option>
+                                                    <option value="Telugu / தெலுங்கு">Telugu / தெலுங்கு</option>
+                                                    <option value="Kannada / கன்னடம்">Kannada / கன்னடம்</option>
+                                                    <option value="Malayalam / மலையாளம்">Malayalam / மலையாளம்</option>
+                                                    <option value="Hindi / இந்தி">Hindi / இந்தி</option>
                                                 </select>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <label>Whatsapp Number <span class="text-danger">*</span></label>
+                                                <input name="whatsapp_no" type="text" value="{{ old('whatsapp_no', $user->mobileno) }}" required>
                                             </div>
                                         </div>
                                     </div>
                                     <input type="button" name="next" class="next action-button" value="Next" />
                                 </fieldset>
 
-                                <!-- Fieldset 2: Education & Professional -->
+                                <!-- Step 2: Education & Professional -->
                                 <fieldset>
                                     <div class="form-card">
+                                        <h3 class="reg-head">Education & Professional / கல்வி மற்றும் தொழில்</h3>
                                         <div class="row">
-                                            <div class="col-md-12"><h3 class="reg-head">Education & Professional / கல்வி மற்றும் தொழில்</h3></div>
                                             <div class="col-lg-6">
-                                                <label> Education / கல்வி தகுதி <span style="color:red;">*</span></label>
+                                                <label>Education / கல்வி தகுதி <span class="text-danger">*</span></label>
                                                 <select name="education" required>
                                                     <option value="">Select</option>
                                                     @foreach($educations as $edu)
@@ -114,7 +124,11 @@
                                                 </select>
                                             </div>
                                             <div class="col-lg-6">
-                                                <label> Employed In / வேலை <span style="color:red;">*</span></label>
+                                                <label>Education Detail / கல்வி விவரம்</label>
+                                                <input name="education_detail" type="text" placeholder="Degree, Major etc.">
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <label>Employed In / வேலை வகை <span class="text-danger">*</span></label>
                                                 <select name="employment" required>
                                                     <option value="">Select</option>
                                                     @foreach($employments as $emp)
@@ -123,7 +137,7 @@
                                                 </select>
                                             </div>
                                             <div class="col-lg-6">
-                                                <label> Occupation / தொழில் <span style="color:red;">*</span> </label>
+                                                <label>Occupation / தொழில் <span class="text-danger">*</span></label>
                                                 <select name="occupation" required>
                                                     <option value="">Select</option>
                                                     @foreach($occupations as $occ)
@@ -132,11 +146,24 @@
                                                 </select>
                                             </div>
                                             <div class="col-lg-6">
-                                                <label> Monthly Income / மாத வருமானம் <span style="color:red;">*</span></label>
+                                                <label>Company Name / நிறுவனத்தின் பெயர்</label>
+                                                <input name="company_name" type="text">
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <label>Monthly Income / மாத வருமானம் <span class="text-danger">*</span></label>
                                                 <select name="indian_currency_value" required>
                                                     <option value="">Select</option>
                                                     @foreach($currency_values as $cv)
                                                         <option value="{{ $cv->currency_value }}">{{ $cv->currency_value }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <label>Work Location / பணிபுரியும் நாடு</label>
+                                                <select name="work_location" id="work_country">
+                                                    <option value="">Select Country</option>
+                                                    @foreach($countries as $country)
+                                                        <option value="{{ $country->countryid }}">{{ $country->country }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -146,22 +173,22 @@
                                     <input type="button" name="next" class="next action-button" value="Next" />
                                 </fieldset>
 
-                                <!-- Fieldset 3: Personal Details & Photo -->
+                                <!-- Step 3: Personal Details -->
                                 <fieldset>
                                     <div class="form-card">
+                                        <h3 class="reg-head">Personal Details / தனிப்பட்ட விவரங்கள்</h3>
                                         <div class="row">
-                                            <div class="col-md-12"><h3 class="reg-head">Personal Details / தனிப்பட்ட விவரங்கள்</h3></div>
                                             <div class="col-lg-6">
-                                                <label> Height / உயரம் <span style="color:red;">*</span> </label>
+                                                <label>Height / உயரம் <span class="text-danger">*</span></label>
                                                 <select name="height" required>
-                                                    <option value="">Feet/Inches</option>
+                                                    <option value="">Select</option>
                                                     @foreach($heights as $h)
                                                         <option value="{{ $h->height }}">{{ $h->height }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
                                             <div class="col-lg-6">
-                                                <label> Weight / எடை <span style="color:red;">*</span></label>
+                                                <label>Weight / எடை <span class="text-danger">*</span></label>
                                                 <select name="weight" required>
                                                     <option value="">Select</option>
                                                     @for($i=35; $i<=150; $i++)
@@ -170,12 +197,31 @@
                                                 </select>
                                             </div>
                                             <div class="col-lg-6">
-                                                <label> Upload Your Photo </label>
-                                                <input name="profile_img" type="file">
+                                                <label>Body Type / உடல் அமைப்பு</label>
+                                                <select name="body_type">
+                                                    <option value="">Select</option>
+                                                    <option value="Average">Average</option>
+                                                    <option value="Slim">Slim</option>
+                                                    <option value="Athletic">Athletic</option>
+                                                    <option value="Heavy">Heavy</option>
+                                                </select>
                                             </div>
                                             <div class="col-lg-6">
-                                                <label> Upload Your Aadhaar Card <span style="color:red;">*</span></label>
-                                                <input name="aadhaar" type="file" required>
+                                                <label>Complexion / நிறம்</label>
+                                                <select name="complexion">
+                                                    <option value="">Select</option>
+                                                    <option value="Fair">Fair</option>
+                                                    <option value="Very Fair">Very Fair</option>
+                                                    <option value="Wheatish">Wheatish</option>
+                                                    <option value="Dark">Dark</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <label>Physical Disability / ஊனம் ஏதேனும் உண்டா?</label>
+                                                <select name="disability">
+                                                    <option value="None">None</option>
+                                                    <option value="Physically Challenged">Physically Challenged</option>
+                                                </select>
                                             </div>
                                         </div>
                                     </div>
@@ -183,70 +229,74 @@
                                     <input type="button" name="next" class="next action-button" value="Next" />
                                 </fieldset>
 
+                                <!-- Step 4: Family Details -->
+                                <fieldset>
+                                    <div class="form-card">
+                                        <h3 class="reg-head">Family Details / குடும்ப விவரங்கள்</h3>
+                                        <div class="row">
                                             <div class="col-lg-6">
-                                                <label> Subcaste / வங்குசம்,குலம் <span style="color:red;">*</span></label>
-                                                <select name="subcaste" id="subcaste" required>
+                                                <label>Caste / ஜாதி <span class="text-danger">*</span></label>
+                                                <select name="caste" id="caste" required>
                                                     <option value="">Select</option>
+                                                    @foreach($castes as $caste)
+                                                        <option value="{{ $caste->id }}">{{ $caste->caste }}</option>
+                                                    @endforeach
                                                 </select>
                                             </div>
                                             <div class="col-lg-6">
-                                                <label>Father Occupation / தந்தை தொழில்</label>
+                                                <label>Subcaste / உட்பிரிவு <span class="text-danger">*</span></label>
+                                                <select name="subcaste" id="subcaste" required>
+                                                    <option value="">Select Caste First</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <label>Gothram / கோத்திரம்</label>
+                                                <input name="gothram" type="text" placeholder="Gothram">
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <label>Father's Name / தந்தை பெயர்</label>
+                                                <input name="father_name" type="text">
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <label>Father's Occupation / தந்தை தொழில்</label>
                                                 <input name="father_occupation" type="text">
                                             </div>
                                             <div class="col-lg-6">
-                                                <label>Mother Occupation / தாய் தொழில்</label>
+                                                <label>Mother's Name / தாய் பெயர்</label>
+                                                <input name="mother_name" type="text">
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <label>Mother's Occupation / தாய் தொழில்</label>
                                                 <input name="mother_occupation" type="text">
                                             </div>
                                             <div class="col-lg-6">
-                                                <label>No of Siblings / உடன்பிறப்புகளின் எண்ணிக்கை <span style="color:red;">*</span></label>
-                                                <input name="no_of_siblings" type="text" placeholder="அண்ணன்-1, தங்கை-1" required>
+                                                <label>No of Siblings / உடன்பிறப்புகள் <span class="text-danger">*</span></label>
+                                                <input name="no_of_siblings" type="text" placeholder="e.g. 1 Brother, 2 Sisters" required>
                                             </div>
                                             <div class="col-lg-6">
-                                                <label>Siblings Marriage Status / உடன்பிறப்புகளின் திருமண நிலை <span style="color:red;">*</span></label>
-                                                <input name="no_of_siblings_married" type="text" placeholder="அண்ணன் திருமணம் ஆனவர்" required>
+                                                <label>Siblings Married / திருமணமானவர்கள் <span class="text-danger">*</span></label>
+                                                <input name="no_of_siblings_married" type="text" placeholder="e.g. 1 Sister Married" required>
                                             </div>
-                                        </div>
-                                    </div>
-                                    <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
-                                    <input type="button" name="next" class="next action-button" value="Next" />
-                                </fieldset>
-
-                                <!-- Fieldset 5: Additional Details -->
-                                <fieldset>
-                                    <div class="form-card">
-                                        <div class="row">
-                                            <div class="col-md-12"><h3 class="reg-head">Additional Details / கூடுதல் விவரங்கள்</h3></div>
                                             <div class="col-lg-6">
-                                                <label>Property Details / சொத்து விவரங்கள்</label>
-                                                <select name="assets[]" multiple>
-                                                    <option value="OWN HOUSE/ சொந்தவீடு">OWN HOUSE/ சொந்தவீடு</option>
-                                                    <option value="RENTAL HOUSE/ வாடகைவீடு">RENTAL HOUSE/ வாடகைவீடு</option>
-                                                    <option value="EMPTY LAND/ காலி மனை">EMPTY LAND/ காலி மனை</option>
-                                                    <option value="AGRI LAND/ விவசாய நிலம்">AGRI LAND/ விவசாய நிலம்</option>
+                                                <label>Family Type / குடும்ப வகை</label>
+                                                <select name="family_type">
+                                                    <option value="Nuclear">Nuclear</option>
+                                                    <option value="Joint">Joint</option>
                                                 </select>
                                             </div>
-                                            <div class="col-lg-6">
-                                                <label>Gold Details / பவுன் விவரங்கள்</label>
-                                                <input name="gold_details" type="text">
-                                            </div>
-                                            <div class="col-lg-12">
-                                                <label>Address / முகவரி <span style="color:red;">*</span></label>
-                                                <textarea name="address" rows="3" required></textarea>
-                                            </div>
                                         </div>
                                     </div>
                                     <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
                                     <input type="button" name="next" class="next action-button" value="Next" />
                                 </fieldset>
 
-                                <!-- Fieldset 6: Horoscope Grid -->
+                                <!-- Step 5: Horoscope & Location -->
                                 <fieldset>
                                     <div class="form-card">
+                                        <h3 class="reg-head">Horoscope Details / ஜாதக விவரங்கள்</h3>
                                         <div class="row">
-                                            <div class="col-md-12"><h3 class="reg-head">Horoscope Grid / ஜாதக கட்டம்</h3></div>
-                                            
                                             <div class="col-lg-6">
-                                                <label>Raasi / ராசி <span style="color:red;">*</span></label>
+                                                <label>Raasi / ராசி <span class="text-danger">*</span></label>
                                                 <select name="raasi" id="raasi" required>
                                                     <option value="">Select</option>
                                                     @foreach($raasis as $r)
@@ -255,13 +305,12 @@
                                                 </select>
                                             </div>
                                             <div class="col-lg-6">
-                                                <label>Star / நட்சத்திரம் <span style="color:red;">*</span> </label>
+                                                <label>Star / நட்சத்திரம் <span class="text-danger">*</span></label>
                                                 <select name="star" id="star" required>
-                                                    <option value="">Select</option>
+                                                    <option value="">Select Raasi First</option>
                                                 </select>
                                             </div>
-
-                                            <div class="col-md-12 mt-4">
+                                            <div class="col-lg-12 mt-3">
                                                 <h4>Raasi Chart / ராசி கட்டம்</h4>
                                                 <div class="table-responsive">
                                                     <table class="table table-bordered text-center">
@@ -289,44 +338,41 @@
                                                     </table>
                                                 </div>
                                             </div>
-
-                                            <div class="col-md-12 mt-4">
-                                                <h4>Amsam Chart / அம்சம் கட்டம்</h4>
-                                                <div class="table-responsive">
-                                                    <table class="table table-bordered text-center">
-                                                        <tr>
-                                                            <td><select name="amsam_12[]" class="form-control" multiple><option value="Lagnam">Lagnam</option><option value="Sun">Sun</option><option value="Moon">Moon</option><option value="Mars">Mars</option><option value="Mercury">Mercury</option><option value="Jupiter">Jupiter</option><option value="Venus">Venus</option><option value="Saturn">Saturn</option><option value="Rahu">Rahu</option><option value="Kethu">Kethu</option></select></td>
-                                                            <td><select name="amsam_1[]" class="form-control" multiple><option value="Lagnam">Lagnam</option><option value="Sun">Sun</option><option value="Moon">Moon</option><option value="Mars">Mars</option><option value="Mercury">Mercury</option><option value="Jupiter">Jupiter</option><option value="Venus">Venus</option><option value="Saturn">Saturn</option><option value="Rahu">Rahu</option><option value="Kethu">Kethu</option></select></td>
-                                                            <td><select name="amsam_2[]" class="form-control" multiple><option value="Lagnam">Lagnam</option><option value="Sun">Sun</option><option value="Moon">Moon</option><option value="Mars">Mars</option><option value="Mercury">Mercury</option><option value="Jupiter">Jupiter</option><option value="Venus">Venus</option><option value="Saturn">Saturn</option><option value="Rahu">Rahu</option><option value="Kethu">Kethu</option></select></td>
-                                                            <td><select name="amsam_3[]" class="form-control" multiple><option value="Lagnam">Lagnam</option><option value="Sun">Sun</option><option value="Moon">Moon</option><option value="Mars">Mars</option><option value="Mercury">Mercury</option><option value="Jupiter">Jupiter</option><option value="Venus">Venus</option><option value="Saturn">Saturn</option><option value="Rahu">Rahu</option><option value="Kethu">Kethu</option></select></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td><select name="amsam_11[]" class="form-control" multiple><option value="Lagnam">Lagnam</option><option value="Sun">Sun</option><option value="Moon">Moon</option><option value="Mars">Mars</option><option value="Mercury">Mercury</option><option value="Jupiter">Jupiter</option><option value="Venus">Venus</option><option value="Saturn">Saturn</option><option value="Rahu">Rahu</option><option value="Kethu">Kethu</option></select></td>
-                                                            <td colspan="2" rowspan="2" class="align-middle"><h4>அம்சம்</h4></td>
-                                                            <td><select name="amsam_4[]" class="form-control" multiple><option value="Lagnam">Lagnam</option><option value="Sun">Sun</option><option value="Moon">Moon</option><option value="Mars">Mars</option><option value="Mercury">Mercury</option><option value="Jupiter">Jupiter</option><option value="Venus">Venus</option><option value="Saturn">Saturn</option><option value="Rahu">Rahu</option><option value="Kethu">Kethu</option></select></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td><select name="amsam_10[]" class="form-control" multiple><option value="Lagnam">Lagnam</option><option value="Sun">Sun</option><option value="Moon">Moon</option><option value="Mars">Mars</option><option value="Mercury">Mercury</option><option value="Jupiter">Jupiter</option><option value="Venus">Venus</option><option value="Saturn">Saturn</option><option value="Rahu">Rahu</option><option value="Kethu">Kethu</option></select></td>
-                                                            <td><select name="amsam_5[]" class="form-control" multiple><option value="Lagnam">Lagnam</option><option value="Sun">Sun</option><option value="Moon">Moon</option><option value="Mars">Mars</option><option value="Mercury">Mercury</option><option value="Jupiter">Jupiter</option><option value="Venus">Venus</option><option value="Saturn">Saturn</option><option value="Rahu">Rahu</option><option value="Kethu">Kethu</option></select></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td><select name="amsam_9[]" class="form-control" multiple><option value="Lagnam">Lagnam</option><option value="Sun">Sun</option><option value="Moon">Moon</option><option value="Mars">Mars</option><option value="Mercury">Mercury</option><option value="Jupiter">Jupiter</option><option value="Venus">Venus</option><option value="Saturn">Saturn</option><option value="Rahu">Rahu</option><option value="Kethu">Kethu</option></select></td>
-                                                            <td><select name="amsam_8[]" class="form-control" multiple><option value="Lagnam">Lagnam</option><option value="Sun">Sun</option><option value="Moon">Moon</option><option value="Mars">Mars</option><option value="Mercury">Mercury</option><option value="Jupiter">Jupiter</option><option value="Venus">Venus</option><option value="Saturn">Saturn</option><option value="Rahu">Rahu</option><option value="Kethu">Kethu</option></select></td>
-                                                            <td><select name="amsam_7[]" class="form-control" multiple><option value="Lagnam">Lagnam</option><option value="Sun">Sun</option><option value="Moon">Moon</option><option value="Mars">Mars</option><option value="Mercury">Mercury</option><option value="Jupiter">Jupiter</option><option value="Venus">Venus</option><option value="Saturn">Saturn</option><option value="Rahu">Rahu</option><option value="Kethu">Kethu</option></select></td>
-                                                            <td><select name="amsam_6[]" class="form-control" multiple><option value="Lagnam">Lagnam</option><option value="Sun">Sun</option><option value="Moon">Moon</option><option value="Mars">Mars</option><option value="Mercury">Mercury</option><option value="Jupiter">Jupiter</option><option value="Venus">Venus</option><option value="Saturn">Saturn</option><option value="Rahu">Rahu</option><option value="Kethu">Kethu</option></select></td>
-                                                        </tr>
-                                                    </table>
-                                                </div>
-                                            </div>
-
                                             <div class="col-lg-6">
-                                                <label> Upload Horoscope / ஜாதகம் பதிவேற்றவும் </label>
-                                                <input name="jathagam" type="file" required>
+                                                <label>Address / முகவரி <span class="text-danger">*</span></label>
+                                                <textarea name="address" rows="3" required></textarea>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <label>Gold Details / பவுன் விவரங்கள்</label>
+                                                <input name="gold_details" type="text" placeholder="e.g. 50 Sovereigns">
                                             </div>
                                         </div>
                                     </div>
                                     <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
-                                    <input type="submit" class="action-button" value="Submit" />
+                                    <input type="button" name="next" class="next action-button" value="Next" />
+                                </fieldset>
+
+                                <!-- Step 6: Uploads -->
+                                <fieldset>
+                                    <div class="form-card">
+                                        <h3 class="reg-head">Uploads / பதிவேற்றம்</h3>
+                                        <div class="row">
+                                            <div class="col-lg-6">
+                                                <label>Profile Photo / வரன் புகைப்படம்</label>
+                                                <input name="profile_img" type="file">
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <label>Aadhaar Card / ஆதார் அட்டை <span class="text-danger">*</span></label>
+                                                <input name="aadhaar" type="file" required>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <label>Horoscope Image / ஜாதக படம்</label>
+                                                <input name="jathagam" type="file">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <input type="button" name="previous" class="previous action-button-previous" value="Previous" />
+                                    <button type="submit" class="action-button">Submit</button>
                                 </fieldset>
 
                             </form>
@@ -348,8 +394,23 @@ $(document).ready(function(){
     $(".next").click(function(){
         current_fs = $(this).parent();
         next_fs = $(this).parent().next();
-        next_fs.show();
-        current_fs.hide();
+        
+        // Basic validation for required fields in current fieldset
+        var valid = true;
+        current_fs.find('input[required], select[required], textarea[required]').each(function(){
+            if($(this).val() == ""){
+                $(this).css('border-color', 'red');
+                valid = false;
+            } else {
+                $(this).css('border-color', '#212121');
+            }
+        });
+
+        if(valid){
+            next_fs.show();
+            current_fs.hide();
+            window.scrollTo(0, 0);
+        }
     });
 
     $(".previous").click(function(){
@@ -357,6 +418,7 @@ $(document).ready(function(){
         previous_fs = $(this).parent().prev();
         previous_fs.show();
         current_fs.hide();
+        window.scrollTo(0, 0);
     });
 
     // AJAX for Subcaste
@@ -367,9 +429,9 @@ $(document).ready(function(){
                 url: '/api/subcastes/' + caste_id,
                 type: 'GET',
                 success: function(data){
-                    $('#subcaste').empty().append('<option value="">Select</option>');
+                    $('#subcaste').empty().append('<option value="">Select Subcaste</option>');
                     $.each(data, function(index, sub){
-                        $('#subcaste').append('<option value="'+sub.subcaste+'">'+sub.subcaste+'</option>');
+                        $('#subcaste').append('<option value="'+sub.id+'">'+sub.subcaste+'</option>');
                     });
                 }
             });
@@ -384,13 +446,19 @@ $(document).ready(function(){
                 url: '/api/stars/' + raasi_id,
                 type: 'GET',
                 success: function(data){
-                    $('#star').empty().append('<option value="">Select</option>');
+                    $('#star').empty().append('<option value="">Select Star</option>');
                     $.each(data, function(index, star){
-                        $('#star').append('<option value="'+star.star+'">'+star.star+'</option>');
+                        $('#star').append('<option value="'+star.id+'">'+star.star+'</option>');
                     });
                 }
             });
         }
+    });
+
+    // Handle AJAX for States if needed
+    $('#work_country').change(function(){
+        var country_id = $(this).val();
+        // Implement state matching logic if needed
     });
 });
 </script>

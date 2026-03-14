@@ -10,4 +10,5 @@ class MemberHoroscope extends Model
     use HasFactory;
     protected $table = 'member_horoscope';
     protected $guarded = [];
+    public $timestamps = false;
 }

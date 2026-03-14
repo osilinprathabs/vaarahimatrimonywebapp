@@ -18,7 +18,7 @@ return new class extends Migration
                 $table->integer('plan_id');
                 $table->date('plan_start_date');
                 $table->date('plan_end_date');
-                $table->string('plan_status', 20)->default('Active'); // or Expired
+                $table->string('plan_status', 20)->default('Active');
                 $table->timestamps();
             });
         }

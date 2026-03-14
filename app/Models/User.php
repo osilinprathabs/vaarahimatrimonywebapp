@@ -64,6 +64,21 @@ class User extends Authenticatable
         'raasi_7', 'raasi_8', 'raasi_9', 'raasi_10', 'raasi_11', 'raasi_12',
         'amsam_1', 'amsam_2', 'amsam_3', 'amsam_4', 'amsam_5', 'amsam_6',
         'amsam_7', 'amsam_8', 'amsam_9', 'amsam_10', 'amsam_11', 'amsam_12',
+        'latitude', 'longitude', 'no_of_child', 'mobileno2', 'whatsapp_no',
+        'education_detail', 'company_name', 'work_location', 'work_state', 'work_city',
+        'body_type', 'complexion', 'disability',
+        'father_status', 'mother_status', 'mother_caste', 'mother_subcaste', 'mother_gothram',
+        'family_origin', 'family_type', 'family_history',
+        'expection', 'avoidance', 'food_habit', 'smoking_habit', 'drinking_habit', 'blood_group',
+        'religion', 'languages_known', 'gothram', 'laknam', 'dasa',
+        'birth_year', 'birth_month', 'birth_date', 'mother_tongue', 'dhosam', 'dhosam_type',
+        'expected_raasi', 'expected_star', 'about_me', 'expectation',
+        'branch_id', 'branch_name', 'branch_address', 'branch_contactno',
+        'living_state', 'living_country', 'living_city', 'living_address',
+        'register_id',
+        'mid',
+        'age',
+        'date_of_birth',
     ];
 
 
@@ -107,6 +122,34 @@ class User extends Authenticatable
         $bondOnlyNum = (int) preg_replace('/[^0-9]/', '', $quotationnos);
         
         return $new_bond_prefix . sprintf('%0' . max(4, $bondLen) . 'd', $bondOnlyNum + 1);
+    }
+
+    public static function generateRegisterId()
+    {
+        $yearMonth = date('Ym');
+        $prefix = 'REG' . $yearMonth;
+        $lastUser = static::where('register_id', 'like', $prefix . '%')->orderBy('id', 'desc')->first();
+        
+        if (!$lastUser) {
+            return $prefix . '001';
+        }
+
+        $lastIdNum = (int) substr($lastUser->register_id, -3);
+        return $prefix . sprintf('%03d', $lastIdNum + 1);
+    }
+
+    public static function generateMid($gender)
+    {
+        $char = ($gender == 'Male') ? 'M' : 'F';
+        $prefix = 'MID' . $char;
+        $lastUser = static::where('mid', 'like', $prefix . '%')->orderBy('id', 'desc')->first();
+        
+        if (!$lastUser) {
+            return $prefix . '001';
+        }
+
+        $lastIdNum = (int) substr($lastUser->mid, -3);
+        return $prefix . sprintf('%03d', $lastIdNum + 1);
     }
 
     public function getEmailAttribute()

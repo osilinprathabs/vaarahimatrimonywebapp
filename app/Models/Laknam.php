@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class Laknam extends Model
 {
     use HasFactory;
+    protected $table = 'laknam';
+    public $timestamps = false;
 }

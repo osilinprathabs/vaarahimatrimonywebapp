@@ -62,8 +62,13 @@ class ProfileController extends Controller
         $user = $request->user();
         
         // Update User (free_user table)
-        // Note: In a real migration, we should add validation here matching the legacy fields
-        $userData = $request->except(['_token', 'profile_img', 'aadhaar', 'passport', 'jathagam', 'raasi_1', 'raasi_2', 'raasi_3', 'raasi_4', 'raasi_5', 'raasi_6', 'raasi_7', 'raasi_8', 'raasi_9', 'raasi_10', 'raasi_11', 'raasi_12', 'amsam_1', 'amsam_2', 'amsam_3', 'amsam_4', 'amsam_5', 'amsam_6', 'amsam_7', 'amsam_8', 'amsam_9', 'amsam_10', 'amsam_11', 'amsam_12']);
+        $userData = $request->except([
+            '_token', 'profile_img', 'aadhaar', 'jathagam', 
+            'raasi_1', 'raasi_2', 'raasi_3', 'raasi_4', 'raasi_5', 'raasi_6', 
+            'raasi_7', 'raasi_8', 'raasi_9', 'raasi_10', 'raasi_11', 'raasi_12', 
+            'amsam_1', 'amsam_2', 'amsam_3', 'amsam_4', 'amsam_5', 'amsam_6', 
+            'amsam_7', 'amsam_8', 'amsam_9', 'amsam_10', 'amsam_11', 'amsam_12'
+        ]);
         
         // Handle physical status mapping if needed
         if ($request->has('disability')) {
@@ -75,29 +80,26 @@ class ProfileController extends Controller
         // Handle File Uploads
         if ($request->hasFile('profile_img')) {
             $path = $request->file('profile_img')->store('uploads/profile', 'public');
-            ProfileImage::create([
-                'userid' => $user->userid,
-                'image_name' => $path,
-                'status' => 1
-            ]);
+            ProfileImage::updateOrCreate(
+                ['userid' => $user->id],
+                ['image_name' => $path, 'status' => 1]
+            );
         }
 
         if ($request->hasFile('aadhaar')) {
             $path = $request->file('aadhaar')->store('uploads/aadhaar', 'public');
-            AadhaarImage::create([
-                'userid' => $user->userid,
-                'image_name' => $path,
-                'status' => 1
-            ]);
+            AadhaarImage::updateOrCreate(
+                ['userid' => $user->userid],
+                ['image_name' => $path, 'status' => 1]
+            );
         }
 
         if ($request->hasFile('jathagam')) {
             $path = $request->file('jathagam')->store('uploads/jathagam', 'public');
-            JathagamImage::create([
-                'userid' => $user->userid,
-                'image_name' => $path,
-                'status' => 1
-            ]);
+            JathagamImage::updateOrCreate(
+                ['userid' => $user->userid],
+                ['image_name' => $path, 'status' => 1]
+            );
         }
 
         // Handle Horoscope Grid (raasi_1 to raasi_12 and amsam_1 to amsam_12)
@@ -123,12 +125,6 @@ class ProfileController extends Controller
                 ['member_id' => $user->id],
                 $horoscopeData
             );
-        }
-
-        // Handle Assets (convert array to string if needed)
-        if ($request->has('assets')) {
-            $user->assets = implode(', ', $request->assets);
-            $user->save();
         }
 
         return redirect()->route('dashboard')->with('status', 'Registration completed successfully!');

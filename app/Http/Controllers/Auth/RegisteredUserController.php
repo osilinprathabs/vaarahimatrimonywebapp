@@ -19,7 +19,8 @@ class RegisteredUserController extends Controller
      */
     public function create(): View
     {
-        return view('auth.register');
+        $onbehalfs = \App\Models\Onbehalf::all();
+        return view('auth.register', compact('onbehalfs'));
     }
 
     /**
@@ -40,6 +41,8 @@ class RegisteredUserController extends Controller
 
         $user = User::create([
             'userid' => User::generateUserId(),
+            'register_id' => User::generateRegisterId(),
+            'mid' => User::generateMid($request->gender),
             'name' => $request->name,
             'emailid' => $request->email,
             'password' => $request->password, // Plain text for now as per legacy
@@ -48,6 +51,8 @@ class RegisteredUserController extends Controller
             'gender' => $request->gender,
             'status' => 1,
             'date' => date('Y-m-d'),
+            'age' => 0,
+            'date_of_birth' => '',
         ]);
 
         event(new Registered($user));

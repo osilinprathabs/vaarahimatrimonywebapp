@@ -12,10 +12,10 @@
     <link rel="stylesheet" href="{{ asset('admin-assets/stylesheets/theme-custom.css') }}">
     <script src="{{ asset('admin-assets/vendor/modernizr/modernizr.js') }}"></script>
     <style>
-        body .btn-primary { background-color: #c1097a !important; border-color: #c1097a !important; }
+        body .btn-primary { background-color: #12243d !important; border-color: #12243d !important; }
         .body-sign .panel-sign .panel-body { background: #000000; width: 85%; margin: 0 auto; border-radius: 20px; }
         .body-sign .panel-sign .panel-body { box-shadow: 0 1px 1px 10px rgba(23,22,22,0.1) !important; }
-        .copy { color: #fff; background-color: #c1097a; padding: 10px; width: 55%; margin: 0 auto; border-radius: 24px; }
+        .copy { color: #fff; background-color: #12243d; padding: 10px; width: 55%; margin: 0 auto; border-radius: 24px; }
         .body-sign .center-sign .logo img { width: 80%; text-align: center; margin-bottom: 39px; }
     </style>
 </head>

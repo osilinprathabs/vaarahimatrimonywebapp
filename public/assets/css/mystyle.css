@@ -18,7 +18,7 @@
 {
     font-size: 40px;
     font-weight: 700;
-    color: #be0978;
+    color: #cc9f53;
 }
 .wel-txt p
 {
@@ -45,7 +45,7 @@
 }
 .site-header-menu-inner
 {
-	background: linear-gradient(135deg, #e00c84 0%,#a90771 50%,#5d0156 100%);
+	background: linear-gradient(135deg, #12243d 0%,#1a3356 50%,#0d1a2c 100%);
 }
 .home-cta-section h5
 {
@@ -191,7 +191,7 @@
     padding:0px;
     text-align: center;
     border-collapse: collapse;
-    border: 2px solid #72035e;
+    border: 2px solid #12243d;
     font-size: 14px;
     color: #000000;
     position: relative;
@@ -297,7 +297,7 @@
 }
 .profile-box li i
 {
-    color: #c10979;
+    color: #cc9f53;
     padding-right: 10px;
 }
 .profile-back .media
@@ -379,7 +379,7 @@
 }
 .card-block li i
 {
-    color: #ae0773;
+    color: #cc9f53;
     padding-right: 10px;
 }
 .profile-id
@@ -404,7 +404,7 @@
     line-height: 24px;
     color: #ffffff;
     margin-top: 13px;
-    background: linear-gradient( 135deg, #e00c84 0%,#a90771 50%,#5d0156 100%) !important;
+    background: linear-gradient( 135deg, #12243d 0%,#1a3356 50%,#0d1a2c 100%) !important;
     padding: 10px 20px;
     border-radius: 7px;
     padding-top: 14px;
@@ -437,7 +437,7 @@
     border-bottom: 1px solid #f5f5f5;
     line-height: 45px;
     padding-bottom: 4px;
-    color: #920569;
+    color: #cc9f53;
 }
 .contact-prof
 {
@@ -452,7 +452,7 @@
 }
 .contact-prof li i
 {
-        color: #920569;
+        color: #cc9f53;
     padding-right: 8px;
 }
 .contact-prof .btn-viewfull
@@ -473,7 +473,7 @@
 
 .base-heading
 {
-  background: linear-gradient(135deg, #e00c84 0%,#a90771 50%,#5d0156 100%) !important;
+  background: linear-gradient(135deg, #12243d 0%,#1a3356 50%,#0d1a2c 100%) !important;
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
     padding: 10px 20px;
@@ -524,7 +524,7 @@
 }
 .myprof-details .btn-myprof 
 {
-    background: linear-gradient( 135deg, #e00c84 0%,#a90771 50%,#5d0156 100%);
+    background: linear-gradient( 135deg, #12243d 0%,#1a3356 50%,#0d1a2c 100%);
     color: #fff;
     position: absolute;
     top: 10px;

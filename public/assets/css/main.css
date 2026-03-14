@@ -78,17 +78,17 @@ p {
     margin: 0 0 15px; 
 }
 *::-moz-selection { 
-    background: #c78665; 
+    background: #cc9f53; 
     color: #fff; 
     text-shadow: none; 
 }
 ::-moz-selection { 
-    background: #c78665; 
+    background: #cc9f53; 
     color: #fff;
     text-shadow: none; 
 }
 ::selection { 
-    background: #c78665; 
+    background: #cc9f53; 
     color: #fff; 
     text-shadow: none; 
 }
@@ -176,7 +176,7 @@ input[type="email"]:focus,
 input[type="url"]:focus, 
 input[type="tel"]:focus, 
 input[type="color"]:focus {
-    border: 1px solid #c78665;
+    border: 1px solid #cc9f53;
     -webkit-box-shadow: none;
     -moz-box-shadow: none;
     box-shadow: none;
@@ -688,7 +688,7 @@ nav.main-menu ul.menu > li > a:before,
 .featured-imagebox.featured-imagebox-event .event-number:before,
 nav.main-menu ul.menu ul.mega-submenu li > a:not(.mega-menu-link):before,
 .pagination-block .page-numbers.current, #totop.top-visible {
-    background-color: #890566;
+    background-color: #cc9f53;
 }
 
 
@@ -707,7 +707,7 @@ nav.main-menu ul.menu ul.mega-submenu li > a:not(.mega-menu-link):before,
 .testimonials-nav .slick-current.testimonial-author_info .testimonial-avatar img, 
 .featured-icon-box.style2 .featured-icon,  .testimonials.style1 .testimonial-content, 
 .featured-icon-box.style2 .ttm-di_links a:before, .widget .tagcloud a:hover {
-    border-color: #c78665;
+    border-color: #cc9f53;
 }
 
 .ttm-bgcolor-darkgrey .tooltip-top:before, .ttm-bgcolor-darkgrey .tooltip:before, 
@@ -717,12 +717,12 @@ nav.main-menu ul.menu ul.mega-submenu li > a:not(.mega-menu-link):before,
 nav.main-menu, .ttm-tabs.ttm-tab-style-01 ul.tabs li.active a:before,
 .tooltip-top:before, [data-tooltip]:before,
 article.ttm-blog-classic , #payment .payment_box, .coupon_toggle .coupon_code {
-    border-top-color: #c78665 !important;
+    border-top-color: #cc9f53 !important;
 }
 
 .ttm-bgcolor-darkgrey .tooltip-bottom:before,  .featured-icon-box.icon-align-top-content.style6:before, 
 .header_search .header_search_content:before {
-    border-bottom-color: #c78665;
+    border-bottom-color: #cc9f53;
 }
 
 
