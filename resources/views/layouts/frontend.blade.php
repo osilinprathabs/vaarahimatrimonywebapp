@@ -23,7 +23,7 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/mystyle.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/megamenu.css') }}"/>
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/responsive.css') }}"/>
-    <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/r::::::::::::::::::::::::::;;;;;;;;;''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''s6.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/rs6.css') }}">
     
     <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">

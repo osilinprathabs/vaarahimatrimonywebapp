@@ -21,66 +21,151 @@
             class="rev-slidebg" data-no-retina>
 
           <!--   <rs-layer
-          id="slider-1-slide-2-layer-0" 
+            id="slider-1-slide-2-layer-0" 
+            data-type="text"
+            data-rsp_ch="on"
+            data-xy="x:l,l,c,c;xo:50px,50px,0,0;y:m;yo:-88px,-88px,-114px,-100px;"
+            data-text="w:normal;s:70,70,70,53;l:130,130,100,80;fw:700;a:center;"
+            data-frame_0="x:50,50,31,19;"
+            data-frame_1="st:100;sp:800;sR:100;"
+            data-frame_999="o:0;st:w;sR:8100;"
+            style="z-index:8;font-family:Cormorant;"
+            >Professional  
+          </rs-layer>
+
+          <rs-layer
+          id="slider-1-slide-2-layer-1" 
+          data-type="text"
+          data-color="#e5e5e5"
+          data-rsp_ch="on"
+          data-xy="x:l,l,c,c;xo:50px,50px,801px,594px;y:m;yo:86px,86px,-110px,-75px;"
+          data-text="w:normal;s:17,17,16,13;l:28,28,25,20;a:left,left,center,center;"
+          data-vbility="t,t,f,f"
+          data-frame_0="y:50,50,31,19;"
+          data-frame_1="st:520;sp:500;sR:520;"
+          data-frame_999="o:0;st:w;sR:7980;"
+          style="z-index:11;font-family:Hind;"
+          >The argument in favor of using filler text this your goes something like this <br> review point you’ll end up reviewing lorem and negotiating.  
+          </rs-layer>
+
+          <a
+          id="slider-1-slide-2-layer-4" 
+          class="rs-layer"
+          href="services-1.html" target="_self" rel="nofollow"
           data-type="text"
           data-rsp_ch="on"
-          data-xy="x:l,l,c,c;xo:50px,50px,0,0;y:m;yo:-88px,-88px,-114px,-100px;"
-          data-text="w:normal;s:70,70,70,53;l:130,130,100,80;fw:700;a:center;"
-          data-frame_0="x:50,50,31,19;"
-          data-frame_1="st:100;sp:800;sR:100;"
-          data-frame_999="o:0;st:w;sR:8100;"
-          style="z-index:8;font-family:Cormorant;"
-          >Professional  
-        </rs-layer>
+          data-xy="x:l,l,c,c;xo:50px,50px,0,0;y:m;yo:184px,184px,54px,40px;"
+          data-text="w:normal;s:19,19,17,17;l:28,28,20,18;fw:700;a:center;"
+          data-padding="t:12;r:45,45,35,30;b:12;l:45,45,35,30;"
+          data-border="bos:solid;boc:#ffffff;bow:1px,1px,1px,1px;bor:3px,3px,3px,3px;"
+          data-frame_0="y:50,50,31,19;"
+          data-frame_1="st:650;sp:500;sR:650;"
+          data-frame_999="o:0;st:w;sR:7850;"
+          data-frame_hover="c:#121f38;bgc:#fff;boc:#fff;bor:3px,3px,3px,3px;bos:solid;bow:1px,1px,1px,1px;"
+          style="z-index:12;font-family:Cormorant;"
+          >More Services! 
+        </a>
 
         <rs-layer
-        id="slider-1-slide-2-layer-1" 
+        id="slider-1-slide-2-layer-11" 
         data-type="text"
-        data-color="#e5e5e5"
         data-rsp_ch="on"
-        data-xy="x:l,l,c,c;xo:50px,50px,801px,594px;y:m;yo:86px,86px,-110px,-75px;"
-        data-text="w:normal;s:17,17,16,13;l:28,28,25,20;a:left,left,center,center;"
-        data-vbility="t,t,f,f"
-        data-frame_0="y:50,50,31,19;"
-        data-frame_1="st:520;sp:500;sR:520;"
-        data-frame_999="o:0;st:w;sR:7980;"
-        style="z-index:11;font-family:Hind;"
-        >The argument in favor of using filler text this your goes something like this <br> review point you’ll end up reviewing lorem and negotiating.  
+        data-xy="x:l,l,c,c;xo:50px,50px,0,0;y:m;yo:-8px,-8px,-36px,-39px;"
+        data-text="w:normal;s:70,70,70,53;l:130,130,100,80;fw:700;a:center;"
+        data-frame_0="x:50,50,31,19;"
+        data-frame_1="st:240;sp:800;sR:240;"
+        data-frame_999="o:0;st:w;sR:7960;"
+        style="z-index:9;font-family:Cormorant;"
+        >Wedco Photography 
         </rs-layer>
 
         <a
-        id="slider-1-slide-2-layer-4" 
+        id="slider-1-slide-2-layer-12" 
         class="rs-layer"
-        href="services-1.html" target="_self" rel="nofollow"
+        href="contact-us.html" target="_self" rel="nofollow"
         data-type="text"
         data-rsp_ch="on"
-        data-xy="x:l,l,c,c;xo:50px,50px,0,0;y:m;yo:184px,184px,54px,40px;"
+        data-xy="x:l,l,c,c;xo:283px,283px,0,0;y:m;yo:184px,184px,120px,98px;"
         data-text="w:normal;s:19,19,17,17;l:28,28,20,18;fw:700;a:center;"
         data-padding="t:12;r:45,45,35,30;b:12;l:45,45,35,30;"
-        data-border="bos:solid;boc:#ffffff;bow:1px,1px,1px,1px;bor:3px,3px,3px,3px;"
+        data-border="bos:solid;boc:#c78665;bow:1px,1px,1px,1px;bor:3px,3px,3px,3px;"
         data-frame_0="y:50,50,31,19;"
-        data-frame_1="st:650;sp:500;sR:650;"
-        data-frame_999="o:0;st:w;sR:7850;"
-        data-frame_hover="c:#121f38;bgc:#fff;boc:#fff;bor:3px,3px,3px,3px;bos:solid;bow:1px,1px,1px,1px;"
-        style="z-index:12;font-family:Cormorant;"
-        >More Services! 
+        data-frame_1="st:730;sp:500;sR:730;"
+        data-frame_999="o:0;st:w;sR:7770;"
+        data-frame_hover="bgc:#ba7552;boc:#ba7552;bor:3px,3px,3px,3px;bos:solid;bow:1px,1px,1px,1px;"
+        style="z-index:13;background-color:#c78665;font-family:Cormorant;"
+        >Conatct Us! 
+      </a>
+      -->
+        </rs-slide>
+
+        <rs-slide data-key="rs-5" data-title="Slide" data-thumb="{{ asset('assets/images/slides/banner1.png') }}"
+          data-anim="ei:d;eo:d;s:d;r:0;t:boxrandomrotate;sl:d;">
+
+          <img src="{{ asset('assets/images/slides/banner1.png') }}" title="slider-main-img04" width="1263" height="500"
+            class="rev-slidebg" data-no-retina>
+
+          <!--  <rs-layer
+      id="slider-1-slide-5-layer-0" 
+      data-type="text"
+      data-rsp_ch="on"
+      data-xy="x:l,l,c,c;xo:50px,50px,0,0;y:m;yo:-85px,-85px,-114px,-94px;"
+      data-text="w:normal;s:70,70,70,45;l:130,130,100,66;fw:700;a:center;"
+      data-frame_0="x:50,50,31,19;"
+      data-frame_1="st:100;sp:800;sR:100;"
+      data-frame_999="o:0;st:w;sR:8100;"
+      style="z-index:8;font-family:Cormorant;"
+      >We are Basics of 
+      </rs-layer>
+
+      <rs-layer
+      id="slider-1-slide-5-layer-1" 
+      data-type="text"
+      data-color="#e5e5e5"
+      data-rsp_ch="on"
+      data-xy="x:l,l,c,c;xo:50px,50px,801px,594px;y:m;yo:87px,87px,-110px,-75px;"
+      data-text="w:normal;s:17,17,16,13;l:28,28,25,20;a:left,left,center,center;"
+      data-vbility="t,t,f,f"
+      data-frame_0="y:50,50,31,19;"
+      data-frame_1="st:520;sp:500;sR:520;"
+      data-frame_999="o:0;st:w;sR:7980;"
+      style="z-index:11;font-family:Hind;"
+      >The argument in favor of using filler text this your goes something like this <br> review point you’ll end up reviewing lorem and negotiating.  
+      </rs-layer>
+
+      <a
+      id="slider-1-slide-5-layer-4" 
+      class="rs-layer"
+      href="live-music-and-dj.html" target="_self" rel="nofollow"
+      data-type="text"
+      data-rsp_ch="on"
+      data-xy="x:l,l,c,c;xo:50px,50px,0,0;y:m;yo:184px,184px,54px,40px;"
+      data-text="w:normal;s:19,19,17,17;l:28,28,20,18;fw:700;a:center;"
+      data-padding="t:12;r:45,45,35,30;b:12;l:45,45,35,30;"
+      data-border="bos:solid;boc:#ffffff;bow:1px,1px,1px,1px;bor:3px,3px,3px,3px;"
+      data-frame_0="y:50,50,31,19;"
+      data-frame_1="st:650;sp:500;sR:650;"
+      data-frame_999="o:0;st:w;sR:7850;"
+      data-frame_hover="c:#121f38;bgc:#fff;boc:#fff;bor:3px,3px,3px,3px;bos:solid;bow:1px,1px,1px,1px;"
+      style="z-index:12;font-family:Cormorant;"
+      >More Services! 
       </a>
 
       <rs-layer
-      id="slider-1-slide-2-layer-11" 
+      id="slider-1-slide-5-layer-11" 
       data-type="text"
       data-rsp_ch="on"
       data-xy="x:l,l,c,c;xo:50px,50px,0,0;y:m;yo:-8px,-8px,-36px,-39px;"
-      data-text="w:normal;s:70,70,70,53;l:130,130,100,80;fw:700;a:center;"
+      data-text="w:normal;s:70,70,70,45;l:130,130,100,60;fw:700;a:center;"
       data-frame_0="x:50,50,31,19;"
       data-frame_1="st:240;sp:800;sR:240;"
       data-frame_999="o:0;st:w;sR:7960;"
       style="z-index:9;font-family:Cormorant;"
-      >Wedco Photography 
+      >Photography Workshop 
       </rs-layer>
 
       <a
-      id="slider-1-slide-2-layer-12" 
+      id="slider-1-slide-5-layer-12" 
       class="rs-layer"
       href="contact-us.html" target="_self" rel="nofollow"
       data-type="text"
@@ -95,93 +180,8 @@
       data-frame_hover="bgc:#ba7552;boc:#ba7552;bor:3px,3px,3px,3px;bos:solid;bow:1px,1px,1px,1px;"
       style="z-index:13;background-color:#c78665;font-family:Cormorant;"
       >Conatct Us! 
-    </a>
-    -->
-        </rs-slide>
-
-        <rs-slide data-key="rs-5" data-title="Slide" data-thumb="{{ asset('assets/images/slides/banner1.png') }}"
-          data-anim="ei:d;eo:d;s:d;r:0;t:boxrandomrotate;sl:d;">
-
-          <img src="{{ asset('assets/images/slides/banner1.png') }}" title="slider-main-img04" width="1263" height="500"
-            class="rev-slidebg" data-no-retina>
-
-          <!--  <rs-layer
-    id="slider-1-slide-5-layer-0" 
-    data-type="text"
-    data-rsp_ch="on"
-    data-xy="x:l,l,c,c;xo:50px,50px,0,0;y:m;yo:-85px,-85px,-114px,-94px;"
-    data-text="w:normal;s:70,70,70,45;l:130,130,100,66;fw:700;a:center;"
-    data-frame_0="x:50,50,31,19;"
-    data-frame_1="st:100;sp:800;sR:100;"
-    data-frame_999="o:0;st:w;sR:8100;"
-    style="z-index:8;font-family:Cormorant;"
-    >We are Basics of 
-    </rs-layer>
-
-    <rs-layer
-    id="slider-1-slide-5-layer-1" 
-    data-type="text"
-    data-color="#e5e5e5"
-    data-rsp_ch="on"
-    data-xy="x:l,l,c,c;xo:50px,50px,801px,594px;y:m;yo:87px,87px,-110px,-75px;"
-    data-text="w:normal;s:17,17,16,13;l:28,28,25,20;a:left,left,center,center;"
-    data-vbility="t,t,f,f"
-    data-frame_0="y:50,50,31,19;"
-    data-frame_1="st:520;sp:500;sR:520;"
-    data-frame_999="o:0;st:w;sR:7980;"
-    style="z-index:11;font-family:Hind;"
-    >The argument in favor of using filler text this your goes something like this <br> review point you’ll end up reviewing lorem and negotiating.  
-    </rs-layer>
-
-    <a
-    id="slider-1-slide-5-layer-4" 
-    class="rs-layer"
-    href="live-music-and-dj.html" target="_self" rel="nofollow"
-    data-type="text"
-    data-rsp_ch="on"
-    data-xy="x:l,l,c,c;xo:50px,50px,0,0;y:m;yo:184px,184px,54px,40px;"
-    data-text="w:normal;s:19,19,17,17;l:28,28,20,18;fw:700;a:center;"
-    data-padding="t:12;r:45,45,35,30;b:12;l:45,45,35,30;"
-    data-border="bos:solid;boc:#ffffff;bow:1px,1px,1px,1px;bor:3px,3px,3px,3px;"
-    data-frame_0="y:50,50,31,19;"
-    data-frame_1="st:650;sp:500;sR:650;"
-    data-frame_999="o:0;st:w;sR:7850;"
-    data-frame_hover="c:#121f38;bgc:#fff;boc:#fff;bor:3px,3px,3px,3px;bos:solid;bow:1px,1px,1px,1px;"
-    style="z-index:12;font-family:Cormorant;"
-    >More Services! 
-    </a>
-
-    <rs-layer
-    id="slider-1-slide-5-layer-11" 
-    data-type="text"
-    data-rsp_ch="on"
-    data-xy="x:l,l,c,c;xo:50px,50px,0,0;y:m;yo:-8px,-8px,-36px,-39px;"
-    data-text="w:normal;s:70,70,70,45;l:130,130,100,60;fw:700;a:center;"
-    data-frame_0="x:50,50,31,19;"
-    data-frame_1="st:240;sp:800;sR:240;"
-    data-frame_999="o:0;st:w;sR:7960;"
-    style="z-index:9;font-family:Cormorant;"
-    >Photography Workshop 
-    </rs-layer>
-
-    <a
-    id="slider-1-slide-5-layer-12" 
-    class="rs-layer"
-    href="contact-us.html" target="_self" rel="nofollow"
-    data-type="text"
-    data-rsp_ch="on"
-    data-xy="x:l,l,c,c;xo:283px,283px,0,0;y:m;yo:184px,184px,120px,98px;"
-    data-text="w:normal;s:19,19,17,17;l:28,28,20,18;fw:700;a:center;"
-    data-padding="t:12;r:45,45,35,30;b:12;l:45,45,35,30;"
-    data-border="bos:solid;boc:#c78665;bow:1px,1px,1px,1px;bor:3px,3px,3px,3px;"
-    data-frame_0="y:50,50,31,19;"
-    data-frame_1="st:730;sp:500;sR:730;"
-    data-frame_999="o:0;st:w;sR:7770;"
-    data-frame_hover="bgc:#ba7552;boc:#ba7552;bor:3px,3px,3px,3px;bos:solid;bow:1px,1px,1px,1px;"
-    style="z-index:13;background-color:#c78665;font-family:Cormorant;"
-    >Conatct Us! 
-    </a>
-    -->
+      </a>
+      -->
         </rs-slide>
 
       </rs-slides>
@@ -263,7 +263,7 @@
                     <label>
                       <span class="text-input select-text">
                         <select name="gender">
-                          <option value=""="selected">Gender</option>
+                          <option value="" selected>Gender</option>
                           <option value="Male">Male / ஆண்</option>
                           <option value="Female">Female / பெண்</option>
                         </select>
@@ -273,8 +273,8 @@
                   <div class="col-lg-12">
                     <label>
                       <span class="text-input"><input name="email" type="email" value="" placeholder="Enter Email"
-                          required="required"></span>
-                      <input type="text" name="otps" id="otps" value="{{ $otp }}" readonly>
+                          required="required" autocomplete="off"></span>
+                      <input type="hidden" name="otps" id="otps" value="{{ $otp }}">
                     </label>
                   </div>
                 </div>
@@ -300,7 +300,8 @@
                     <label>
                       <span class="text-input" id="show_hide_password">
                         <input type="password" name="password" id="password" placeholder="Password" data-size="8" rel="gp"
-                          data-character-set="a-z,A-Z,0-9,@#$%^&+=!, \[email protected]~" required>
+                          data-character-set="a-z,A-Z,0-9,@#$%^&+=!, \[email protected]~" required
+                          autocomplete="new-password">
                         <!--<span class="input-group-btn"><button type="button" class="btn btn-default btn-lg getNewPass"><span class="fa fa-refresh"></span></button></span>-->
                         <div class="input-group-addon">
                           <a href=""><i class="fa fa-eye-slash" aria-hidden="true"></i></a>
@@ -442,60 +443,60 @@
     </section>
     <!--features-section end-->
     <!--  
-    <section class="search-prof" style="background-image: url('{{ asset('assets/images/logo/search-back.png') }}');">
-      <div class="container">
-      <div class="row">
-        <div class="col-md-12">
-        <h3>Search Matching Profile</h3>
-        <p>Start your search for a perfect match</p>
-        </div>
-        <div class="col-md-3">
-        <label>Looking for</label>
-        <select name="orderby" class="select2-hidden-accessible">
-          <option value="menu_order" selected="selected">Gender</option>
-          <option value="male">Male</option>
-          <option value="female">Female</option>
-        </select>
-        </div>
-        <div class="col-md-2">
-        <label>Age</label>
-        <select name="orderby" class="select2-hidden-accessible">
-          <option value="menu_order" selected="selected">Any</option>
-          <option value="male">19</option>
-          <option value="female">20</option>
-          <option value="male">21</option>
-          <option value="female">22</option>
-        </select>
-        </div>
+      <section class="search-prof" style="background-image: url('{{ asset('assets/images/logo/search-back.png') }}');">
+        <div class="container">
+        <div class="row">
+          <div class="col-md-12">
+          <h3>Search Matching Profile</h3>
+          <p>Start your search for a perfect match</p>
+          </div>
+          <div class="col-md-3">
+          <label>Looking for</label>
+          <select name="orderby" class="select2-hidden-accessible">
+            <option value="menu_order" selected="selected">Gender</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+          </select>
+          </div>
+          <div class="col-md-2">
+          <label>Age</label>
+          <select name="orderby" class="select2-hidden-accessible">
+            <option value="menu_order" selected="selected">Any</option>
+            <option value="male">19</option>
+            <option value="female">20</option>
+            <option value="male">21</option>
+            <option value="female">22</option>
+          </select>
+          </div>
 
-        <div class="col-md-2">
-        <label></label>
-        <select name="orderby" class="select2-hidden-accessible" style="margin-top: 7px;">
-          <option value="menu_order" selected="selected">Any</option>
-          <option value="male">19</option>
-          <option value="female">20</option>
-          <option value="male">21</option>
-          <option value="female">22</option>
-        </select>
+          <div class="col-md-2">
+          <label></label>
+          <select name="orderby" class="select2-hidden-accessible" style="margin-top: 7px;">
+            <option value="menu_order" selected="selected">Any</option>
+            <option value="male">19</option>
+            <option value="female">20</option>
+            <option value="male">21</option>
+            <option value="female">22</option>
+          </select>
 
+          </div>
+          <div class="col-md-2">
+          <label>Marital Status</label>
+          <select name="orderby" class="select2-hidden-accessible">
+            <option value="menu_order" selected="selected">Any</option>
+            <option value="male">Never Married</option>
+            <option value="female">Widowed</option>
+            <option value="male">Divorced</option>
+            <option value="female">Awaiting Divorce</option>
+          </select>
+          </div>
+          <div class="col-md-3">
+          <a class="ttm-btn ttm-btn-size-md ttm-btn-shape-rounded ttm-btn-style-border ttm-icon-btn-right ttm-btn-color-darkgrey mt-20 mr-20" href="about-us.html" title="" tabindex="0" style="width: 100%;text-align: center;margin-top: 31px !important;border: none !important;font-weight: 500;">SEARCH PROFILE 
+          </a>
+          </div>
         </div>
-        <div class="col-md-2">
-        <label>Marital Status</label>
-        <select name="orderby" class="select2-hidden-accessible">
-          <option value="menu_order" selected="selected">Any</option>
-          <option value="male">Never Married</option>
-          <option value="female">Widowed</option>
-          <option value="male">Divorced</option>
-          <option value="female">Awaiting Divorce</option>
-        </select>
         </div>
-        <div class="col-md-3">
-        <a class="ttm-btn ttm-btn-size-md ttm-btn-shape-rounded ttm-btn-style-border ttm-icon-btn-right ttm-btn-color-darkgrey mt-20 mr-20" href="about-us.html" title="" tabindex="0" style="width: 100%;text-align: center;margin-top: 31px !important;border: none !important;font-weight: 500;">SEARCH PROFILE 
-        </a>
-        </div>
-      </div>
-      </div>
-    </section> -->
+      </section> -->
 
     <!--team-member-section-->
 
@@ -554,7 +555,8 @@
                             <h5>100% Privacy</h5>
                           </div>
                           <div class="featured-desc">
-                            <p>Sri Vaarahi Matrimony website provides you a 100% secure platform to meet your life partner</p>
+                            <p>Sri Vaarahi Matrimony website provides you a 100% secure platform to meet your life partner
+                            </p>
                           </div>
                         </div>
                       </div><!--featured-icon-box end-->
