@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Vaarahi Matrimony</title>
+    <title>Sri Vaarahi Matrimony</title>
 
     <!-- favicon icon -->
     <link rel="shortcut icon" href="{{ asset('assets/images/logo/logo.png') }}" />
@@ -23,7 +23,7 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/mystyle.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/megamenu.css') }}"/>
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/responsive.css') }}"/>
-    <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/rs6.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/r::::::::::::::::::::::::::;;;;;;;;;''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''s6.css') }}">
     
     <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -62,7 +62,7 @@
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="site-branding">
-                                <a class="home-link" href="{{ url('/') }}" title="Vaarahi Matrimony" rel="home">
+                                <a class="home-link" href="{{ url('/') }}" title="Sri Vaarahi Matrimony" rel="home">
                                     <img id="logo-dark" class="img-center img-fluid" src="{{ asset('assets/images/logo/matrimony.png') }}" alt="logo-img">
                                 </a>
                             </div>
@@ -132,8 +132,8 @@
                     <div class="row">
                         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 widget-area">
                             <div class="widget widget_text clearfix">
-                                <h3 class="widget-title">About Vaarahi Matrimony</h3>
-                                <div class="textwidget widget-text">We’ve delivered fabulous wedding event experiences over the last two decades.</div>
+                                <h3 class="widget-title">About Sri Vaarahi Matrimony</h3>
+                                <div class="textwidget widget-text">We’ve delivered fabulous wedding event experiences over the last few months.</div>
                             </div>
                         </div>
                         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 widget-area">
@@ -163,7 +163,7 @@
                 <div class="container">
                     <div class="row copyright">
                         <div class="col-md-12 text-center">
-                            <span>Copyright © {{ date('Y') }}. All rights reserved by Vaarahi Matrimony</span>
+                            <span>Copyright © {{ date('Y') }}. All rights reserved by Sri Vaarahi Matrimony</span>
                         </div>
                     </div>
                 </div>

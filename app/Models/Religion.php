@@ -11,4 +11,6 @@ class Religion extends Model
 
     protected $table = 'religion';
     public $timestamps = false;
+
+    protected $fillable = ['religion'];
 }

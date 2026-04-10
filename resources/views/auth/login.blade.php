@@ -239,6 +239,17 @@ select.list-dt:focus {
 					{{ session('msg1') }}
 				</div>
 				@endif
+
+                @if($errors->any())
+                <div class="alert alert-danger alert-micro">
+                    <a href="#" class="close" data-dismiss="alert">&times;</a>
+                    <ul style="margin-bottom: 0;">
+                        @foreach($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+                @endif
                               
        <div class="col-lg-12">
            <h4 style="margin-top: 30px;
@@ -247,12 +258,14 @@ select.list-dt:focus {
        </div>
          <div class="col-lg-12">
          <label style="float: left;"> Email / Mobile No </label> 
-          <span class="text-input"><input type="text" name="username" id="username" value="" required="required"></span>
+          <span class="text-input"><input type="text" name="username" id="username" value="{{ old('username') }}" required="required"></span>
+          @error('username') <span class="text-danger" style="float: left; font-size: 13px;">{{ $message }}</span> @enderror
         </div>
         
         <div class="col-lg-12">
          <label style="float: left;"> Password </label> 
           <span class="text-input"><input type="password"  name="password" id="password" value="" required="required"></span>
+          @error('password') <span class="text-danger" style="float: left; font-size: 13px;">{{ $message }}</span> @enderror
         </div>
         <div class="col-md-12">
             <div class="form-check" style="float: left;margin-bottom: 20px;margin-top: 5px;">

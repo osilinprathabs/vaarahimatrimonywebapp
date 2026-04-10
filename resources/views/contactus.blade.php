@@ -46,7 +46,7 @@
                             <div class="layer-content">
                                 <div class="section-title without-seperator">
                                     <div class="title-header">
-                                        <h5>Vaarahi Matrimony</h5>
+                                        <h5>Sri Vaarahi Matrimony</h5>
                                         <h2 class="title">It’s Your Turn</h2>
                                     </div>
                                 </div>
@@ -60,10 +60,10 @@
                                     </div>
                                     <div class="featured-content">
                                         <div class="featured-title">
-                                            <h5>Call Or Email</h5>
+                                            <h5>Call Or Whatsapp : +91 90925 26272</h5>
                                         </div>
                                         <div class="featured-desc">
-                                            <p>info@digitalcloudies.com</p>
+                                            <p>helpdesk@srivaarahimatrimony.com</p>
                                         </div>
                                     </div>
                                 </div>

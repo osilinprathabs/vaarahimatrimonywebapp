@@ -12,7 +12,7 @@
                 <div class="thumb-info mb-md">
                     @php
                         $profileImg = $images->where('type', 'Profile')->first();
-                        $imgPath = $profileImg ? asset('upload/' . $profileImg->image_name) : asset('assets/images/profile/default.jpg');
+                        $imgPath = $profileImg ? asset('storage/' . $profileImg->image_name) : asset('assets/images/profile/default.jpg');
                     @endphp
                     <img src="{{ $imgPath }}" class="rounded img-responsive" alt="{{ $member->name }}">
                     <div class="thumb-info-title">
@@ -73,8 +73,8 @@
                         @forelse($images as $img)
                         <div class="col-md-4 mb-md">
                             <label>{{ $img->type }}</label>
-                            <a href="{{ asset('upload/' . $img->image_name) }}" target="_blank">
-                                <img src="{{ asset('upload/' . $img->image_name) }}" class="img-responsive thumbnail">
+                            <a href="{{ asset('storage/' . $img->image_name) }}" target="_blank">
+                                <img src="{{ asset('storage/' . $img->image_name) }}" class="img-responsive thumbnail">
                             </a>
                         </div>
                         @empty

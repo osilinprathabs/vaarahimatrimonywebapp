@@ -41,6 +41,7 @@ class User extends Authenticatable
         'education',
         'employment',
         'occupation',
+        'currency_value',
         'indian_currency_value',
         'height',
         'weight',
@@ -169,17 +170,24 @@ class User extends Authenticatable
 
     public function latestProfileImage()
     {
-        return $this->hasOne(ProfileImage::class, 'userid', 'id')->where('status', 1)->latest();
+        return $this->hasOne(ProfileImage::class, 'userid', 'id')->where('status', 1)->latest('added_datetime');
+    }
+
+    public function planAssign()
+    {
+        return $this->hasOne(PlanAssign::class, 'member_id', 'id');
+    }
+
+    public function payments()
+    {
+        return $this->hasMany(Payment::class, 'member_id', 'id');
     }
 
     /**
      * Check if the user profile is expired based on global settings.
      */
     public function isExpired()
-    {
-        // Don't expire active premium members unless you want to
-        // For now, let's follow the logic that it might apply to the registration date
-        
+    {        
         if (self::$_expirySettings === null) {
             self::$_expirySettings = \Illuminate\Support\Facades\DB::table('profile_ex_status')->first();
         }

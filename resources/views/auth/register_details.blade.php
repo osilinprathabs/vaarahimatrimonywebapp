@@ -17,6 +17,9 @@
     }
     label { font-weight: 600; margin-bottom: 5px; display: block; color: #333; }
     h4 { color: #a0066e; margin-top: 20px; margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
+    #resumeModal .modal-header { background: #12243d; color: #cc9f53; border-bottom: 2px solid #cc9f53; }
+    #resumeModal .btn-primary { background: #12243d; border-color: #cc9f53; color: #cc9f53; }
+    #resumeModal .btn-secondary { background: #6c757d; border: none; }
 </style>
 @endsection
 
@@ -383,10 +386,28 @@
         </div>
     </div>
 </section>
+
+<!-- Resume Registration Modal -->
+<div class="modal fade" id="resumeModal" tabindex="-1" role="dialog" aria-labelledby="resumeModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="resumeModalLabel">Resume Registration? / பதிவைத் தொடரவா?</h5>
+            </div>
+            <div class="modal-body text-center">
+                <p>It looks like you have some unsaved registration data from your last visit. Would you like to continue where you left off?</p>
+                <p>நீங்கள் கடைசியாகப் பதிவு செய்த விவரங்கள் உள்ளன. அதைத் தொடர விரும்புகிறீர்களா?</p>
+            </div>
+            <div class="modal-footer justify-content-center">
+                <button type="button" class="btn btn-secondary" id="btnStartNew">Start New / புதிதாகத் தொடங்கு</button>
+                <button type="button" class="btn btn-primary" id="btnResume">Resume / தொடரவும்</button>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 
 @section('scripts')
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
 $(document).ready(function(){
     var current_fs, next_fs, previous_fs;
@@ -433,6 +454,15 @@ $(document).ready(function(){
                     $.each(data, function(index, sub){
                         $('#subcaste').append('<option value="'+sub.id+'">'+sub.subcaste+'</option>');
                     });
+                    
+                    // Restore value if loading from cache
+                    let storedData = localStorage.getItem('v_matrimony_reg_cache');
+                    if (storedData) {
+                        let formData = JSON.parse(storedData);
+                        if (formData.subcaste) {
+                            $('#subcaste').val(formData.subcaste);
+                        }
+                    }
                 }
             });
         }
@@ -448,8 +478,17 @@ $(document).ready(function(){
                 success: function(data){
                     $('#star').empty().append('<option value="">Select Star</option>');
                     $.each(data, function(index, star){
-                        $('#star').append('<option value="'+star.id+'">'+star.star+'</option>');
+                        $('#star').append('<option value="'+star.id+'">'+star.name+'</option>');
                     });
+
+                    // Restore value if loading from cache
+                    let storedData = localStorage.getItem('v_matrimony_reg_cache');
+                    if (storedData) {
+                        let formData = JSON.parse(storedData);
+                        if (formData.star) {
+                            $('#star').val(formData.star);
+                        }
+                    }
                 }
             });
         }
@@ -460,6 +499,91 @@ $(document).ready(function(){
         var country_id = $(this).val();
         // Implement state matching logic if needed
     });
+
+    // --- Form Persistence Logic ---
+    const STORAGE_KEY = 'v_matrimony_reg_cache';
+    const STEP_KEY = 'v_matrimony_reg_step';
+
+    function saveFormData() {
+        let formData = {};
+        $('#msform').find('input:not([type="file"]), select, textarea').each(function() {
+            let name = $(this).attr('name');
+            if (name && name !== '_token') {
+                formData[name] = $(this).val();
+            }
+        });
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(formData));
+        
+        // Save current step
+        let currentStep = $('fieldset:visible').index('fieldset');
+        localStorage.setItem(STEP_KEY, currentStep);
+    }
+
+    function clearFormData() {
+        localStorage.removeItem(STORAGE_KEY);
+        localStorage.removeItem(STEP_KEY);
+    }
+
+    function loadFormData() {
+        let storedData = localStorage.getItem(STORAGE_KEY);
+        if (storedData) {
+            let formData = JSON.parse(storedData);
+            $.each(formData, function(name, value) {
+                let $el = $('[name="' + name + '"]');
+                if ($el.length) {
+                    $el.val(value);
+                    // Trigger change for AJAX dependent fields
+                    if (name === 'caste' || name === 'raasi') {
+                        $el.trigger('change');
+                    }
+                }
+            });
+
+            // Restore step
+            let savedStep = localStorage.getItem(STEP_KEY);
+            if (savedStep && savedStep > 0) {
+                $('fieldset').hide();
+                $('fieldset').eq(savedStep).show();
+            }
+        }
+    }
+
+    // Monitor all inputs
+    $('#msform').on('input change', 'input:not([type="file"]), select, textarea', function() {
+        saveFormData();
+    });
+
+    // Handle Modal actions
+    $('#btnResume').click(function() {
+        loadFormData();
+        $('#resumeModal').modal('hide');
+    });
+
+    $('#btnStartNew').click(function() {
+        clearFormData();
+        $('#resumeModal').modal('hide');
+    });
+
+    // Clear on submit
+    $('#msform').submit(function() {
+        clearFormData();
+    });
+
+    // Check on Load
+    setTimeout(function() {
+        if (localStorage.getItem(STORAGE_KEY)) {
+            try {
+                $('#resumeModal').modal('show');
+            } catch (e) {
+                console.error("Modal error, using confirm fallback", e);
+                if (confirm("Would you like to resume your previous registration? / உங்கள் கடந்த காலப் பதிவைத் தொடர விரும்புகிறீர்களா?")) {
+                    loadFormData();
+                } else {
+                    clearFormData();
+                }
+            }
+        }
+    }, 1000);
 });
 </script>
 @endsection

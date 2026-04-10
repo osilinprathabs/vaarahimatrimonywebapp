@@ -27,7 +27,7 @@ class LoginRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email' => ['required', 'string'], // No 'email' validation because it can be mobile or email
+            'username' => ['required', 'string'],
             'password' => ['required', 'string'],
         ];
     }
@@ -41,17 +41,19 @@ class LoginRequest extends FormRequest
     {
         $this->ensureIsNotRateLimited();
 
+        $username = $this->username;
+
+        // Try email first
         $credentials = [
-            'emailid' => $this->email,
+            'emailid' => $username,
             'password' => $this->password,
             'status' => 1,
         ];
 
-        // Try email first
         if (! Auth::attempt($credentials, $this->boolean('remember'))) {
             // Try mobile second
             $credentials = [
-                'mobileno' => $this->email,
+                'mobileno' => $username,
                 'password' => $this->password,
                 'status' => 1,
             ];
@@ -60,7 +62,7 @@ class LoginRequest extends FormRequest
                 RateLimiter::hit($this->throttleKey());
 
                 throw ValidationException::withMessages([
-                    'email' => trans('auth.failed'),
+                    'username' => trans('auth.failed'),
                 ]);
             }
         }
@@ -96,6 +98,6 @@ class LoginRequest extends FormRequest
      */
     public function throttleKey(): string
     {
-        return Str::transliterate(Str::lower($this->string('email')).'|'.$this->ip());
+        return Str::transliterate(Str::lower($this->string('username')).'|'.$this->ip());
     }
 }

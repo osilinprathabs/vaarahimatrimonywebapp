@@ -70,6 +70,19 @@ class ProfileController extends Controller
             'amsam_7', 'amsam_8', 'amsam_9', 'amsam_10', 'amsam_11', 'amsam_12'
         ]);
         
+        // Map dob to date_of_birth and calculate age
+        if ($request->has('dob')) {
+            $userData['date_of_birth'] = $request->dob;
+            $userData['age'] = \Carbon\Carbon::parse($request->dob)->age;
+            unset($userData['dob']);
+        }
+
+        // Map indian_currency_value to currency_value
+        if ($request->has('indian_currency_value')) {
+            $userData['currency_value'] = $request->indian_currency_value;
+            unset($userData['indian_currency_value']);
+        }
+
         // Handle physical status mapping if needed
         if ($request->has('disability')) {
             $userData['disability'] = $request->disability;
@@ -90,7 +103,7 @@ class ProfileController extends Controller
             $path = $request->file('aadhaar')->store('uploads/aadhaar', 'public');
             AadhaarImage::updateOrCreate(
                 ['userid' => $user->userid],
-                ['image_name' => $path, 'status' => 1]
+                ['image_name' => $path, 'aadhaar_image' => $path, 'status' => 1]
             );
         }
 
@@ -144,7 +157,7 @@ class ProfileController extends Controller
 
     public function getSubcastes($caste_id)
     {
-        return response()->json(Subcaste::where('caste_id', $caste_id)->get());
+        return response()->json(Subcaste::where('caste', $caste_id)->get());
     }
 
     public function getGotharams($caste_id)
@@ -154,7 +167,7 @@ class ProfileController extends Controller
 
     public function getStars($raasi_id)
     {
-        return response()->json(Star::where('raasi_id', $raasi_id)->get());
+        return response()->json(Star::where('rashi', $raasi_id)->get());
     }
 
     /**

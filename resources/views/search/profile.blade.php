@@ -18,7 +18,7 @@
             <div class="col-md-3">
                 <div class="profile-box">
                     @if($targetUser->latestProfileImage)
-                        <img src="{{ asset('storage/' . $targetUser->latestProfileImage->image) }}" alt="{{ $targetUser->name }}">
+                        <img src="{{ asset('storage/' . $targetUser->latestProfileImage->image_name) }}" alt="{{ $targetUser->name }}">
                     @else
                         <img src="{{ asset('assets/images/' . ($targetUser->gender == 'Female' ? 'female.png' : 'men.png')) }}" alt="image">
                     @endif

@@ -74,6 +74,8 @@ Route::prefix('admin')->group(function () {
             Route::post('/approve/{id}', [App\Http\Controllers\Admin\MemberManagementController::class, 'approveMember'])->name('admin.members.approve');
             Route::post('/suspend/{id}', [App\Http\Controllers\Admin\MemberManagementController::class, 'suspendMember'])->name('admin.members.suspend');
             Route::delete('/delete/{id}', [App\Http\Controllers\Admin\MemberManagementController::class, 'deleteMember'])->name('admin.members.delete');
+            Route::get('/create', [App\Http\Controllers\Admin\MemberManagementController::class, 'createMember'])->name('admin.members.create');
+            Route::post('/store', [App\Http\Controllers\Admin\MemberManagementController::class, 'storeMember'])->name('admin.members.store');
             
             // Photo & Horoscope Queues
             Route::get('/photo-queue', [App\Http\Controllers\Admin\MemberManagementController::class, 'photoQueue'])->name('admin.members.photo_queue');
@@ -109,5 +111,20 @@ Route::prefix('admin')->group(function () {
         });
     });
 });
+
+
+// Storage Workaround for shared hosting (disabled symlink)
+Route::get('storage/{path}', function ($path) {
+    $path = storage_path('app/public/' . $path);
+
+    if (!file_exists($path)) {
+        abort(404);
+    }
+
+    $file = file_get_contents($path);
+    $type = mime_content_type($path);
+
+    return response($file)->header('Content-Type', $type);
+})->where('path', '.*');
 
 require __DIR__.'/auth.php';

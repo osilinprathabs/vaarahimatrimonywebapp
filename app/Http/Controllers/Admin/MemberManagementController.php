@@ -102,6 +102,39 @@ class MemberManagementController extends Controller
     }
 
     /**
+     * Show create member form
+     */
+    public function createMember()
+    {
+        return view('admin.members.create', ['title' => 'Add New Member']);
+    }
+
+    /**
+     * Store new member
+     */
+    public function storeMember(Request $request)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email',
+            'gender' => 'required|in:Male,Female',
+            // Add other necessary fields
+        ]);
+
+        // Basic user creation
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'gender' => $request->gender,
+            'password' => bcrypt('password123'), // Default password
+            'register_id' => 'REG-' . time(), // Simple unique ID
+            'status' => 1,
+        ]);
+
+        return redirect()->route('admin.members.all')->with('success', 'Member created successfully.');
+    }
+
+    /**
      * Expired members list
      */
     public function expiredList()

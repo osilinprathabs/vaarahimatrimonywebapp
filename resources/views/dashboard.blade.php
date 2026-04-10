@@ -38,7 +38,7 @@
                             <div class="match-card">
                                 <div class="match-thumb">
                                     @if($match->latestProfileImage)
-                                        <img src="{{ asset('storage/' . $match->latestProfileImage->image) }}" alt="{{ $match->name }}">
+                                        <img src="{{ asset('storage/' . $match->latestProfileImage->image_name) }}" alt="{{ $match->name }}">
                                     @else
                                         <img src="{{ asset('assets/images/' . ($match->gender == 'Female' ? 'female.png' : 'men.png')) }}" alt="image">
                                     @endif
@@ -67,7 +67,7 @@
                             <div class="match-card">
                                 <div class="match-thumb">
                                     @if($match->latestProfileImage)
-                                        <img src="{{ asset('storage/' . $match->latestProfileImage->image) }}" alt="{{ $match->name }}">
+                                        <img src="{{ asset('storage/' . $match->latestProfileImage->image_name) }}" alt="{{ $match->name }}">
                                     @else
                                         <img src="{{ asset('assets/images/' . ($match->gender == 'Female' ? 'female.png' : 'men.png')) }}" alt="image">
                                     @endif

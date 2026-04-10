@@ -1,7 +1,7 @@
 <div class="col-md-3">
     <div class="profile-box">
         @if($user->latestProfileImage)
-            <img src="{{ asset('storage/' . $user->latestProfileImage->image) }}" class="img-fluid">
+            <img src="{{ asset('storage/' . $user->latestProfileImage->image_name) }}" class="img-fluid">
         @else
             @php
                 $image_list = ($user->gender == 'Female') ? 'female.png' : 'men.png';
