@@ -11,4 +11,5 @@ class Caste extends Model
 
     protected $table = 'caste';
     public $timestamps = false;
+    protected $fillable = ['caste', 'religion'];
 }

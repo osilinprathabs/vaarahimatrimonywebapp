@@ -10,4 +10,5 @@ class Subcaste extends Model
     use HasFactory;
     protected $table = 'subcaste';
     public $timestamps = false;
+    protected $fillable = ['subcaste', 'caste'];
 }

@@ -10,4 +10,5 @@ class Gothram extends Model
     use HasFactory;
     protected $table = 'gotharam';
     public $timestamps = false;
+    protected $fillable = ['gotharam'];
 }

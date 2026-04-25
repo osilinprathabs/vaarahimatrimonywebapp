@@ -105,7 +105,7 @@ Route::prefix('admin')->group(function () {
         // Master Data CRUD
         Route::prefix('master')->group(function () {
             Route::get('/{type}', [App\Http\Controllers\Admin\MasterDataController::class, 'index'])->name('admin.master.index');
-            Route::post('/{type}/store', [App\Http\Controllers\Admin\MasterDataController::class, 'store'])->name('admin.master.store');
+            Route::post('/{type}', [App\Http\Controllers\Admin\MasterDataController::class, 'store'])->name('admin.master.store');
             Route::post('/{type}/update/{id}', [App\Http\Controllers\Admin\MasterDataController::class, 'update'])->name('admin.master.update');
             Route::delete('/{type}/delete/{id}', [App\Http\Controllers\Admin\MasterDataController::class, 'destroy'])->name('admin.master.delete');
         });

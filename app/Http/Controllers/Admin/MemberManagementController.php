@@ -179,7 +179,7 @@ class MemberManagementController extends Controller
     {
         $photos = DB::table('profile_images')
             ->join('free_user', 'profile_images.userid', '=', 'free_user.id')
-            ->select('profile_images.*', 'free_user.userid as m_userid', 'free_user.name')
+            ->select('profile_images.*', 'profile_images.image_name as image', 'free_user.userid as m_userid', 'free_user.name')
             ->orderBy('profile_images.status', 'asc')
             ->paginate(50);
         return view('admin.members.photo_queue', compact('photos'));
@@ -192,7 +192,7 @@ class MemberManagementController extends Controller
     {
         $horoscopes = DB::table('jathagam_images')
             ->join('free_user', 'jathagam_images.userid', '=', 'free_user.id')
-            ->select('jathagam_images.*', 'free_user.userid as m_userid', 'free_user.name')
+            ->select('jathagam_images.*', 'jathagam_images.image_name as image', 'free_user.userid as m_userid', 'free_user.name')
             ->orderBy('jathagam_images.status', 'asc')
             ->paginate(50);
         return view('admin.members.horoscope_queue', compact('horoscopes'));

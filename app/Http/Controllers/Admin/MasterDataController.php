@@ -71,6 +71,7 @@ class MasterDataController extends Controller
 
     private function getDataForType($type)
     {
+        if ($type == 'gothram') $type = 'gotharam';
         switch ($type) {
             case 'religion': return ['items' => Religion::all(), 'label' => 'Religion'];
             case 'caste': return ['items' => Caste::all(), 'label' => 'Caste'];
@@ -79,13 +80,14 @@ class MasterDataController extends Controller
             case 'star': return ['items' => Star::all(), 'label' => 'Star'];
             case 'education': return ['items' => Education::all(), 'label' => 'Education'];
             case 'occupation': return ['items' => Occupation::all(), 'label' => 'Occupation'];
-            case 'gotharam': return ['items' => DB::table('gotharam')->get(), 'label' => 'Gotharam'];
+            case 'gotharam': return ['items' => \App\Models\Gothram::all(), 'label' => 'Gotharam'];
             default: abort(404);
         }
     }
 
     private function getModelForType($type)
     {
+        if ($type == 'gothram') $type = 'gotharam';
         switch ($type) {
             case 'religion': return new Religion;
             case 'caste': return new Caste;
@@ -94,14 +96,17 @@ class MasterDataController extends Controller
             case 'star': return new Star;
             case 'education': return new Education;
             case 'occupation': return new Occupation;
+            case 'gotharam': return new \App\Models\Gothram;
             default: abort(404);
         }
     }
 
     private function mapFields($type, $validated)
     {
+        if ($type == 'gothram') $type = 'gotharam';
         $nameField = $type; // Most tables have same name as type (e.g. caste, religion)
         if ($type == 'subcaste') $nameField = 'subcaste';
+        if ($type == 'raasi' || $type == 'star') $nameField = 'name';
         
         $fields = [$nameField => $validated['name']];
         

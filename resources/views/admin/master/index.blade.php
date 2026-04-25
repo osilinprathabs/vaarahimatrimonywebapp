@@ -34,6 +34,7 @@
                             <button class="btn btn-xs btn-success edit-btn" 
                                     data-id="{{ $item->id }}" 
                                     data-name="{{ $itemName }}"
+                                    data-parent-id="{{ $item->religion ?? $item->caste ?? '' }}"
                                     data-toggle="modal" 
                                     data-target="#editModal">Edit</button>
                             <form action="{{ route('admin.master.delete', [$type, $item->id]) }}" method="POST" style="display:inline;">
@@ -102,6 +103,20 @@
                         <label>Name</label>
                         <input type="text" name="name" id="edit_name" class="form-control" required>
                     </div>
+                    @if($type == 'caste' || $type == 'subcaste')
+                    <div class="form-group">
+                        <label>{{ $type == 'caste' ? 'Religion' : 'Caste' }}</label>
+                        <select name="parent_id" id="edit_parent_id" class="form-control" required>
+                            @php
+                                $parents = ($type == 'caste') ? \App\Models\Religion::all() : \App\Models\Caste::all();
+                                $parentType = ($type == 'caste') ? 'religion' : 'caste';
+                            @endphp
+                            @foreach($parents as $parent)
+                                <option value="{{ $parent->id }}">{{ $parent->$parentType }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    @endif
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -118,14 +133,16 @@
 $(document).ready(function() {
     $('#masterTable').DataTable();
 
-    $('.edit-btn').on('click', function() {
+    $(document).on('click', '.edit-btn', function() {
         var id = $(this).data('id');
         var name = $(this).data('name');
+        var parentId = $(this).data('parent-id');
         var url = "{{ route('admin.master.update', [$type, ':id']) }}";
         url = url.replace(':id', id);
 
         $('#editForm').attr('action', url);
         $('#edit_name').val(name);
+        $('#edit_parent_id').val(parentId);
     });
 });
 </script>

@@ -10,4 +10,5 @@ class State extends Model
     use HasFactory;
     protected $table = 'state';
     public $timestamps = false;
+    protected $fillable = ['state', 'country'];
 }

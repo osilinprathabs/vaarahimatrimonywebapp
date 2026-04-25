@@ -10,4 +10,5 @@ class Education extends Model
     use HasFactory;
     protected $table = 'education';
     public $timestamps = false;
+    protected $fillable = ['education'];
 }

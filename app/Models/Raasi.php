@@ -10,4 +10,5 @@ class Raasi extends Model
     use HasFactory;
     protected $table = 'raasi';
     public $timestamps = false;
+    protected $fillable = ['name'];
 }
