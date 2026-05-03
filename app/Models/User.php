@@ -80,6 +80,9 @@ class User extends Authenticatable
         'mid',
         'age',
         'date_of_birth',
+        'role',
+        'branch_id',
+        'username',
     ];
 
 

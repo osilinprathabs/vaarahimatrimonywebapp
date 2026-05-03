@@ -87,14 +87,17 @@ class HomeController extends Controller
         $data = [
             'user' => $user,
             'targetUser' => $targetUser,
+            'religion' => \App\Models\Religion::find($targetUser->religion),
             'caste' => \App\Models\Caste::find($targetUser->caste),
-            'subcaste' => \App\Models\Subcaste::where('subcaste', $targetUser->subcaste)->first(),
+            'subcaste' => \App\Models\Subcaste::find($targetUser->subcaste),
             'raasi' => \App\Models\Raasi::find($targetUser->raasi),
-            'star' => \App\Models\Star::where('star', $targetUser->star)->first(),
+            'star' => \App\Models\Star::find($targetUser->star),
             'dosham' => \App\Models\Dosham::find($targetUser->dhosam_type),
             'city' => \App\Models\City::find($targetUser->city),
             'state' => \App\Models\State::find($targetUser->state),
             'country' => \App\Models\Country::where('countryid', $targetUser->country)->first(),
+            'height' => \App\Models\Height::where('height', $targetUser->height)->first(),
+            'horoscope' => \App\Models\MemberHoroscope::where('member_id', $targetUser->id)->first(),
         ];
         
         return view('search.profile', $data);

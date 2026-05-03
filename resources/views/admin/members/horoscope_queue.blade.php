@@ -1,62 +1,74 @@
 @extends('layouts.admin')
 
 @section('content')
-<header class="page-header">
-    <h2>Horoscope Approval Queue</h2>
-</header>
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box">
+            <h4 class="page-title">Horoscope Approval Queue</h4>
+        </div>
+    </div>
+</div>
 
-<section class="panel">
-    <div class="panel-body">
+<div class="card border-0 shadow-sm mt-3" style="border-radius: 12px;">
+    <div class="card-body">
         <div class="table-responsive">
-            <table class="table table-bordered table-striped mb-none">
-                <thead>
+            <table class="table table-hover table-centered align-middle table-nowrap mb-0">
+                <thead class="bg-light">
                     <tr>
-                        <th>S.No</th>
+                        <th class="ps-3">S.No</th>
                         <th>Member ID</th>
-                        <th>Name</th>
+                        <th>Member Name</th>
                         <th>Horoscope File</th>
-                        <th>Status</th>
-                        <th>Action</th>
+                        <th class="text-center">Status</th>
+                        <th class="text-center">Manage</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach($horoscopes as $i => $horoscope)
                     <tr>
-                        <td>{{ $i + 1 }}</td>
-                        <td>{{ $horoscope->userid }}</td>
-                        <td>{{ $horoscope->name }}</td>
+                        <td class="ps-3">{{ $i + 1 }}</td>
+                        <td><span class="badge bg-light text-dark fw-bold">{{ $horoscope->userid }}</span></td>
+                        <td class="fw-bold">{{ $horoscope->name }}</td>
                         <td>
-                            <a href="{{ asset('uploads/horoscopes/' . $horoscope->image) }}" target="_blank" class="btn btn-xs btn-info">
-                                <i class="fa fa-file-image-o"></i> View File
+                            <a href="{{ asset('uploads/horoscopes/' . $horoscope->image) }}" target="_blank" class="btn btn-sm btn-info-subtle text-info">
+                                <i class="ti ti-file-description me-1"></i> View Horoscope
                             </a>
                         </td>
-                        <td>
+                        <td class="text-center">
                             @if($horoscope->status == 0)
-                                <span class="label label-warning">Pending</span>
+                                <span class="badge bg-warning-subtle text-warning px-2 py-1">Pending</span>
                             @elseif($horoscope->status == 1)
-                                <span class="label label-success">Approved</span>
+                                <span class="badge bg-success-subtle text-success px-2 py-1">Approved</span>
                             @else
-                                <span class="label label-danger">Rejected</span>
+                                <span class="badge bg-danger-subtle text-danger px-2 py-1">Rejected</span>
                             @endif
                         </td>
-                        <td>
-                            <form action="{{ route('admin.members.horoscope_update', $horoscope->id) }}" method="POST" style="display:inline;">
-                                @csrf
-                                <input type="hidden" name="status" value="1">
-                                <button type="submit" class="btn btn-xs btn-success" {{ $horoscope->status == 1 ? 'disabled' : '' }}>Approve</button>
-                            </form>
-                            <form action="{{ route('admin.members.horoscope_update', $horoscope->id) }}" method="POST" style="display:inline;">
-                                @csrf
-                                <input type="hidden" name="status" value="2">
-                                <button type="submit" class="btn btn-xs btn-danger" {{ $horoscope->status == 2 ? 'disabled' : '' }}>Reject</button>
-                            </form>
+                        <td class="text-center">
+                            <div class="d-flex justify-content-center gap-1">
+                                @if($horoscope->status != 1)
+                                <form action="{{ route('admin.members.horoscope_update', $horoscope->id) }}" method="POST" class="d-inline">
+                                    @csrf
+                                    <input type="hidden" name="status" value="1">
+                                    <button type="submit" class="btn btn-sm btn-success-subtle text-success" title="Approve"><i class="ti ti-check"></i></button>
+                                </form>
+                                @endif
+                                @if($horoscope->status != 2)
+                                <form action="{{ route('admin.members.horoscope_update', $horoscope->id) }}" method="POST" class="d-inline">
+                                    @csrf
+                                    <input type="hidden" name="status" value="2">
+                                    <button type="submit" class="btn btn-sm btn-danger-subtle text-danger" title="Reject"><i class="ti ti-x"></i></button>
+                                </form>
+                                @endif
+                            </div>
                         </td>
                     </tr>
                     @endforeach
                 </tbody>
             </table>
         </div>
-        {{ $horoscopes->links() }}
+        <div class="mt-4">
+            {{ $horoscopes->links() }}
+        </div>
     </div>
-</section>
+</div>
 @endsection

@@ -217,7 +217,7 @@
             <!--</a>-->
           </div>
         </div>
-        @php $otp = rand(1000, 9999); @endphp
+{{-- @php $otp = rand(1000, 9999); @endphp --}}
 
         <div class="col-lg-5">
           <div class="col-bg-img-five ttm-col-bgimage-yes ttm-bg ttm-bgcolor-white box-shadow spacing-5">
@@ -274,7 +274,7 @@
                     <label>
                       <span class="text-input"><input name="email" type="email" value="" placeholder="Enter Email"
                           required="required" autocomplete="off"></span>
-                      <input type="hidden" name="otps" id="otps" value="{{ $otp }}">
+                      {{-- <input type="hidden" name="otps" id="otps" value="{{ $otp }}"> --}}
                     </label>
                   </div>
                 </div>
@@ -286,11 +286,13 @@
                           onkeypress="return (event.charCode !=8 && event.charCode ==0 || (event.charCode >= 48 && event.charCode <= 57))"
                           placeholder="Enter Phone Number" />
 
+{{-- 
                         <div class="input-group-addon"
                           style="color: #fff;background: linear-gradient(135deg, #e00c84 0%,#a90771 50%,#5d0156 100%) !important;position: relative;right: 0;margin-top: -14px;border-top-right-radius: 5px;border-bottom-right-radius: 5px;">
                           <a href="#"><button type="button" id="btn_otp" class="btn btn-sendotp"
                               style="color: #fff;padding: 13px;"> Send OTP</button></a>
                         </div>
+--}}
                       </span>
                     </label>
                   </div>
@@ -320,6 +322,7 @@
                   <!--  </span>-->
                   <!-- </label>-->
                   <!--</div>-->
+{{-- 
                   <div class="col-lg-12" style="margin-top: -15px;">
                     <label>
                       <span class="text-input">
@@ -329,6 +332,7 @@
                       </span>
                     </label>
                   </div>
+--}}
                 </div>
 
                 <div class="row">

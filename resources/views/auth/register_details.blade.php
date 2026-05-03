@@ -33,6 +33,14 @@
                     <p>Fill all form fields to complete your profile</p>
                     <div class="row">
                         <div class="col-md-12 mx-0">
+                            @if(session('generated_password'))
+                                <div class="alert alert-success border-0 shadow-sm mx-4 mt-4 text-start">
+                                    <h4 class="alert-heading fw-bold"><i class="bi bi-shield-lock me-2"></i>Registration Successful!</h4>
+                                    <p class="mb-0">Your account has been created. Your generated password is: <strong class="fs-4 text-primary">{{ session('generated_password') }}</strong></p>
+                                    <hr>
+                                    <p class="mb-0 small text-muted">Please note this password. You can change it later from your profile settings.</p>
+                                </div>
+                            @endif
                             <form id="msform" method="post" action="{{ route('register.details.store') }}" enctype="multipart/form-data">
                                 @csrf
                                 

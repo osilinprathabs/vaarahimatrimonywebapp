@@ -56,28 +56,35 @@ class AdminAuthController extends Controller
         return view('admin.auth.change_password');
     }
 
-    // Update admin password
+    // Update admin profile (username and/or password)
     public function updatePassword(Request $request)
     {
         $request->validate([
             'username' => 'required|string',
             'current_password' => 'required',
-            'new_password' => 'required|min:6|confirmed',
+            'new_password' => 'nullable|min:6|confirmed',
         ]);
 
         $admin = DB::table('admin')->where('admin_id', session('admin_id'))->first();
 
-        if ($admin && $admin->password === $request->current_password) {
-            DB::table('admin')->where('admin_id', session('admin_id'))->update([
-                'user_id' => $request->username,
-                'password' => $request->new_password
-            ]);
-            
-            session(['admin_username' => $request->username]);
-            
-            return back()->with('success', 'Profile updated successfully.');
+        // Check current password
+        if (!$admin || $admin->password !== $request->current_password) {
+            return back()->with('error', 'Current password does not match.');
         }
 
-        return back()->with('error', 'Current password does not match.');
+        $updateData = [
+            'user_id' => $request->username,
+        ];
+
+        // Only update password if a new one is provided
+        if ($request->filled('new_password')) {
+            $updateData['password'] = $request->new_password;
+        }
+
+        DB::table('admin')->where('admin_id', session('admin_id'))->update($updateData);
+        
+        session(['admin_username' => $request->username]);
+        
+        return back()->with('success', 'Profile updated successfully.');
     }
 }

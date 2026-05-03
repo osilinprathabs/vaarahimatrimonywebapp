@@ -242,12 +242,3 @@
         </div>
     </section>
 @endsection
-
-</div>
-</div>
-</div>
-</section>
-
-</div>
-</div>
-</section>

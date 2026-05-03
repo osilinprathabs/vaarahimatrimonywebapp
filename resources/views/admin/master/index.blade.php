@@ -1,25 +1,27 @@
 @extends('layouts.admin')
 
 @section('content')
-<header class="page-header">
-    <h2>Master: {{ $label }}</h2>
-</header>
-
-<section class="panel">
-    <header class="panel-heading">
-        <div class="panel-actions">
-            <button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#addModal">Add New</button>
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box">
+            <h4 class="page-title">Master: {{ $label }}</h4>
         </div>
-        <h2 class="panel-title">{{ $label }} Data</h2>
-    </header>
-    <div class="panel-body">
+    </div>
+</div>
+
+<div class="card border-0 shadow-sm mt-3" style="border-radius: 12px;">
+    <div class="card-header bg-white border-0 py-3 d-flex justify-content-between align-items-center">
+        <h5 class="card-title mb-0 fw-bold">{{ $label }} Data</h5>
+        <button class="btn btn-primary px-3" data-bs-toggle="modal" data-bs-target="#addModal"><i class="ti ti-plus me-1"></i> Add New</button>
+    </div>
+    <div class="card-body">
         <div class="table-responsive">
-            <table class="table table-bordered table-striped mb-none" id="masterTable">
-                <thead>
+            <table class="table table-hover table-centered align-middle table-nowrap mb-0" id="masterTable">
+                <thead class="bg-light">
                     <tr>
-                        <th>S.No</th>
+                        <th class="ps-3">S.No</th>
                         <th>Name</th>
-                        <th>Action</th>
+                        <th class="text-center">Manage</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -28,19 +30,19 @@
                         @php
                             $itemName = $item->$type ?? $item->name ?? $item->star ?? $item->raasi ?? $item->education ?? $item->occupation ?? $item->id;
                         @endphp
-                        <td>{{ $i + 1 }}</td>
-                        <td>{{ $itemName }}</td>
-                        <td>
-                            <button class="btn btn-xs btn-success edit-btn" 
+                        <td class="ps-3">{{ $i + 1 }}</td>
+                        <td class="fw-bold">{{ $itemName }}</td>
+                        <td class="text-center">
+                            <button class="btn btn-sm btn-success-subtle text-success me-1 edit-btn" 
                                     data-id="{{ $item->id }}" 
                                     data-name="{{ $itemName }}"
                                     data-parent-id="{{ $item->religion ?? $item->caste ?? '' }}"
-                                    data-toggle="modal" 
-                                    data-target="#editModal">Edit</button>
-                            <form action="{{ route('admin.master.delete', [$type, $item->id]) }}" method="POST" style="display:inline;">
+                                    data-bs-toggle="modal" 
+                                    data-bs-target="#editModal" title="Edit"><i class="ti ti-edit"></i></button>
+                            <form action="{{ route('admin.master.delete', [$type, $item->id]) }}" method="POST" class="d-inline">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn btn-xs btn-danger" onclick="return confirm('Are you sure?')">Delete</button>
+                                <button type="submit" class="btn btn-sm btn-danger-subtle text-danger" onclick="return confirm('Are you sure?')" title="Delete"><i class="ti ti-trash"></i></button>
                             </form>
                         </td>
                     </tr>
@@ -49,26 +51,27 @@
             </table>
         </div>
     </div>
-</section>
+</div>
 
 <!-- Add Modal -->
-<div class="modal fade" id="addModal" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
+<div class="modal fade" id="addModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg" style="border-radius: 15px;">
             <form action="{{ route('admin.master.store', $type) }}" method="post">
                 @csrf
-                <div class="modal-header">
-                    <h4 class="modal-title">Add {{ $label }}</h4>
+                <div class="modal-header border-0 pb-0">
+                    <h5 class="modal-title fw-bold">Add {{ $label }}</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label>Name</label>
-                        <input type="text" name="name" class="form-control" required>
+                <div class="modal-body p-4">
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Name</label>
+                        <input type="text" name="name" class="form-control" placeholder="Enter name" required>
                     </div>
                     @if($type == 'caste' || $type == 'subcaste')
-                    <div class="form-group">
-                        <label>{{ $type == 'caste' ? 'Religion' : 'Caste' }}</label>
-                        <select name="parent_id" class="form-control" required>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">{{ $type == 'caste' ? 'Religion' : 'Caste' }}</label>
+                        <select name="parent_id" class="form-select" required>
                             @php
                                 $parents = ($type == 'caste') ? \App\Models\Religion::all() : \App\Models\Caste::all();
                                 $parentType = ($type == 'caste') ? 'religion' : 'caste';
@@ -80,9 +83,9 @@
                     </div>
                     @endif
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Save</button>
+                <div class="modal-footer border-0 pt-0">
+                    <button type="button" class="btn btn-light px-4" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary px-4">Save</button>
                 </div>
             </form>
         </div>
@@ -90,23 +93,24 @@
 </div>
 
 <!-- Edit Modal -->
-<div class="modal fade" id="editModal" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
+<div class="modal fade" id="editModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg" style="border-radius: 15px;">
             <form id="editForm" action="" method="post">
                 @csrf
-                <div class="modal-header">
-                    <h4 class="modal-title">Edit {{ $label }}</h4>
+                <div class="modal-header border-0 pb-0">
+                    <h5 class="modal-title fw-bold">Edit {{ $label }}</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label>Name</label>
-                        <input type="text" name="name" id="edit_name" class="form-control" required>
+                <div class="modal-body p-4">
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Name</label>
+                        <input type="text" name="name" id="edit_name" class="form-control" placeholder="Enter name" required>
                     </div>
                     @if($type == 'caste' || $type == 'subcaste')
-                    <div class="form-group">
-                        <label>{{ $type == 'caste' ? 'Religion' : 'Caste' }}</label>
-                        <select name="parent_id" id="edit_parent_id" class="form-control" required>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">{{ $type == 'caste' ? 'Religion' : 'Caste' }}</label>
+                        <select name="parent_id" id="edit_parent_id" class="form-select" required>
                             @php
                                 $parents = ($type == 'caste') ? \App\Models\Religion::all() : \App\Models\Caste::all();
                                 $parentType = ($type == 'caste') ? 'religion' : 'caste';
@@ -118,9 +122,9 @@
                     </div>
                     @endif
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Update</button>
+                <div class="modal-footer border-0 pt-0">
+                    <button type="button" class="btn btn-light px-4" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary px-4">Update</button>
                 </div>
             </form>
         </div>
@@ -129,20 +133,26 @@
 @endsection
 
 @section('scripts')
+@vite(['resources/js/pages/datatables-basic.js'])
 <script>
-$(document).ready(function() {
-    $('#masterTable').DataTable();
+document.addEventListener('DOMContentLoaded', function() {
+    const editBtns = document.querySelectorAll('.edit-btn');
+    const editForm = document.getElementById('editForm');
+    const editName = document.getElementById('edit_name');
+    const editParentId = document.getElementById('edit_parent_id');
 
-    $(document).on('click', '.edit-btn', function() {
-        var id = $(this).data('id');
-        var name = $(this).data('name');
-        var parentId = $(this).data('parent-id');
-        var url = "{{ route('admin.master.update', [$type, ':id']) }}";
-        url = url.replace(':id', id);
+    editBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            const id = this.getAttribute('data-id');
+            const name = this.getAttribute('data-name');
+            const parentId = this.getAttribute('data-parent-id');
+            let url = "{{ route('admin.master.update', [$type, ':id']) }}";
+            url = url.replace(':id', id);
 
-        $('#editForm').attr('action', url);
-        $('#edit_name').val(name);
-        $('#edit_parent_id').val(parentId);
+            editForm.setAttribute('action', url);
+            editName.value = name;
+            if (editParentId) editParentId.value = parentId;
+        });
     });
 });
 </script>

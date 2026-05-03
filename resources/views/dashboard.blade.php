@@ -2,92 +2,124 @@
 
 @section('styles')
 <style>
-    .profile-box { background: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); margin-bottom: 20px; text-align: center; }
-    .profile-box img { border-radius: 5px; margin-bottom: 15px; max-height: 200px; object-fit: cover; }
-    .profile-box li { list-style: none; padding: 10px 0; border-bottom: 1px solid #eee; text-align: left; }
-    .profile-box li:last-child { border-bottom: none; }
-    .profile-box li i { margin-right: 10px; color: #ac0772; }
-    .profile-box a { color: #333; text-decoration: none; }
-    .profile-box a:hover { color: #ac0772; }
-    .head-back { background: linear-gradient(135deg, #ab0772 0%,#a90771 50%,#5d0156 100%); padding: 15px; border-radius: 5px 5px 0 0; color: #fff; }
-    .head-back h2 { margin: 0; font-size: 20px; }
-    .match-card { background: #fff; border-radius: 5px; overflow: hidden; box-shadow: 0 0 5px rgba(0,0,0,0.1); margin-bottom: 20px; transition: transform 0.3s; }
-    .match-card:hover { transform: translateY(-5px); }
-    .match-thumb img { width: 100%; height: 200px; object-fit: cover; }
-    .match-info { padding: 15px; }
-    .match-info h5 { margin: 0 0 10px; font-size: 16px; color: #ac0772; }
-    .match-info p { margin: 0 0 5px; font-size: 13px; color: #666; }
-    .btn-freeplan { background: #499d0b; font-size: 12px; padding: 5px 10px; border-radius: 20px; }
+    .match-card { border-radius: 15px; overflow: hidden; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); border: none; }
+    .match-card:hover { transform: translateY(-10px); box-shadow: 0 15px 30px rgba(0,0,0,0.1) !important; }
+    .match-thumb { position: relative; height: 250px; overflow: hidden; }
+    .match-thumb img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; }
+    .match-card:hover .match-thumb img { transform: scale(1.1); }
+    .gender-badge { position: absolute; top: 15px; right: 15px; background: rgba(255,255,255,0.9); padding: 5px 12px; border-radius: 20px; font-weight: bold; font-size: 11px; }
+    .section-title { font-weight: 800; color: #333; position: relative; padding-bottom: 15px; margin-bottom: 30px; }
+    .section-title::after { content: ''; position: absolute; left: 0; bottom: 0; width: 50px; height: 4px; background: #ab0772; border-radius: 2px; }
 </style>
 @endsection
 
 @section('content')
-<section class="py-5" style="background-color: #f8f9fa;">
+<section class="py-5" style="background-color: #f0f2f5; min-height: 100vh;">
     <div class="container">
-        <div class="row">
+        <div class="row g-4">
             @include('partials.member_sidebar')
 
-            <div class="col-md-9">
-                <!-- Premium Profiles -->
-                <div class="head-back mb-3">
-                    <h2>Premium Profiles</h2>
+            <div class="col-lg-9">
+                <!-- Welcome Banner -->
+                <div class="card border-0 shadow-sm mb-5 text-white overflow-hidden" style="border-radius: 15px; background: linear-gradient(135deg, #ab0772 0%, #764ba2 100%);">
+                    <div class="card-body p-4 p-md-5 d-flex align-items-center">
+                        <div class="flex-grow-1">
+                            <h2 class="fw-bold mb-2">Find Your Perfect Match, {{ explode(' ', $user->name)[0] }}!</h2>
+                            <p class="fs-16 opacity-75 mb-0">We have analyzed thousands of profiles to find the best recommendations for you.</p>
+                        </div>
+                        <div class="d-none d-md-block">
+                            <i class="fa fa-heart-circle-check fs-1 opacity-25"></i>
+                        </div>
+                    </div>
                 </div>
-                <div class="row">
+
+                <!-- Premium Profiles -->
+                <div class="d-flex justify-content-between align-items-center mb-1">
+                    <h4 class="section-title">Premium Recommendations</h4>
+                    <a href="#" class="text-primary fw-bold small">See All <i class="fa fa-arrow-right ms-1"></i></a>
+                </div>
+                <div class="row g-4 mb-5">
                     @forelse($premium_matches as $match)
                         <div class="col-md-4">
-                            <div class="match-card">
+                            <div class="card match-card shadow-sm h-100">
                                 <div class="match-thumb">
                                     @if($match->latestProfileImage)
                                         <img src="{{ asset('storage/' . $match->latestProfileImage->image_name) }}" alt="{{ $match->name }}">
                                     @else
                                         <img src="{{ asset('assets/images/' . ($match->gender == 'Female' ? 'female.png' : 'men.png')) }}" alt="image">
                                     @endif
+                                    <div class="gender-badge shadow-sm">
+                                        <i class="fa fa-star text-warning me-1"></i> PREMIUM
+                                    </div>
                                 </div>
-                                <div class="match-info">
-                                    <p class="mb-1 text-muted">{{ $match->userid }}</p>
-                                    <h5><a href="{{ route('profile.view', $match->id) }}">{{ $match->name }}</a></h5>
-                                    <p>Age: {{ $match->age }}</p>
-                                    <p>Marital Status: {{ $match->maritalstatus }}</p>
-                                    <a href="{{ route('profile.view', $match->id) }}" class="btn btn-sm btn-outline-danger mt-2">View Profile <i class="fa fa-user"></i></a>
+                                <div class="card-body p-4">
+                                    <div class="d-flex justify-content-between mb-2">
+                                        <span class="text-muted small fw-bold">{{ $match->userid }}</span>
+                                        <span class="text-primary small fw-bold"><i class="fa fa-circle fs-8 me-1"></i> Online</span>
+                                    </div>
+                                    <h5 class="fw-bold mb-3"><a href="{{ route('profile.view', $match->id) }}" class="text-dark text-decoration-none">{{ $match->name }}</a></h5>
+                                    <div class="d-flex flex-wrap gap-2 mb-4">
+                                        <span class="badge bg-light text-dark border px-2 py-1">{{ $match->age }} Yrs</span>
+                                        <span class="badge bg-light text-dark border px-2 py-1">{{ $match->maritalstatus }}</span>
+                                        <span class="badge bg-light text-dark border px-2 py-1">{{ $match->religion }}</span>
+                                    </div>
+                                    <div class="d-grid">
+                                        <a href="{{ route('profile.view', $match->id) }}" class="btn btn-outline-primary rounded-pill fw-bold">View Full Profile</a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     @empty
-                        <div class="col-12"><p class="text-center p-5 bg-white rounded shadow-sm">No premium profiles found.</p></div>
+                        <div class="col-12">
+                            <div class="card border-0 shadow-sm rounded-4 text-center py-5 bg-white">
+                                <i class="fa fa-search text-muted mb-3" style="font-size: 3rem;"></i>
+                                <h5 class="text-muted">No premium profiles found matching your preferences.</h5>
+                            </div>
+                        </div>
                     @endforelse
                 </div>
 
                 <!-- New Matches -->
-                <div class="head-back mt-4 mb-3">
-                    <h2>New Matches</h2>
+                <div class="d-flex justify-content-between align-items-center mb-1">
+                    <h4 class="section-title">Newest Members</h4>
+                    <a href="#" class="text-primary fw-bold small">View More <i class="fa fa-arrow-right ms-1"></i></a>
                 </div>
-                <div class="row">
+                <div class="row g-4">
                     @forelse($new_matches as $match)
                         <div class="col-md-4">
-                            <div class="match-card">
+                            <div class="card match-card shadow-sm h-100">
                                 <div class="match-thumb">
                                     @if($match->latestProfileImage)
                                         <img src="{{ asset('storage/' . $match->latestProfileImage->image_name) }}" alt="{{ $match->name }}">
                                     @else
                                         <img src="{{ asset('assets/images/' . ($match->gender == 'Female' ? 'female.png' : 'men.png')) }}" alt="image">
                                     @endif
+                                    <div class="gender-badge shadow-sm" style="background: rgba(0,0,0,0.5); color: #fff;">
+                                        NEW JOINER
+                                    </div>
                                 </div>
-                                <div class="match-info">
-                                    <p class="mb-1 text-muted">{{ $match->userid }}</p>
-                                    <h5><a href="{{ route('profile.view', $match->id) }}">{{ $match->name }}</a></h5>
-                                    <p>Age: {{ $match->age }}</p>
-                                    <p>Marital Status: {{ $match->maritalstatus }}</p>
-                                    <a href="{{ route('profile.view', $match->id) }}" class="btn btn-sm btn-outline-danger mt-2">View Profile <i class="fa fa-user"></i></a>
+                                <div class="card-body p-4">
+                                    <div class="d-flex justify-content-between mb-2">
+                                        <span class="text-muted small fw-bold">{{ $match->userid }}</span>
+                                    </div>
+                                    <h5 class="fw-bold mb-3"><a href="{{ route('profile.view', $match->id) }}" class="text-dark text-decoration-none">{{ $match->name }}</a></h5>
+                                    <div class="d-flex flex-wrap gap-2 mb-4">
+                                        <span class="badge bg-light text-dark border px-2 py-1">{{ $match->age }} Yrs</span>
+                                        <span class="badge bg-light text-dark border px-2 py-1 text-truncate" style="max-width: 80px;">{{ $match->maritalstatus }}</span>
+                                    </div>
+                                    <div class="d-grid">
+                                        <a href="{{ route('profile.view', $match->id) }}" class="btn btn-outline-dark rounded-pill fw-bold">View Profile</a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     @empty
-                        <div class="col-12"><p class="text-center p-5 bg-white rounded shadow-sm">No new matches found.</p></div>
+                        <div class="col-12">
+                            <div class="card border-0 shadow-sm rounded-4 text-center py-5 bg-white">
+                                <h5 class="text-muted">No new members found recently.</h5>
+                            </div>
+                        </div>
                     @endforelse
-                </div>
-                
-                <div class="text-center mt-4">
-                    <a href="#" class="btn btn-outline-primary">View All Matches <i class="fa fa-angle-double-right"></i></a>
                 </div>
             </div>
         </div>

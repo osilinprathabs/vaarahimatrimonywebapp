@@ -15,8 +15,9 @@ class AdminMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (!$request->session()->has('admin_logged_in')) {
-            return redirect()->route('admin.login')->with('error', 'Please login to access the admin panel.');
+        $role = $request->session()->get('role');
+        if (!in_array($role, ['admin', 'staff', 'mediator'])) {
+            return redirect()->route('login')->with('error', 'Unauthorized access.');
         }
 
         return $next($request);

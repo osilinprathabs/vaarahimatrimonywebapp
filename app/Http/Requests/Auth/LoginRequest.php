@@ -29,6 +29,7 @@ class LoginRequest extends FormRequest
         return [
             'username' => ['required', 'string'],
             'password' => ['required', 'string'],
+            'role'     => ['required', 'string', 'in:customer,admin,staff,mediator'],
         ];
     }
 
@@ -42,32 +43,43 @@ class LoginRequest extends FormRequest
         $this->ensureIsNotRateLimited();
 
         $username = $this->username;
+        $password = $this->password;
+        $selectedRole = $this->role;
 
-        // Try email first
-        $credentials = [
-            'emailid' => $username,
-            'password' => $this->password,
-            'status' => 1,
-        ];
+        // Unified check in free_user table via User model, filtered by selected role
+        $user = \App\Models\User::where('status', 1)
+            ->where('role', $selectedRole)
+            ->where(function($q) use ($username) {
+                $q->where('emailid', $username)
+                  ->orWhere('mobileno', $username)
+                  ->orWhere('userid', $username)
+                  ->orWhere('username', $username);
+            })->first();
 
-        if (! Auth::attempt($credentials, $this->boolean('remember'))) {
-            // Try mobile second
-            $credentials = [
-                'mobileno' => $username,
-                'password' => $this->password,
-                'status' => 1,
-            ];
-
-            if (! Auth::attempt($credentials, $this->boolean('remember'))) {
-                RateLimiter::hit($this->throttleKey());
-
-                throw ValidationException::withMessages([
-                    'username' => trans('auth.failed'),
+        if ($user && \Illuminate\Support\Facades\Hash::check($password, $user->password)) {
+            Auth::login($user, $this->boolean('remember'));
+            
+            // Set session legacy variables for compatibility with existing admin controllers if needed
+            if (in_array($user->role, ['admin', 'staff', 'mediator'])) {
+                session([
+                    'admin_logged_in' => true,
+                    'admin_id'        => $user->id,
+                    'admin_username'  => $user->username ?? $user->userid,
+                    'role'            => $user->role
                 ]);
+            } else {
+                session(['role' => 'customer']);
             }
+
+            RateLimiter::clear($this->throttleKey());
+            return;
         }
 
-        RateLimiter::clear($this->throttleKey());
+        RateLimiter::hit($this->throttleKey());
+
+        throw ValidationException::withMessages([
+            'username' => trans('auth.failed'),
+        ]);
     }
 
     /**

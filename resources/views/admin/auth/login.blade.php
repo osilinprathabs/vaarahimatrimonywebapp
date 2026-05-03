@@ -1,74 +1,69 @@
-<!doctype html>
-<html class="fixed">
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta charset="utf-8"/>
     <title>Admin Login | Vaarahi Matrimony</title>
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800|Shadows+Into+Light" rel="stylesheet">
-    <link rel="stylesheet" href="{{ asset('admin-assets/vendor/bootstrap/css/bootstrap.css') }}" />
-    <link rel="stylesheet" href="{{ asset('admin-assets/vendor/font-awesome/css/font-awesome.css') }}" />
-    <link rel="stylesheet" href="{{ asset('admin-assets/stylesheets/theme.css') }}" />
-    <link rel="stylesheet" href="{{ asset('admin-assets/stylesheets/skins/default.css') }}" />
-    <link rel="stylesheet" href="{{ asset('admin-assets/stylesheets/theme-custom.css') }}">
-    <script src="{{ asset('admin-assets/vendor/modernizr/modernizr.js') }}"></script>
+    <meta content="width=device-width, initial-scale=1" name="viewport"/>
+    <link href="/images/favicon.ico" rel="shortcut icon"/>
+    @include('shared.partials.head-css')
     <style>
-        body .btn-primary { background-color: #12243d !important; border-color: #12243d !important; }
-        .body-sign .panel-sign .panel-body { background: #000000; width: 85%; margin: 0 auto; border-radius: 20px; }
-        .body-sign .panel-sign .panel-body { box-shadow: 0 1px 1px 10px rgba(23,22,22,0.1) !important; }
-        .copy { color: #fff; background-color: #12243d; padding: 10px; width: 55%; margin: 0 auto; border-radius: 24px; }
-        .body-sign .center-sign .logo img { width: 80%; text-align: center; margin-bottom: 39px; }
+        body { background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); min-height: 100vh; display: flex; align-items: center; justify-content: center; }
+        .auth-card { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px); border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.3); overflow: hidden; }
+        .btn-primary { background: #ac0772; border: none; padding: 12px; border-radius: 10px; font-weight: 600; }
+        .btn-primary:hover { background: #8e065d; }
     </style>
 </head>
-<body class="login" style="background-image: url({{ asset('admin-assets/images/login-back.jpg') }});background-attachment:fixed;background-size:cover;background-repeat:no-repeat;background-position:center;">
 
-<section class="body-sign">
-    <div class="center-sign">
-        <div class="logo text-center">
-            <img src="{{ asset('admin-assets/images/dreammatrimony.png') }}" style="">
-        </div>
-        <div class="panel panel-sign">
-            <div class="panel-body">
-                @if(session('error'))
-                    <div class="alert alert-danger">{{ session('error') }}</div>
-                @endif
-                <form action="{{ route('admin.login.submit') }}" method="post">
-                    @csrf
-                    <div class="form-group mb-lg">
-                        <label style="color:white;"><b>Username</b></label>
-                        <div class="input-group input-group-icon">
-                            <input name="username" type="text" class="form-control input-lg" value="{{ old('username') }}" />
-                            <span class="input-group-addon"><span class="icon icon-lg"><i class="fa fa-user"></i></span></span>
+<body>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-5">
+                <div class="auth-card shadow-lg">
+                    <div class="p-5">
+                        <div class="text-center mb-4">
+                            <h2 class="fw-bold" style="color: #ac0772;">Vaarahi Admin</h2>
+                            <p class="text-muted">Enter your credentials to access the admin panel</p>
+                        </div>
+
+                        @if(session('error'))
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                {{ session('error') }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        @endif
+
+                        <form action="{{ route('admin.login.submit') }}" method="post">
+                            @csrf
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Username</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light border-end-0"><i class="ti ti-user fs-5"></i></span>
+                                    <input type="text" name="username" class="form-control bg-light border-start-0" placeholder="Enter username" value="{{ old('username') }}" required>
+                                </div>
+                            </div>
+
+                            <div class="mb-4">
+                                <label class="form-label fw-bold">Password</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light border-end-0"><i class="ti ti-lock fs-5"></i></span>
+                                    <input type="password" name="password" class="form-control bg-light border-start-0" placeholder="Enter password" required>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <button type="submit" class="btn btn-primary w-100 shadow">Sign In</button>
+                            </div>
+                        </form>
+
+                        <div class="text-center mt-4">
+                            <p class="text-muted small">&copy; {{ date('Y') }} Vaarahi Matrimony. All Rights Reserved.</p>
                         </div>
                     </div>
-                    <div class="form-group mb-lg">
-                        <div class="clearfix">
-                            <label class="pull-left" style="color:white;"><b>Password</b></label>
-                        </div>
-                        <div class="input-group input-group-icon">
-                            <input name="password" type="password" class="form-control input-lg" />
-                            <span class="input-group-addon"><span class="icon icon-lg"><i class="fa fa-lock"></i></span></span>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-8">
-                            <p style="color:#fff;">Admin Login Panel</p>
-                        </div>
-                        <div class="col-sm-4 text-right">
-                            <button type="submit" class="btn btn-primary hidden-xs">Sign In</button>
-                            <button type="submit" class="btn btn-primary btn-block btn-lg visible-xs mt-lg">Sign In</button>
-                        </div>
-                    </div>
-                </form>
+                </div>
             </div>
         </div>
-        <p class="text-center mt-md mb-md copy" style="color:#fff;">&copy; Copyright {{ date('Y') }}. All Rights Reserved.</p>
     </div>
-</section>
 
-<script src="{{ asset('admin-assets/vendor/jquery/jquery.js') }}"></script>
-<script src="{{ asset('admin-assets/vendor/bootstrap/js/bootstrap.js') }}"></script>
-<script src="{{ asset('admin-assets/javascripts/theme.js') }}"></script>
-<script src="{{ asset('admin-assets/javascripts/theme.custom.js') }}"></script>
-<script src="{{ asset('admin-assets/javascripts/theme.init.js') }}"></script>
+    @include('shared.partials.footer-scripts')
 </body>
 </html>

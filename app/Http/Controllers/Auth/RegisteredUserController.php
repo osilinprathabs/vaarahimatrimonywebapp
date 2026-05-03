@@ -33,11 +33,15 @@ class RegisteredUserController extends Controller
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:free_user,emailid'],
-            'password' => ['required', 'string'], // No 'confirmed' in home form, keep it simple for now or adjust
             'mobileno' => ['required', 'string', 'max:10', 'unique:free_user,mobileno'],
             'onbehalf' => ['required'],
             'gender' => ['required'],
         ]);
+
+        // Generate password: first 4 letters of name + last 5 digits of mobile
+        $namePart = str_replace(' ', '', substr($request->name, 0, 4));
+        $mobilePart = substr($request->mobileno, -5);
+        $generatedPassword = $namePart . $mobilePart;
 
         $user = User::create([
             'userid' => User::generateUserId(),
@@ -45,7 +49,8 @@ class RegisteredUserController extends Controller
             'mid' => User::generateMid($request->gender),
             'name' => $request->name,
             'emailid' => $request->email,
-            'password' => $request->password, // Plain text for now as per legacy
+            'password' => \Illuminate\Support\Facades\Hash::make($generatedPassword),
+            'temp_password' => $generatedPassword, // Store temporarily to show user, or just pass to session
             'mobileno' => $request->mobileno,
             'onbehalf' => $request->onbehalf,
             'gender' => $request->gender,
@@ -59,6 +64,6 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
-        return redirect()->route('register.details');
+        return redirect()->route('register.details')->with('generated_password', $generatedPassword);
     }
 }

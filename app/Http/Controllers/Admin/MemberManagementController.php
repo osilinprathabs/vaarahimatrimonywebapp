@@ -16,6 +16,12 @@ class MemberManagementController extends Controller
     public function allMembers(Request $request)
     {
         $query = User::query();
+        
+        // Branch filtering for mediators/staff
+        if (session('role') === 'mediator') {
+            $query->where('branch_id', auth()->user()->branch_id);
+        }
+        
         if ($request->gender) $query->where('gender', $request->gender);
         if ($request->status !== null && $request->status !== '') $query->where('status', $request->status);
         $members = $query->orderBy('id', 'desc')->paginate(50);
@@ -28,6 +34,11 @@ class MemberManagementController extends Controller
     public function premiumMembers(Request $request)
     {
         $query = User::whereNotNull('plan')->where('plan', '!=', '')->where('plan', '!=', 'Free');
+        
+        if (session('role') === 'mediator') {
+            $query->where('branch_id', auth()->user()->branch_id);
+        }
+
         if ($request->gender) $query->where('gender', $request->gender);
         $members = $query->orderBy('id', 'desc')->paginate(50);
         return view('admin.members.list', compact('members'), ['title' => 'Premium Members']);
@@ -41,6 +52,11 @@ class MemberManagementController extends Controller
         $query = User::where(function($q) {
             $q->whereNull('plan')->orWhere('plan', '')->orWhere('plan', 'Free');
         })->where('status', '!=', 3);
+        
+        if (session('role') === 'mediator') {
+            $query->where('branch_id', auth()->user()->branch_id);
+        }
+
         if ($request->gender) $query->where('gender', $request->gender);
         $members = $query->orderBy('id', 'desc')->paginate(50);
         return view('admin.members.list', compact('members'), ['title' => 'Free Members']);
@@ -51,7 +67,11 @@ class MemberManagementController extends Controller
      */
     public function deletedMembers()
     {
-        $members = User::where('status', 3)->orderBy('id', 'desc')->paginate(50);
+        $query = User::where('status', 3);
+        if (session('role') === 'mediator') {
+            $query->where('branch_id', auth()->user()->branch_id);
+        }
+        $members = $query->orderBy('id', 'desc')->paginate(50);
         return view('admin.members.list', compact('members'), ['title' => 'Deleted Members']);
     }
 
@@ -60,7 +80,11 @@ class MemberManagementController extends Controller
      */
     public function pendingMembers()
     {
-        $members = User::where('status', 0)->orderBy('id', 'desc')->paginate(50);
+        $query = User::where('status', 0);
+        if (session('role') === 'mediator') {
+            $query->where('branch_id', auth()->user()->branch_id);
+        }
+        $members = $query->orderBy('id', 'desc')->paginate(50);
         return view('admin.members.list', compact('members'), ['title' => 'Member Approval - Pending']);
     }
 
@@ -70,6 +94,12 @@ class MemberManagementController extends Controller
     public function viewMember($id)
     {
         $member = User::findOrFail($id);
+        
+        // Security check for mediators
+        if (session('role') === 'mediator' && $member->branch_id != auth()->user()->branch_id) {
+            abort(403, 'Unauthorized access to this member.');
+        }
+
         $images  = DB::table('profile_images')->where('userid', $id)->get();
         return view('admin.members.view', compact('member', 'images'));
     }
@@ -79,7 +109,11 @@ class MemberManagementController extends Controller
      */
     public function approveMember($id)
     {
-        User::where('id', $id)->update(['status' => 1]);
+        $member = User::findOrFail($id);
+        if (session('role') === 'mediator' && $member->branch_id != auth()->user()->branch_id) {
+            abort(403);
+        }
+        $member->update(['status' => 1]);
         return back()->with('success', 'Member approved successfully.');
     }
 
@@ -88,7 +122,11 @@ class MemberManagementController extends Controller
      */
     public function suspendMember($id)
     {
-        User::where('id', $id)->update(['status' => 2]);
+        $member = User::findOrFail($id);
+        if (session('role') === 'mediator' && $member->branch_id != auth()->user()->branch_id) {
+            abort(403);
+        }
+        $member->update(['status' => 2]);
         return back()->with('success', 'Member suspended.');
     }
 
@@ -97,7 +135,11 @@ class MemberManagementController extends Controller
      */
     public function deleteMember($id)
     {
-        User::where('id', $id)->update(['status' => 3]);
+        $member = User::findOrFail($id);
+        if (session('role') === 'mediator' && $member->branch_id != auth()->user()->branch_id) {
+            abort(403);
+        }
+        $member->update(['status' => 3]);
         return back()->with('success', 'Member deleted.');
     }
 
@@ -106,7 +148,21 @@ class MemberManagementController extends Controller
      */
     public function createMember()
     {
-        return view('admin.members.create', ['title' => 'Add New Member']);
+        $onbehalfs = DB::table('onbehalf')->get();
+        $religions = DB::table('religion')->get();
+        $marital_statuses = DB::table('marital_status')->get();
+        $educations = DB::table('education')->get();
+        $employments = DB::table('employment')->get();
+        $occupations = DB::table('occupation')->get();
+        $heights = DB::table('height')->get();
+        $raasis = DB::table('raasi')->get();
+        $stars = DB::table('star')->get();
+
+        return view('admin.members.create', compact(
+            'onbehalfs', 'religions', 'marital_statuses', 
+            'educations', 'employments', 'occupations', 
+            'heights', 'raasis', 'stars'
+        ), ['title' => 'Add New Member']);
     }
 
     /**
@@ -114,21 +170,53 @@ class MemberManagementController extends Controller
      */
     public function storeMember(Request $request)
     {
+        // Add branch_id to request if mediator
+        if (session('role') === 'mediator') {
+            $request->merge(['branch_id' => auth()->user()->branch_id]);
+        }
+
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
+            'email' => 'nullable|email|unique:free_user,emailid',
+            'mobileno' => 'required|digits:10|unique:free_user,mobileno',
             'gender' => 'required|in:Male,Female',
-            // Add other necessary fields
+            'onbehalf' => 'required|exists:onbehalf,id',
+            'password' => 'required|string|min:6',
+            'date_of_birth' => 'required|date',
+            'maritalstatus' => 'required|string',
+            'religion' => 'required|exists:religion,id',
+            'branch_id' => 'nullable|exists:temple_branches,id',
         ]);
+
+        // Generate unique IDs
+        $register_id = User::generateRegisterId();
+        $mid = User::generateMid($request->gender);
+        $userid = User::generateUserId();
+
+        // Calculate age from DOB
+        $dob = new \DateTime($request->date_of_birth);
+        $now = new \DateTime();
+        $age = $now->diff($dob)->y;
 
         // Basic user creation
         $user = User::create([
             'name' => $request->name,
-            'email' => $request->email,
+            'emailid' => $request->email,
+            'mobileno' => $request->mobileno,
             'gender' => $request->gender,
-            'password' => bcrypt('password123'), // Default password
-            'register_id' => 'REG-' . time(), // Simple unique ID
+            'password' => bcrypt($request->password), 
+            'register_id' => $register_id,
+            'mid' => $mid,
+            'userid' => $userid,
+            'onbehalf' => $request->onbehalf,
+            'maritalstatus' => $request->maritalstatus,
+            'religion' => $request->religion,
             'status' => 1,
+            'date' => date('Y-m-d'),
+            'role' => 'customer',
+            'branch_id' => $request->branch_id,
+            'date_of_birth' => $request->date_of_birth,
+            'age' => $age,
         ]);
 
         return redirect()->route('admin.members.all')->with('success', 'Member created successfully.');

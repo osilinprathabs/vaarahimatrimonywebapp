@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\CheckoutController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -44,21 +45,19 @@ Route::get('/terms-and-conditions', [HomeController::class, 'terms'])->name('ter
     Route::get('/api/subcastes/{caste_id}', [ProfileController::class, 'getSubcastes']);
     Route::get('/api/gotharams/{caste_id}', [ProfileController::class, 'getGotharams']);
     Route::get('/api/stars/{raasi_id}', [ProfileController::class, 'getStars']);
+    // Payment Routes
+    Route::post('/payment/initiate', [CheckoutController::class, 'initiatePayment'])->name('payment.initiate');
+    Route::post('/payment/razorpay/webhook', [CheckoutController::class, 'handleWebhook']);
 });
 
 
-Route::get('/adminpanel', function () {
-    return redirect('/admin/dashboard');
-});
-Route::get('/adminPanel', function () {
-    return redirect('/admin/dashboard');
-});
+Route::get('/adminpanel', function () { return redirect('/login'); });
+Route::get('/adminPanel', function () { return redirect('/login'); });
 
 // Admin Routes
 Route::prefix('admin')->group(function () {
-    Route::get('/login', [App\Http\Controllers\Admin\AdminAuthController::class, 'showLogin'])->name('admin.login');
-    Route::post('/login', [App\Http\Controllers\Admin\AdminAuthController::class, 'login'])->name('admin.login.submit');
-    Route::get('/logout', [App\Http\Controllers\Admin\AdminAuthController::class, 'logout'])->name('admin.logout');
+    Route::get('/login', function() { return redirect('/login'); })->name('admin.login');
+    Route::get('/logout', [\App\Http\Controllers\Auth\AuthenticatedSessionController::class, 'destroy'])->name('admin.logout');
 
     Route::middleware([\App\Http\Middleware\AdminMiddleware::class])->group(function () {
         Route::get('/dashboard', [App\Http\Controllers\Admin\AdminController::class, 'dashboard'])->name('admin.dashboard');
@@ -96,11 +95,20 @@ Route::prefix('admin')->group(function () {
 
         // Other Sections
         Route::get('/expired-list', [App\Http\Controllers\Admin\MemberManagementController::class, 'expiredList'])->name('admin.expired_list');
-        Route::get('/settings', [App\Http\Controllers\Admin\AdminController::class, 'settings'])->name('admin.settings');
-        Route::post('/settings', [App\Http\Controllers\Admin\AdminController::class, 'updateSettings'])->name('admin.settings.update');
+        Route::get('/settings', [App\Http\Controllers\Admin\SettingController::class, 'index'])->name('admin.settings');
+        Route::post('/settings', [App\Http\Controllers\Admin\SettingController::class, 'update'])->name('admin.settings.update');
 
         Route::get('/change-password', [App\Http\Controllers\Admin\AdminAuthController::class, 'showChangePassword'])->name('admin.change_password');
         Route::post('/change-password', [App\Http\Controllers\Admin\AdminAuthController::class, 'updatePassword'])->name('admin.change_password.submit');
+
+        Route::get('/payment-gateway', [App\Http\Controllers\Admin\PaymentGatewayController::class, 'index'])->name('admin.settings.payment_gateway');
+        Route::get('/payment-gateway/edit/{id}', [App\Http\Controllers\Admin\PaymentGatewayController::class, 'edit'])->name('admin.settings.payment_gateway.edit');
+        Route::post('/payment-gateway/update/{id}', [App\Http\Controllers\Admin\PaymentGatewayController::class, 'update'])->name('admin.settings.payment_gateway.update');
+        Route::post('/payment-gateway/toggle/{id}', [App\Http\Controllers\Admin\PaymentGatewayController::class, 'toggleStatus'])->name('admin.settings.payment_gateway.toggle');
+        Route::delete('/payment-gateway/delete/{id}', [App\Http\Controllers\Admin\PaymentGatewayController::class, 'destroy'])->name('admin.settings.payment_gateway.delete');
+        Route::post('/payment-gateway/store', [App\Http\Controllers\Admin\PaymentGatewayController::class, 'store'])->name('admin.settings.payment_gateway.store');
+
+        Route::get('/clear-cache', [App\Http\Controllers\Admin\AdminController::class, 'clearCache'])->name('admin.clear_cache');
 
         // Master Data CRUD
         Route::prefix('master')->group(function () {
