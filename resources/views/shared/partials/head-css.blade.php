@@ -64,4 +64,4 @@
         }
     }
 </script>
-@vite(['resources/js/vendor.js'])
+@vite(['resources/css/app.css', 'resources/js/vendor.js', 'resources/js/app.js'])

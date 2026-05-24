@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Http\Requests\Auth;
-
 use Illuminate\Auth\Events\Lockout;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
@@ -53,10 +52,29 @@ class LoginRequest extends FormRequest
                 $q->where('emailid', $username)
                   ->orWhere('mobileno', $username)
                   ->orWhere('userid', $username)
-                  ->orWhere('username', $username);
+                  ->orWhere('username', $username)
+                  ->orWhere('mid', $username)
+                  ->orWhere('register_id', $username);
             })->first();
 
-        if ($user && \Illuminate\Support\Facades\Hash::check($password, $user->password)) {
+        $passwordMatches = false;
+        if ($user) {
+            $isBcrypt = password_get_info($user->password)['algoName'] === 'bcrypt';
+            if ($isBcrypt) {
+                $passwordMatches = \Illuminate\Support\Facades\Hash::check($password, $user->password);
+            } else {
+                // Fallback for legacy plaintext password comparison
+                $passwordMatches = ($password === $user->password);
+                
+                // Auto-upgrade legacy plaintext password to bcrypt upon successful match
+                if ($passwordMatches) {
+                    $user->password = \Illuminate\Support\Facades\Hash::make($password);
+                    $user->save();
+                }
+            }
+        }
+
+        if ($user && $passwordMatches) {
             Auth::login($user, $this->boolean('remember'));
             
             // Set session legacy variables for compatibility with existing admin controllers if needed
