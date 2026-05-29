@@ -27,7 +27,7 @@
         <div class="row align-items-center">
             <div class="col-md-4">
                 @if($targetUser->latestProfileImage)
-                    <img src="{{ asset('storage/' . $targetUser->latestProfileImage->image_name) }}" class="profile-main-img" alt="{{ $targetUser->name }}">
+                    <img src="{{ storage_url($targetUser->latestProfileImage->image_name) }}" class="profile-main-img" alt="{{ $targetUser->name }}">
                 @else
                     <img src="{{ asset('assets/images/' . ($targetUser->gender == 'Female' ? 'female.png' : 'men.png')) }}" class="profile-main-img" alt="Default Image">
                 @endif

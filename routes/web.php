@@ -39,6 +39,9 @@ Route::get('/terms-and-conditions', [HomeController::class, 'terms'])->name('ter
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
+    // Profile photo upload (standalone, from dashboard camera button)
+    Route::post('/profile/photo', [ProfileController::class, 'uploadPhoto'])->name('profile.photo.upload');
+
     // AJAX Routes
     Route::get('/api/states/{country_id}', [ProfileController::class, 'getStates']);
     Route::get('/api/cities/{state_id}', [ProfileController::class, 'getCities']);

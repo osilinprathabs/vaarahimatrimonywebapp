@@ -18,7 +18,7 @@
         backdrop-filter: blur(20px);
         width: 100%; 
         max-width: 440px;
-        padding: 45px;
+        padding: 30px 35px;
         z-index: 10;
         border: 1px solid rgba(255, 255, 255, 0.7);
     }
@@ -126,26 +126,25 @@
     <div class="bg-shape shape-2"></div>
     
     <div class="auth-card mx-auto">
-        <div class="auth-brand text-center mb-5">
-            <div class="mb-4">
-                <img src="{{ asset('assets/images/logo/logo.png') }}" alt="Sri Vaarahi Matrimony" class="img-fluid" style="max-height: 80px; filter: drop-shadow(0 5px 15px rgba(0,0,0,0.1));">
+        <div class="auth-brand text-center mb-3">
+            <div class="mb-2">
+                <img src="{{ asset('assets/images/logo/logo.png') }}" alt="Sri Vaarahi Matrimony" class="img-fluid" style="max-height: 55px; filter: drop-shadow(0 5px 15px rgba(0,0,0,0.1));">
             </div>
-            <h2 class="fw-bold mb-2">LET'S GET STARTED NOW!</h2>
-            <h5 class="text-dark fw-bold">Login and find your life partner</h5>
-            <p class="text-muted small px-3">Access your account to connect with potential matches.</p>
+            <h4 class="fw-bold mb-1">LET'S GET STARTED NOW!</h4>
+            <p class="text-dark fw-bold mb-0" style="font-size:0.9rem;">Login and find your life partner</p>
         </div>
 
         @if(session('error'))
-            <div class="alert alert-danger border-0 shadow-sm mb-4 py-2 small">
-                {{ session('error') }}
+            <div class="alert border-0 shadow-sm mb-4 py-3 px-4 small" style="background:#fff0f3; border-left: 4px solid #dc3545 !important; border-radius: 12px;">
+                <span class="fw-bold text-danger"><i class="ti ti-alert-circle me-1"></i> {{ session('error') }}</span>
             </div>
         @endif
 
         @if($errors->any())
-            <div class="alert alert-danger border-0 shadow-sm mb-4 py-2 small">
-                <ul class="mb-0">
+            <div class="alert border-0 shadow-sm mb-4 py-3 px-4 small" style="background:#fff0f3; border-left: 4px solid #dc3545 !important; border-radius: 12px;">
+                <ul class="mb-0 ps-3">
                     @foreach($errors->all() as $error)
-                        <li>{{ $error }}</li>
+                        <li class="fw-bold text-danger"><i class="ti ti-alert-circle me-1"></i> {{ $error }}</li>
                     @endforeach
                 </ul>
             </div>
@@ -153,28 +152,28 @@
 
         <form action="{{ route('login') }}" method="POST">
             @csrf
-            <div class="mb-4">
-                <label class="form-label fw-bold">Login As</label>
+            <div class="mb-3">
+                <label class="form-label fw-bold mb-1">Login As</label>
                 <div class="input-group">
                     <span class="input-group-text bg-white border-end-0"><i class="ti ti-users fs-18"></i></span>
                     <select name="role" class="form-select border-start-0 ps-1" required>
-                        <option value="customer">Customer</option>
-                        <option value="admin" selected>Administrator</option>
-                        <option value="staff">Staff</option>
-                        <option value="mediator">Mediator</option>
+                        <option value="customer" {{ old('role', 'customer') === 'customer' ? 'selected' : '' }}>Customer</option>
+                        <option value="admin"    {{ old('role') === 'admin'    ? 'selected' : '' }}>Administrator</option>
+                        <option value="staff"    {{ old('role') === 'staff'    ? 'selected' : '' }}>Staff</option>
+                        <option value="mediator" {{ old('role') === 'mediator' ? 'selected' : '' }}>Mediator</option>
                     </select>
                 </div>
             </div>
 
-            <div class="mb-4">
-                <label class="form-label fw-bold">Email / Mobile No / MID</label>
+            <div class="mb-3">
+                <label class="form-label fw-bold mb-1">Email / Mobile No / MID</label>
                 <div class="input-group">
                     <span class="input-group-text bg-white border-end-0"><i class="ti ti-user fs-18"></i></span>
                     <input type="text" name="username" class="form-control border-start-0 ps-1" placeholder="Enter Email or Mobile No" required autofocus>
                 </div>
             </div>
 
-            <div class="mb-4">
+            <div class="mb-3">
                 <div class="d-flex justify-content-between align-items-center mb-1">
                     <label class="form-label fw-bold mb-0">Password</label>
                 </div>
@@ -187,7 +186,7 @@
                 </div>
             </div>
 
-            <div class="d-flex justify-content-between align-items-center mb-4">
+            <div class="d-flex justify-content-between align-items-center mb-3">
                 <div class="form-check">
                     <input type="checkbox" class="form-check-input" id="remember" name="remember">
                     <label class="form-check-label small" for="remember">Remember me</label>

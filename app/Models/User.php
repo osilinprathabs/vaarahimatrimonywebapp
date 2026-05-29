@@ -111,6 +111,26 @@ class User extends Authenticatable
         return $this->password;
     }
 
+    /**
+     * Override remember token methods to be no-ops.
+     * The legacy free_user table may not have a remember_token column on all environments.
+     * This prevents SQLSTATE[42S22] errors when Auth::login() tries to persist the token.
+     */
+    public function getRememberToken()
+    {
+        return null;
+    }
+
+    public function setRememberToken($value)
+    {
+        // Intentionally left blank — remember_token column is not guaranteed to exist.
+    }
+
+    public function getRememberTokenName()
+    {
+        return ''; // Return empty string so Laravel skips the DB update entirely.
+    }
+
     public static function generateUserId()
     {
         $lastUser = static::orderBy('id', 'desc')->first();

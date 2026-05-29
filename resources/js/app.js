@@ -386,80 +386,14 @@ class App {
         })
     }
 
-    // Left Sidebar Menu Link Activation (Vertical Menu)
+    // Left Sidebar Menu — flat nav, no dropdowns
     initLeftSidebar() {
         const sideNav = document.querySelector(".side-nav")
         if (!sideNav) return
 
-        // Prevent default toggle behavior for toggle links
-        sideNav.querySelectorAll("li [data-bs-toggle='collapse']").forEach((toggle) => {
-            toggle.addEventListener("click", (e) => e.preventDefault())
-        })
-
-        // Ensure only one collapse is open at a time
-        const allCollapses = sideNav.querySelectorAll("li .collapse")
-        allCollapses.forEach((collapse) => {
-            collapse.addEventListener("show.bs.collapse", (event) => {
-                const currentCollapse = event.target
-
-                // Get all ancestor collapses of the current item
-                const ancestors = []
-                let el = currentCollapse.parentElement
-                while (el && el !== sideNav) {
-                    if (el.classList.contains("collapse")) {
-                        ancestors.push(el)
-                    }
-                    el = el.parentElement
-                }
-
-                allCollapses.forEach((other) => {
-                    if (other !== currentCollapse && !ancestors.includes(other)) {
-                        new bootstrap.Collapse(other, { toggle: false }).hide()
-                    }
-                })
-            })
-        })
-
-        // Match current URL
-        const currentUrl = window.location.href.split(/[?#]/)[0]
-        const allLinks = sideNav.querySelectorAll("a")
-
-        allLinks.forEach((link) => {
-            if (link.href === currentUrl) {
-                sideNav.querySelectorAll("a.active, li.active, .collapse.show").forEach((el) => {
-                    el.classList.remove("active")
-                    el.classList.remove("show")
-                })
-
-                link.classList.add("active")
-
-                // Traverse up to activate all parents and show collapses
-                let currentElement = link.closest("li")
-                while (currentElement && currentElement !== sideNav) {
-                    currentElement.classList.add("active")
-
-                    // Show parent collapses
-                    const parentCollapse = currentElement.closest(".collapse")
-                    if (parentCollapse) {
-                        new bootstrap.Collapse(parentCollapse, { toggle: false }).show()
-
-                        // Also mark the <li> that contains the collapse as active
-                        const collapseParentLi = parentCollapse.closest("li")
-                        if (collapseParentLi) {
-                            collapseParentLi.classList.add("active")
-                        }
-
-                        currentElement = collapseParentLi
-                    } else {
-                        currentElement = currentElement.parentElement
-                    }
-                }
-            }
-        })
-
         // Auto-scroll to active item
         setTimeout(() => {
-            const activeItem = sideNav.querySelector("li.active .active .active") || sideNav.querySelector("li.active .active")
+            const activeItem = sideNav.querySelector("li.active a.active")
             const scrollContainer = document.querySelector(".sidenav-menu .simplebar-content-wrapper")
 
             if (activeItem && scrollContainer) {
@@ -470,7 +404,6 @@ class App {
             }
         }, 200)
 
-        // Smooth scroll utility
         function scrollToPosition(element, to, duration) {
             const start = element.scrollTop
             const change = to - start
@@ -484,7 +417,6 @@ class App {
                     setTimeout(animateScroll, increment)
                 }
             }
-
             animateScroll()
         }
 

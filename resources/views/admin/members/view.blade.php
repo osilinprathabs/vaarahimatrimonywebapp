@@ -15,7 +15,7 @@
             <div class="bg-primary py-5 px-3 text-center">
                 @php
                     $profileImg = $images->where('type', 'Profile')->first();
-                    $imgPath = $profileImg ? asset('storage/' . $profileImg->image_name) : asset('assets/images/profile/default.jpg');
+                    $imgPath = $profileImg ? storage_url($profileImg->image_name) : asset('assets/images/profile/default.jpg');
                 @endphp
                 <img src="{{ $imgPath }}" class="rounded-circle border border-4 border-white shadow" style="width: 120px; height: 120px; object-fit: cover;" alt="{{ $member->name }}">
                 <h4 class="text-white mt-3 mb-1 fw-bold">{{ $member->name }}</h4>
@@ -264,8 +264,8 @@
                                     <div class="position-absolute top-0 end-0 p-2">
                                         <span class="badge bg-dark bg-opacity-75">{{ $img->type }}</span>
                                     </div>
-                                    <a href="{{ asset('storage/' . $img->image_name) }}" target="_blank">
-                                        <img src="{{ asset('storage/' . $img->image_name) }}" class="img-fluid w-100" style="height: 200px; object-fit: cover;" alt="Member Image">
+                                    <a href="{{ storage_url($img->image_name) }}" target="_blank">
+                                        <img src="{{ storage_url($img->image_name) }}" class="img-fluid w-100" style="height: 200px; object-fit: cover;" alt="Member Image">
                                     </a>
                                 </div>
                             </div>

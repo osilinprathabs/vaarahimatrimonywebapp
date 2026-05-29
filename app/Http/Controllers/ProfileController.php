@@ -92,26 +92,42 @@ class ProfileController extends Controller
 
         // Handle File Uploads
         if ($request->hasFile('profile_img')) {
-            $path = $request->file('profile_img')->store('uploads/profile', 'public');
+            $file = $request->file('profile_img');
+            $path = $file->store('uploads/profile', 'public');
             ProfileImage::updateOrCreate(
                 ['userid' => $user->id],
-                ['image_name' => $path, 'status' => 1]
+                [
+                    'image_name'      => $path,
+                    'status'          => 0,  // pending admin approval
+                    'added_datetime'  => now(),
+                ]
             );
         }
 
         if ($request->hasFile('aadhaar')) {
-            $path = $request->file('aadhaar')->store('uploads/aadhaar', 'public');
+            $file = $request->file('aadhaar');
+            $path = $file->store('uploads/aadhaar', 'public');
             AadhaarImage::updateOrCreate(
-                ['userid' => $user->userid],
-                ['image_name' => $path, 'aadhaar_image' => $path, 'status' => 1]
+                ['userid' => $user->id],
+                [
+                    'image_name'     => $path,
+                    'aadhaar_image'  => $path,
+                    'status'         => 1,
+                    'added_datetime' => now(),
+                ]
             );
         }
 
         if ($request->hasFile('jathagam')) {
-            $path = $request->file('jathagam')->store('uploads/jathagam', 'public');
+            $file = $request->file('jathagam');
+            $path = $file->store('uploads/jathagam', 'public');
             JathagamImage::updateOrCreate(
-                ['userid' => $user->userid],
-                ['image_name' => $path, 'status' => 1]
+                ['userid' => $user->id],   // userid is INT — must use $user->id
+                [
+                    'image_name'     => $path,
+                    'status'         => 1,
+                    'added_datetime' => now(),
+                ]
             );
         }
 
@@ -141,6 +157,32 @@ class ProfileController extends Controller
         }
 
         return redirect()->route('dashboard')->with('status', 'Registration completed successfully!');
+    }
+
+    /**
+     * Upload / replace the logged-in member's profile photo.
+     * Called from the dashboard camera-button modal.
+     */
+    public function uploadPhoto(Request $request): RedirectResponse
+    {
+        $request->validate([
+            'profile_img' => ['required', 'image', 'mimes:jpg,jpeg,png,webp', 'max:4096'],
+        ]);
+
+        $user = $request->user();
+
+        $path = $request->file('profile_img')->store('uploads/profile', 'public');
+
+        ProfileImage::updateOrCreate(
+            ['userid' => $user->id],
+            [
+                'image_name'     => $path,
+                'status'         => 0,   // pending admin approval
+                'added_datetime' => now(),
+            ]
+        );
+
+        return back()->with('photo_status', 'Your photo has been uploaded and is pending admin approval.');
     }
 
 
