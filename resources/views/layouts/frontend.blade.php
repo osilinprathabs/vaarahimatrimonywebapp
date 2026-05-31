@@ -8,7 +8,7 @@
     <title>Sri Vaarahi Matrimony</title>
 
     <!-- favicon icon -->
-    <link rel="shortcut icon" href="{{ asset('assets/images/logo/logo.png') }}" />
+    <link rel="shortcut icon" href="{{ asset(\App\Models\Setting::get('favicon', 'assets/images/logo/logo.png')) }}" />
 
     <!-- styles -->
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/bootstrap.min.css') }}"/>
@@ -46,7 +46,7 @@
                                 @auth
                                     <form method="POST" action="{{ route('logout') }}" style="display:inline;">
                                         @csrf
-                                        <i class="fa fa-user-circle-o" style="float:right;color:white;margin-top: 16px;">&nbsp;<a href="{{ route('logout') }}" onclick="event.preventDefault(); this.closest('form').submit();" style="float: right;color:white;">Logout</a></i>
+                                         <i class="fa fa-user-circle-o" style="float:right;color:white;margin-top: 16px;">&nbsp;<a href="{{ route('logout') }}" onclick="confirmLogout(event, this);" style="float: right;color:white;">Logout</a></i>
                                     </form>
                                 @else
                                     <i class="fa fa-user-circle-o" style="float:right;color:white;margin-top: 16px;">&nbsp;<a href="{{ route('login') }}" style="float: right;color:white;">Login</a></i>
@@ -63,7 +63,7 @@
                         <div class="col-lg-12">
                             <div class="site-branding">
                                 <a class="home-link" href="{{ url('/') }}" title="Sri Vaarahi Matrimony" rel="home">
-                                    <img id="logo-dark" class="img-center img-fluid" src="{{ asset('assets/images/logo/matrimony.png') }}" alt="logo-img">
+                                    <img id="logo-dark" class="img-center img-fluid" src="{{ asset(\App\Models\Setting::get('logo', 'assets/images/logo/matrimony.png')) }}" alt="logo-img">
                                 </a>
                             </div>
                         </div>
@@ -108,7 +108,7 @@
                                                 <li>
                                                     <form method="POST" action="{{ route('logout') }}" style="display:inline;">
                                                         @csrf
-                                                        <a href="{{ route('logout') }}" onclick="event.preventDefault(); this.closest('form').submit();">Logout <br> வெளியேறு</a>
+                                                         <a href="{{ route('logout') }}" onclick="confirmLogout(event, this);">Logout <br> வெளியேறு</a>
                                                     </form>
                                                 </li>
                                             @endguest
@@ -195,6 +195,33 @@
     <!-- SLIDER REVOLUTION 6.0 EXTENSIONS -->
     <script src="{{ asset('assets/revolution/js/revolution.tools.min.js') }}"></script>
     <script src="{{ asset('assets/revolution/js/rs6.min.js') }}"></script>
+    
+    <!-- SweetAlert2 CSS & JS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        function confirmLogout(event, element) {
+            event.preventDefault();
+            Swal.fire({
+                title: 'Confirm Logout',
+                text: "Are you sure you want to log out from Sri Vaarahi Matrimony?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#ab0772',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Yes, Logout',
+                cancelButtonText: 'Cancel',
+                background: '#ffffff',
+                customClass: {
+                    popup: 'rounded-4 shadow-lg border-0'
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    element.closest('form').submit();
+                }
+            });
+        }
+    </script>
     
     @yield('scripts')
 </body>

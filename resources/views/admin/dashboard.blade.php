@@ -150,6 +150,197 @@
 </div>
 
 <div class="row mt-4">
+    <div class="col-xl-3 col-md-6">
+        <div class="card shadow-sm border-0" style="border-radius: 12px; background: linear-gradient(135deg, #ab0772 0%, #d41490 100%); color: white;">
+            <div class="card-body">
+                <div class="d-flex align-items-center">
+                    <div class="flex-grow-1">
+                        <h6 class="text-white-50 text-uppercase fs-12 fw-bold">Interests Sent</h6>
+                        <h3 class="mb-0 text-white">{{ $total_interests }}</h3>
+                    </div>
+                    <div class="avatar-sm flex-shrink-0">
+                        <span class="avatar-title bg-white bg-opacity-20 rounded fs-3 text-white">
+                            <i class="ti ti-heart"></i>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-md-6">
+        <div class="card shadow-sm border-0" style="border-radius: 12px; background: linear-gradient(135deg, #2e7d32 0%, #4caf50 100%); color: white;">
+            <div class="card-body">
+                <div class="d-flex align-items-center">
+                    <div class="flex-grow-1">
+                        <h6 class="text-white-50 text-uppercase fs-12 fw-bold">Accepted Mutual</h6>
+                        <h3 class="mb-0 text-white">{{ $accepted_interests }}</h3>
+                    </div>
+                    <div class="avatar-sm flex-shrink-0">
+                        <span class="avatar-title bg-white bg-opacity-20 rounded fs-3 text-white">
+                            <i class="ti ti-check"></i>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-md-6">
+        <div class="card shadow-sm border-0" style="border-radius: 12px; background: linear-gradient(135deg, #c62828 0%, #ef5350 100%); color: white;">
+            <div class="card-body">
+                <div class="d-flex align-items-center">
+                    <div class="flex-grow-1">
+                        <h6 class="text-white-50 text-uppercase fs-12 fw-bold">Rejected Requests</h6>
+                        <h3 class="mb-0 text-white">{{ $rejected_interests }}</h3>
+                    </div>
+                    <div class="avatar-sm flex-shrink-0">
+                        <span class="avatar-title bg-white bg-opacity-20 rounded fs-3 text-white">
+                            <i class="ti ti-ban"></i>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-md-6">
+        <div class="card shadow-sm border-0" style="border-radius: 12px; background: linear-gradient(135deg, #f57c00 0%, #ffb74d 100%); color: white;">
+            <div class="card-body">
+                <div class="d-flex align-items-center">
+                    <div class="flex-grow-1">
+                        <h6 class="text-white-50 text-uppercase fs-12 fw-bold">Pending Approval</h6>
+                        <h3 class="mb-0 text-white">{{ $pending_interests }}</h3>
+                    </div>
+                    <div class="avatar-sm flex-shrink-0">
+                        <span class="avatar-title bg-white bg-opacity-20 rounded fs-3 text-white">
+                            <i class="ti ti-clock"></i>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-xl-6">
+        <div class="card border-0 shadow-sm" style="border-radius: 12px;">
+            <div class="card-header bg-white border-0 py-3 d-flex justify-content-between align-items-center">
+                <h5 class="card-title mb-0 fw-bold"><i class="ti ti-award text-warning me-2"></i>Top Premium Members</h5>
+                <span class="badge bg-light text-primary">Active Packages</span>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="bg-light">
+                            <tr>
+                                <th class="ps-4">MID</th>
+                                <th>Name</th>
+                                <th>Gender</th>
+                                <th>Plan</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse($top_premium_members as $member)
+                            <tr>
+                                <td class="ps-4 fw-bold text-primary">{{ $member->userid }}</td>
+                                <td class="fw-bold">{{ $member->name }}</td>
+                                <td>{{ $member->gender }}</td>
+                                <td><span class="badge bg-success bg-opacity-10 text-success rounded-pill px-3">{{ $member->plan }}</span></td>
+                            </tr>
+                            @empty
+                            <tr>
+                                <td colspan="4" class="text-center py-3 text-muted">No premium members found.</td>
+                            </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-6">
+        <div class="card border-0 shadow-sm" style="border-radius: 12px;">
+            <div class="card-header bg-white border-0 py-3 d-flex justify-content-between align-items-center">
+                <h5 class="card-title mb-0 fw-bold"><i class="ti ti-bolt text-danger me-2"></i>Most Active Users</h5>
+                <span class="badge bg-light text-danger">Interests Sent</span>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="bg-light">
+                            <tr>
+                                <th class="ps-4">MID</th>
+                                <th>Name</th>
+                                <th>Gender</th>
+                                <th>Interests Sent</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse($most_active_users as $member)
+                            <tr>
+                                <td class="ps-4 fw-bold text-primary">{{ $member->userid }}</td>
+                                <td class="fw-bold">{{ $member->name }}</td>
+                                <td>{{ $member->gender }}</td>
+                                <td><span class="badge bg-danger bg-opacity-10 text-danger rounded-pill px-3">{{ $member->sent_count }} Sent</span></td>
+                            </tr>
+                            @empty
+                            <tr>
+                                <td colspan="4" class="text-center py-3 text-muted">No interest activity recorded yet.</td>
+                            </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-xl-6">
+        <div class="card border-0 shadow-sm" style="border-radius: 12px; background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%); color: white;">
+            <div class="card-body p-4">
+                <h6 class="text-white-50 text-uppercase fw-bold mb-3"><i class="ti ti-trending-up me-1"></i> Highest Interest Sender</h6>
+                @if($highest_sender)
+                    <div class="d-flex align-items-center">
+                        <div class="flex-grow-1">
+                            <h4 class="fw-bold text-white mb-1">{{ $highest_sender->name }}</h4>
+                            <span class="text-white-50 small">{{ $highest_sender->userid }} | {{ $highest_sender->gender }}</span>
+                        </div>
+                        <div class="text-right">
+                            <h2 class="fw-bold text-white mb-0">{{ $highest_sender->sent_count }}</h2>
+                            <span class="text-white-50 small">Interests Sent</span>
+                        </div>
+                    </div>
+                @else
+                    <span class="text-white-50">No data available yet.</span>
+                @endif
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-6">
+        <div class="card border-0 shadow-sm" style="border-radius: 12px; background: linear-gradient(135deg, #581c87 0%, #a855f7 100%); color: white;">
+            <div class="card-body p-4">
+                <h6 class="text-white-50 text-uppercase fw-bold mb-3"><i class="ti ti-arrow-down-left me-1"></i> Highest Interest Receiver</h6>
+                @if($highest_receiver)
+                    <div class="d-flex align-items-center">
+                        <div class="flex-grow-1">
+                            <h4 class="fw-bold text-white mb-1">{{ $highest_receiver->name }}</h4>
+                            <span class="text-white-50 small">{{ $highest_receiver->userid }} | {{ $highest_receiver->gender }}</span>
+                        </div>
+                        <div class="text-right">
+                            <h2 class="fw-bold text-white mb-0">{{ $highest_receiver->received_count }}</h2>
+                            <span class="text-white-50 small">Received Requests</span>
+                        </div>
+                    </div>
+                @else
+                    <span class="text-white-50">No data available yet.</span>
+                @endif
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
     <div class="col-12">
         <div class="card border-0 shadow-sm" style="border-radius: 12px;">
             <div class="card-header bg-white border-0 py-3">

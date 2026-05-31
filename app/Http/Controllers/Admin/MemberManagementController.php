@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 use App\Models\User;
+use App\Models\Interest;
+use App\Models\ContactAccessLog;
 use Illuminate\Support\Facades\DB;
 
 class MemberManagementController extends Controller
@@ -22,9 +24,50 @@ class MemberManagementController extends Controller
             $query->where('branch_id', auth()->user()->branch_id);
         }
         
-        if ($request->gender) $query->where('gender', $request->gender);
-        if ($request->status !== null && $request->status !== '') $query->where('status', $request->status);
-        $members = $query->orderBy('id', 'desc')->paginate(50);
+        if ($request->gender) {
+            $query->where('gender', $request->gender);
+        }
+
+        if ($request->status !== null && $request->status !== '') {
+            // Get all plan-expired and registration-expired IDs
+            $planExpiredIds = DB::table('plan_assign')
+                ->where('plan_status', 'Expired')
+                ->pluck('member_id');
+
+            $settings = DB::table('profile_ex_status')->first();
+            $expiredUserIds = collect();
+
+            if ($settings && $settings->expire_status && $settings->count) {
+                $unit = $settings->expire_status; // date, month, year
+                $count = $settings->count;
+                
+                $cutoffDate = now();
+                if ($unit == 'date') $cutoffDate->subDays($count);
+                elseif ($unit == 'month') $cutoffDate->subMonths($count);
+                elseif ($unit == 'year') $cutoffDate->subYears($count);
+
+                $expiredUserIds = User::where('date', '<', $cutoffDate->toDateString())
+                    ->where('status', 1)
+                    ->pluck('id');
+            }
+
+            $allExpiredIds = $planExpiredIds->merge($expiredUserIds)->unique();
+
+            if ($request->status === 'active' || $request->status === '1') {
+                // Approved accounts (status = 1) that are NOT expired
+                $query->where('status', 1)->whereNotIn('id', $allExpiredIds);
+            } elseif ($request->status === 'expired') {
+                // Approved accounts that are expired
+                $query->whereIn('id', $allExpiredIds);
+            } elseif ($request->status === 'inactive' || $request->status === '0') {
+                // Pending (status = 0) or suspended (status = 2) accounts
+                $query->where(function($q) {
+                    $q->where('status', 0)->orWhere('status', 2);
+                });
+            }
+        }
+        
+        $members = $query->orderBy('id', 'desc')->paginate(25);
         return view('admin.members.list', compact('members'), ['title' => 'All Members', 'show_add' => true]);
     }
 
@@ -40,7 +83,7 @@ class MemberManagementController extends Controller
         }
 
         if ($request->gender) $query->where('gender', $request->gender);
-        $members = $query->orderBy('id', 'desc')->paginate(50);
+        $members = $query->orderBy('id', 'desc')->paginate(25);
         return view('admin.members.list', compact('members'), ['title' => 'Premium Members']);
     }
 
@@ -58,7 +101,7 @@ class MemberManagementController extends Controller
         }
 
         if ($request->gender) $query->where('gender', $request->gender);
-        $members = $query->orderBy('id', 'desc')->paginate(50);
+        $members = $query->orderBy('id', 'desc')->paginate(25);
         return view('admin.members.list', compact('members'), ['title' => 'Free Members']);
     }
 
@@ -71,7 +114,7 @@ class MemberManagementController extends Controller
         if (session('role') === 'mediator') {
             $query->where('branch_id', auth()->user()->branch_id);
         }
-        $members = $query->orderBy('id', 'desc')->paginate(50);
+        $members = $query->orderBy('id', 'desc')->paginate(25);
         return view('admin.members.list', compact('members'), ['title' => 'Deleted Members']);
     }
 
@@ -84,7 +127,7 @@ class MemberManagementController extends Controller
         if (session('role') === 'mediator') {
             $query->where('branch_id', auth()->user()->branch_id);
         }
-        $members = $query->orderBy('id', 'desc')->paginate(50);
+        $members = $query->orderBy('id', 'desc')->paginate(25);
         return view('admin.members.list', compact('members'), ['title' => 'Member Approval - Pending']);
     }
 
@@ -255,7 +298,7 @@ class MemberManagementController extends Controller
 
         $members = User::whereIn('id', $allExpiredIds)
             ->orderBy('id', 'desc')
-            ->paginate(50);
+            ->paginate(25);
 
         return view('admin.members.expired', compact('members'));
     }
@@ -269,7 +312,7 @@ class MemberManagementController extends Controller
             ->join('free_user', 'profile_images.userid', '=', 'free_user.id')
             ->select('profile_images.*', 'profile_images.image_name as image', 'free_user.userid as m_userid', 'free_user.name')
             ->orderBy('profile_images.status', 'asc')
-            ->paginate(50);
+            ->paginate(25);
         return view('admin.members.photo_queue', compact('photos'));
     }
 
@@ -282,7 +325,7 @@ class MemberManagementController extends Controller
             ->join('free_user', 'jathagam_images.userid', '=', 'free_user.id')
             ->select('jathagam_images.*', 'jathagam_images.image_name as image', 'free_user.userid as m_userid', 'free_user.name')
             ->orderBy('jathagam_images.status', 'asc')
-            ->paginate(50);
+            ->paginate(25);
         return view('admin.members.horoscope_queue', compact('horoscopes'));
     }
 
@@ -302,5 +345,235 @@ class MemberManagementController extends Controller
     {
         DB::table('jathagam_images')->where('id', $id)->update(['status' => $request->status]);
         return back()->with('success', 'Horoscope status updated.');
+    }
+
+    /**
+     * Export members list to CSV, Excel, or PDF print.
+     */
+    public function exportMembers(Request $request)
+    {
+        $query = User::query();
+        
+        if ($request->list_type === 'expired') {
+            $planExpiredIds = DB::table('plan_assign')
+                ->where('plan_status', 'Expired')
+                ->pluck('member_id');
+
+            $settings = DB::table('profile_ex_status')->first();
+            $expiredUserIds = collect();
+
+            if ($settings && $settings->expire_status && $settings->count) {
+                $unit = $settings->expire_status;
+                $count = $settings->count;
+                
+                $cutoffDate = now();
+                if ($unit == 'date') $cutoffDate->subDays($count);
+                elseif ($unit == 'month') $cutoffDate->subMonths($count);
+                elseif ($unit == 'year') $cutoffDate->subYears($count);
+
+                $expiredUserIds = User::where('date', '<', $cutoffDate->toDateString())
+                    ->where('status', 1)
+                    ->pluck('id');
+            }
+
+            $allExpiredIds = $planExpiredIds->merge($expiredUserIds)->unique();
+            $query->whereIn('id', $allExpiredIds);
+        }
+        
+        if (session('role') === 'mediator') {
+            $query->where('branch_id', auth()->user()->branch_id);
+        }
+        
+        if ($request->gender) {
+            $query->where('gender', $request->gender);
+        }
+
+        if ($request->status !== null && $request->status !== '') {
+            $planExpiredIds = DB::table('plan_assign')
+                ->where('plan_status', 'Expired')
+                ->pluck('member_id');
+
+            $settings = DB::table('profile_ex_status')->first();
+            $expiredUserIds = collect();
+
+            if ($settings && $settings->expire_status && $settings->count) {
+                $unit = $settings->expire_status;
+                $count = $settings->count;
+                
+                $cutoffDate = now();
+                if ($unit == 'date') $cutoffDate->subDays($count);
+                elseif ($unit == 'month') $cutoffDate->subMonths($count);
+                elseif ($unit == 'year') $cutoffDate->subYears($count);
+
+                $expiredUserIds = User::where('date', '<', $cutoffDate->toDateString())
+                    ->where('status', 1)
+                    ->pluck('id');
+            }
+
+            $allExpiredIds = $planExpiredIds->merge($expiredUserIds)->unique();
+
+            if ($request->status === 'active' || $request->status === '1') {
+                $query->where('status', 1)->whereNotIn('id', $allExpiredIds);
+            } elseif ($request->status === 'expired') {
+                $query->whereIn('id', $allExpiredIds);
+            } elseif ($request->status === 'inactive' || $request->status === '0') {
+                $query->where(function($q) {
+                    $q->where('status', 0)->orWhere('status', 2);
+                });
+            }
+        }
+
+        // Fetch all matching records without pagination for full export
+        $members = $query->orderBy('id', 'desc')->get();
+
+        $format = strtolower($request->input('format') ?? 'csv');
+
+        if ($format === 'pdf') {
+            return view('admin.members.print', compact('members'));
+        }
+
+        // CSV/Excel stream
+        $filename = "members_export_" . date('Ymd_His') . ($format === 'excel' ? '.xls' : '.csv');
+        
+        header('Content-Type: text/csv; charset=utf-8');
+        header('Content-Disposition: attachment; filename="' . $filename . '"');
+        
+        $output = fopen('php://output', 'w');
+        
+        // Output CSV column headers
+        fputcsv($output, ['S.No', 'Member ID', 'Name', 'Gender', 'Mobile No', 'Email', 'Plan', 'Registration Date', 'Status']);
+        
+        foreach ($members as $index => $member) {
+            $statusText = 'Pending';
+            if ($member->status == 1) $statusText = 'Active';
+            elseif ($member->status == 2) $statusText = 'Suspended';
+            elseif ($member->status == 3) $statusText = 'Deleted';
+
+            fputcsv($output, [
+                $index + 1,
+                $member->userid,
+                $member->name,
+                $member->gender,
+                $member->mobileno,
+                $member->email,
+                $member->plan ?? 'Free',
+                $member->date,
+                $statusText
+            ]);
+        }
+        
+        fclose($output);
+        exit;
+    }
+
+    /**
+     * Admin Interest Management
+     */
+    public function allInterests(Request $request, $status = null)
+    {
+        $query = Interest::with(['sender', 'receiver']);
+
+        // Handle specific status submenus
+        if ($status && in_array(ucfirst($status), ['Pending', 'Accepted', 'Rejected', 'Withdrawn'])) {
+            $query->where('status', ucfirst($status));
+        }
+
+        // Global search filtering if search term provided
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->whereHas('sender', function($sq) use ($search) {
+                    $sq->where('name', 'like', "%$search%")->orWhere('userid', 'like', "%$search%");
+                })->orWhereHas('receiver', function($rq) use ($search) {
+                    $rq->where('name', 'like', "%$search%")->orWhere('userid', 'like', "%$search%");
+                });
+            });
+        }
+
+        // If export parameter is present, stream CSV directly
+        if ($request->filled('export')) {
+            $interests = $query->orderBy('id', 'desc')->get();
+            $filename = "interests_export_" . date('Ymd_His') . ".csv";
+            header('Content-Type: text/csv; charset=utf-8');
+            header('Content-Disposition: attachment; filename="' . $filename . '"');
+            $output = fopen('php://output', 'w');
+            fputcsv($output, ['Interest ID', 'Sender MID', 'Sender Name', 'Receiver MID', 'Receiver Name', 'Plan Name', 'Consumed Credit', 'Status', 'Date']);
+            foreach ($interests as $item) {
+                fputcsv($output, [
+                    'INT' . sprintf('%04d', $item->id),
+                    $item->sender->userid ?? 'N/A',
+                    $item->sender->name ?? 'N/A',
+                    $item->receiver->userid ?? 'N/A',
+                    $item->receiver->name ?? 'N/A',
+                    $item->plan_name ?? 'Free',
+                    $item->consumed_interests,
+                    $item->status,
+                    $item->created_at
+                ]);
+            }
+            fclose($output);
+            exit;
+        }
+
+        $interests = $query->orderBy('id', 'desc')->paginate(25);
+
+        // Calculate Interest Statistics
+        $stats = [
+            'total' => Interest::count(),
+            'pending' => Interest::where('status', 'Pending')->count(),
+            'accepted' => Interest::where('status', 'Accepted')->count(),
+            'rejected' => Interest::where('status', 'Rejected')->count(),
+            'withdrawn' => Interest::where('status', 'Withdrawn')->count(),
+        ];
+
+        return view('admin.interests.index', compact('interests', 'stats', 'status'));
+    }
+
+    /**
+     * Admin Contact Access Logs
+     */
+    public function contactAccessLogs(Request $request)
+    {
+        $query = ContactAccessLog::with(['viewer', 'profileOwner']);
+
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->whereHas('viewer', function($vq) use ($search) {
+                    $vq->where('name', 'like', "%$search%")->orWhere('userid', 'like', "%$search%");
+                })->orWhereHas('profileOwner', function($pq) use ($search) {
+                    $pq->where('name', 'like', "%$search%")->orWhere('userid', 'like', "%$search%");
+                });
+            });
+        }
+
+        // If export parameter is present, stream CSV directly
+        if ($request->filled('export')) {
+            $logs = $query->orderBy('id', 'desc')->get();
+            $filename = "contact_access_logs_" . date('Ymd_His') . ".csv";
+            header('Content-Type: text/csv; charset=utf-8');
+            header('Content-Disposition: attachment; filename="' . $filename . '"');
+            $output = fopen('php://output', 'w');
+            fputcsv($output, ['S.No', 'Viewer MID', 'Viewer Name', 'Owner MID', 'Owner Name', 'Interest ID', 'Mobile Revealed', 'Email Revealed', 'Viewed Time']);
+            foreach ($logs as $index => $log) {
+                fputcsv($output, [
+                    $index + 1,
+                    $log->viewer->userid ?? 'N/A',
+                    $log->viewer->name ?? 'N/A',
+                    $log->profileOwner->userid ?? 'N/A',
+                    $log->profileOwner->name ?? 'N/A',
+                    'INT' . sprintf('%04d', $log->interest_id),
+                    $log->mobile_viewed ?? 'N/A',
+                    $log->email_viewed ?? 'N/A',
+                    $log->viewed_time
+                ]);
+            }
+            fclose($output);
+            exit;
+        }
+
+        $logs = $query->orderBy('id', 'desc')->paginate(25);
+
+        return view('admin.interests.contact_logs', compact('logs'));
     }
 }

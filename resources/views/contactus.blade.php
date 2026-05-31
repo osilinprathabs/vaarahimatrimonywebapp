@@ -88,8 +88,21 @@
                     </div>
                     <div class="col-lg-7 col-md-7 col-sm-12">
                         <div class="border pt-35 pr-30 pb-40 pl-30">
-                            <h5>Get in Touch</h5>
-                            <form id="contactform" class="contactform wrap-form pt-5 clearfix" method="post" action="#">
+                            @if(session('success'))
+                                <div class="alert alert-success" style="background-color: #d1e7dd; color: #0f5132; padding: 15px; border-radius: 6px; margin-bottom: 20px; font-weight: bold; border-left: 5px solid #0f5132;">
+                                    {{ session('success') }}
+                                </div>
+                            @endif
+                            @if($errors->any())
+                                <div class="alert alert-danger" style="background-color: #f8d7da; color: #842029; padding: 15px; border-radius: 6px; margin-bottom: 20px;">
+                                    <ul class="mb-0">
+                                        @foreach($errors->all() as $err)
+                                            <li>{{ $err }}</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            @endif
+                            <form id="contactform" class="contactform wrap-form pt-3 clearfix" method="post" action="{{ route('contact.store') }}">
                                 @csrf
                                 <div class="row">
                                     <div class="col-md-6">

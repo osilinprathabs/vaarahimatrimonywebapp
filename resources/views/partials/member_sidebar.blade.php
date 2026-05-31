@@ -1,3 +1,12 @@
+@php
+    $planAssign = $user->getPlanDetails();
+    $usedInt = $planAssign->used_interests;
+    $totalInt = $planAssign->total_interests;
+    $remInt = max(0, $totalInt - $usedInt);
+    $percent = $totalInt > 0 ? min(100, round(($usedInt / $totalInt) * 100)) : 0;
+    $planName = \App\Models\Plan::find($planAssign->plan_id)->name ?? 'Free';
+@endphp
+
 <div class="col-lg-3">
     <div class="card border-0 shadow-sm overflow-hidden" style="border-radius: 15px;">
         <div class="bg-primary p-4 text-center">
@@ -46,7 +55,7 @@
             <div class="p-3 border-bottom text-center">
                 <span class="d-block text-muted small text-uppercase fw-bold mb-2">Membership Status</span>
                 <span class="badge bg-success px-3 py-2 rounded-pill shadow-sm" style="font-size: 11px;">
-                    <i class="fa fa-star me-1"></i> {{ $user->plan ?? 'FREE' }} PLAN
+                    <i class="fa fa-star me-1"></i> {{ strtoupper($planName) }} PLAN
                 </span>
             </div>
 
@@ -66,23 +75,31 @@
                 <a href="{{ route('search.advanced') }}" class="list-group-item list-group-item-action border-0 px-4 py-3 text-muted">
                     <i class="fa fa-filter me-3"></i> Match Finder
                 </a>
-                <a href="#" class="list-group-item list-group-item-action border-0 px-4 py-3 text-muted">
-                    <i class="fa fa-heart me-3"></i> Express Interests
+                <a href="{{ route('my.interests') }}" class="list-group-item list-group-item-action border-0 px-4 py-3 {{ request()->routeIs('my.interests') ? 'bg-light text-primary fw-bold' : 'text-muted' }}">
+                    <i class="fa fa-heart me-3"></i> My Interests
+                </a>
+                <a href="{{ route('profile.billing') }}" class="list-group-item list-group-item-action border-0 px-4 py-3 {{ request()->routeIs('profile.billing') ? 'bg-light text-primary fw-bold' : 'text-muted' }}">
+                    <i class="fa fa-credit-card me-3"></i> Billing &amp; Boosters
                 </a>
                 <a href="#" class="list-group-item list-group-item-action border-0 px-4 py-3 text-muted">
                     <i class="fa fa-history me-3"></i> View History
                 </a>
             </div>
 
+
             <div class="p-4 bg-light mx-3 mb-3 mt-2 rounded" style="border: 1px dashed #dee2e6;">
                 <div class="d-flex justify-content-between align-items-center mb-1">
-                    <span class="small text-muted">Profile Credits</span>
-                    <span class="small fw-bold text-primary">0 / 0</span>
+                    <span class="small text-muted fw-bold">Interest Usage</span>
+                    <span class="small fw-bold text-primary">{{ $usedInt }} / {{ $totalInt }} Used</span>
                 </div>
                 <div class="progress" style="height: 6px;">
-                    <div class="progress-bar bg-primary" style="width: 0%"></div>
+                    <div class="progress-bar bg-primary" style="width: {{ $percent }}%"></div>
                 </div>
-                <a href="#" class="btn btn-sm btn-primary w-100 mt-3 rounded-pill fw-bold" style="font-size: 11px;">Upgrade Now</a>
+                <div class="d-flex justify-content-between mt-2" style="font-size: 11px;">
+                    <span class="text-muted">Remaining:</span>
+                    <span class="fw-bold text-success">{{ $remInt }}</span>
+                </div>
+                <a href="{{ route('profile.billing') }}" class="btn btn-sm btn-primary w-100 mt-3 rounded-pill fw-bold" style="font-size: 11px;">Upgrade / Buy Boosters</a>
             </div>
         </div>
     </div>

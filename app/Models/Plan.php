@@ -9,6 +9,19 @@ class Plan extends Model
 {
     use HasFactory;
 
+    protected $table = 'plans';
+    public $timestamps = false;
+
+    protected static function boot()
+    {
+        parent::boot();
+        static::creating(function ($model) {
+            if (empty($model->id)) {
+                $model->id = (static::max('id') ?? 0) + 1;
+            }
+        });
+    }
+
     protected $fillable = [
         'name',
         'amount',
@@ -27,13 +40,13 @@ class Plan extends Model
     ];
 
     protected $casts = [
-        'star_matching' => 'boolean',
-        'premium_list' => 'boolean',
-        'receive_interest' => 'boolean',
-        'express_interest' => 'boolean',
-        'shortlist_profile' => 'boolean',
+        'star_matching'            => 'boolean',
+        'premium_list'             => 'boolean',
+        'receive_interest'         => 'boolean',
+        'express_interest'         => 'boolean',
+        'shortlist_profile'        => 'boolean',
         'unlimited_profile_access' => 'boolean',
-        'priority_search' => 'boolean',
-        'status' => 'boolean'
+        'priority_search'          => 'boolean',
+        'status'                   => 'boolean'
     ];
 }

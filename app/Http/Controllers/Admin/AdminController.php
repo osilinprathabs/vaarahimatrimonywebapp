@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\DB;
 use App\Models\User;
 use App\Models\Dosham;
 use App\Models\Subcaste;
+use App\Models\Interest;
+use App\Models\ContactAccessLog;
 
 class AdminController extends Controller
 {
@@ -49,9 +51,75 @@ class AdminController extends Controller
                 ->count();
         }
 
+        // New Interest and Contact Access Log metrics for widgets
+        $total_interests = Interest::count();
+        $accepted_interests = Interest::where('status', 'Accepted')->count();
+        $rejected_interests = Interest::where('status', 'Rejected')->count();
+        $pending_interests = Interest::where('status', 'Pending')->count();
+
+        // Top Premium Members
+        $top_premium_members = User::whereNotNull('plan')
+            ->where('plan', '!=', '')
+            ->where('plan', '!=', 'Free')
+            ->limit(5)
+            ->get();
+
+        // Most Active Users (by sent interests count) - decoupling to resolve ONLY_FULL_GROUP_BY syntax error
+        $mostActiveUserIds = DB::table('interests')
+            ->select('from_member_id', DB::raw('count(id) as sent_count'))
+            ->groupBy('from_member_id')
+            ->orderBy('sent_count', 'desc')
+            ->limit(5)
+            ->pluck('sent_count', 'from_member_id')
+            ->toArray();
+
+        $most_active_users = collect();
+        if (!empty($mostActiveUserIds)) {
+            $users = User::whereIn('id', array_keys($mostActiveUserIds))->get()->keyBy('id');
+            foreach ($mostActiveUserIds as $userId => $count) {
+                if (isset($users[$userId])) {
+                    $u = $users[$userId];
+                    $u->sent_count = $count;
+                    $most_active_users->push($u);
+                }
+            }
+        }
+
+        // Highest Interest Sender
+        $highestSenderInfo = DB::table('interests')
+            ->select('from_member_id', DB::raw('count(id) as sent_count'))
+            ->groupBy('from_member_id')
+            ->orderBy('sent_count', 'desc')
+            ->first();
+
+        $highest_sender = null;
+        if ($highestSenderInfo) {
+            $highest_sender = User::find($highestSenderInfo->from_member_id);
+            if ($highest_sender) {
+                $highest_sender->sent_count = $highestSenderInfo->sent_count;
+            }
+        }
+
+        // Highest Interest Receiver
+        $highestReceiverInfo = DB::table('interests')
+            ->select('to_member_id', DB::raw('count(id) as received_count'))
+            ->groupBy('to_member_id')
+            ->orderBy('received_count', 'desc')
+            ->first();
+
+        $highest_receiver = null;
+        if ($highestReceiverInfo) {
+            $highest_receiver = User::find($highestReceiverInfo->to_member_id);
+            if ($highest_receiver) {
+                $highest_receiver->received_count = $highestReceiverInfo->received_count;
+            }
+        }
+
         return view('admin.dashboard', compact(
             'profile_count', 'female_count', 'male_count',
-            'pending_count', 'premium_count', 'free_count', 'recent_members', 'expired_count'
+            'pending_count', 'premium_count', 'free_count', 'recent_members', 'expired_count',
+            'total_interests', 'accepted_interests', 'rejected_interests', 'pending_interests',
+            'top_premium_members', 'most_active_users', 'highest_sender', 'highest_receiver'
         ));
     }
 

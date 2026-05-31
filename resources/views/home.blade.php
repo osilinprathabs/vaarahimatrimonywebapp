@@ -233,6 +233,17 @@
               <form id="request_form" name="myForm" class="request_form wrap-form clearfix" method="post"
                 action="{{ route('register') }}">
                 @csrf
+                
+                @if ($errors->any())
+                  <div class="alert alert-danger py-2 px-3 mb-3 border-0 rounded shadow-sm text-start" style="font-size: 13px; color: #721c24; background-color: #f8d7da;">
+                    <ul class="mb-0 ps-3">
+                      @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                      @endforeach
+                    </ul>
+                  </div>
+                @endif
+                
                 <div class="row">
                   <div class="col-md-12">
 
@@ -298,7 +309,7 @@
                   </div>
                   <div id="mobileno_valid"></div>
 
-                  <div class="col-lg-12" style="margin-top: -25px;">
+                  <div class="col-lg-12 mt-3">
                     <label>
                       <span class="text-input" id="show_hide_password">
                         <input type="password" name="password" id="password" placeholder="Password" data-size="8" rel="gp"
@@ -306,12 +317,36 @@
                           autocomplete="new-password">
                         <!--<span class="input-group-btn"><button type="button" class="btn btn-default btn-lg getNewPass"><span class="fa fa-refresh"></span></button></span>-->
                         <div class="input-group-addon">
-                          <a href=""><i class="fa fa-eye-slash" aria-hidden="true"></i></a>
+                          <a href="javascript:void(0);" id="togglePassword"><i class="fa fa-eye-slash" aria-hidden="true"></i></a>
                         </div>
 
                       </span>
                     </label>
                   </div>
+                  
+                  <script>
+                  document.addEventListener('DOMContentLoaded', function() {
+                      var togglePassword = document.getElementById('togglePassword');
+                      if (togglePassword) {
+                          togglePassword.addEventListener('click', function(e) {
+                              e.preventDefault();
+                              var passwordInput = document.getElementById('password');
+                              var eyeIcon = togglePassword.querySelector('i');
+                              if (passwordInput && eyeIcon) {
+                                  if (passwordInput.type === 'password') {
+                                      passwordInput.type = 'text';
+                                      eyeIcon.classList.remove('fa-eye-slash');
+                                      eyeIcon.classList.add('fa-eye');
+                                  } else {
+                                      passwordInput.type = 'password';
+                                      eyeIcon.classList.remove('fa-eye');
+                                      eyeIcon.classList.add('fa-eye-slash');
+                                  }
+                              }
+                          });
+                      }
+                  });
+                  </script>
                   <!--<div class="col-lg-12" style="margin-top: -15px;">-->
                   <!-- <label>-->
                   <!--  <span class="text-input" id="show_hide_password1">-->

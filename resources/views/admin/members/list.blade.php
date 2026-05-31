@@ -24,13 +24,51 @@
                         <div class="col-auto">
                             <select class="form-select" name="status">
                                 <option value="">Status</option>
-                                <option value="1" {{ request('status') == '1' ? 'selected' : '' }}>Active</option>
-                                <option value="0" {{ request('status') == '0' ? 'selected' : '' }}>Inactive</option>
+                                <option value="active" {{ request('status') === 'active' || request('status') === '1' ? 'selected' : '' }}>Active</option>
+                                <option value="expired" {{ request('status') === 'expired' ? 'selected' : '' }}>Expired</option>
+                                <option value="inactive" {{ request('status') === 'inactive' || request('status') === '0' ? 'selected' : '' }}>Inactive</option>
                             </select>
                         </div>
                         <div class="col-auto">
                             <button type="submit" class="btn btn-primary px-3">Filter</button>
                             <a href="{{ url()->current() }}" class="btn btn-light px-3">Reset</a>
+                            
+                            <!-- Premium Export Actions Dropdown -->
+                            <div class="btn-group ms-1">
+                                <button type="button" class="btn btn-outline-success dropdown-toggle px-3" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="ti ti-download me-1"></i> Export Data
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-end shadow border-0" style="border-radius: 8px;">
+                                    <li><h6 class="dropdown-header text-muted">Export Filtered List</h6></li>
+                                    <li>
+                                        <a class="dropdown-item py-2" href="{{ route('admin.members.export', array_merge(request()->query(), ['format' => 'csv'])) }}">
+                                            <i class="ti ti-file-type-csv text-primary me-2"></i> Export to CSV
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item py-2" href="{{ route('admin.members.export', array_merge(request()->query(), ['format' => 'excel'])) }}">
+                                            <i class="ti ti-file-spreadsheet text-success me-2"></i> Export to Excel
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item py-2" target="_blank" href="{{ route('admin.members.export', array_merge(request()->query(), ['format' => 'pdf'])) }}">
+                                            <i class="ti ti-file-type-pdf text-danger me-2"></i> Print / Save PDF
+                                        </a>
+                                    </li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><h6 class="dropdown-header text-muted">Export Overall Entries</h6></li>
+                                    <li>
+                                        <a class="dropdown-item py-2" href="{{ route('admin.members.export', ['format' => 'csv']) }}">
+                                            <i class="ti ti-file-type-csv text-muted me-2"></i> Export All to CSV
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item py-2" href="{{ route('admin.members.export', ['format' => 'excel']) }}">
+                                            <i class="ti ti-file-spreadsheet text-muted me-2"></i> Export All to Excel
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -89,8 +127,8 @@
                                             <form method="post" action="{{ route('admin.members.approve', $member->id) }}"
                                                 class="d-inline">
                                                 @csrf
-                                                <button type="submit" class="btn btn-sm btn-success-subtle text-success"
-                                                    onclick="return confirm('Approve this member?')" title="Approve"><i
+                                                <button type="submit" class="btn btn-sm btn-success-subtle text-success confirm-btn"
+                                                    data-title="Approve Member?" data-text="Are you sure you want to approve this member?" data-confirm-btn="Yes, Approve" data-btn-class="btn-success" title="Approve"><i
                                                         class="ti ti-check"></i></button>
                                             </form>
                                         @endif
@@ -98,8 +136,8 @@
                                             <form method="post" action="{{ route('admin.members.suspend', $member->id) }}"
                                                 class="d-inline">
                                                 @csrf
-                                                <button type="submit" class="btn btn-sm btn-warning-subtle text-warning"
-                                                    onclick="return confirm('Suspend this member?')" title="Suspend"><i
+                                                <button type="submit" class="btn btn-sm btn-warning-subtle text-warning confirm-btn"
+                                                    data-title="Suspend Member?" data-text="Are you sure you want to suspend this member?" data-confirm-btn="Yes, Suspend" data-btn-class="btn-warning" title="Suspend"><i
                                                         class="ti ti-lock"></i></button>
                                             </form>
                                         @endif
@@ -107,8 +145,8 @@
                                             class="d-inline">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn btn-sm btn-danger-subtle text-danger"
-                                                onclick="return confirm('Delete this member?')" title="Delete"><i
+                                            <button type="submit" class="btn btn-sm btn-danger-subtle text-danger confirm-btn"
+                                                data-title="Delete Member?" data-text="Are you sure you want to permanently delete this member?" data-confirm-btn="Yes, Delete" data-btn-class="btn-danger" title="Delete"><i
                                                     class="ti ti-trash"></i></button>
                                         </form>
                                     </div>

@@ -55,7 +55,12 @@
                                     <span class="menu-icon"><i class="ti ti-photo"></i></span>
                                     <span class="menu-text">Photo Approval</span>
                                 </span>
-                                @php $pendingPhotos = \Illuminate\Support\Facades\DB::table('profile_images')->where('status', 0)->count(); @endphp
+                                @php 
+                                    $pendingPhotos = \Illuminate\Support\Facades\DB::table('profile_images')
+                                        ->join('free_user', 'profile_images.userid', '=', 'free_user.id')
+                                        ->where('profile_images.status', 0)
+                                        ->count(); 
+                                @endphp
                                 @if($pendingPhotos > 0)
                                     <span class="badge bg-warning rounded-pill text-dark">{{ $pendingPhotos }}</span>
                                 @endif
@@ -68,7 +73,12 @@
                                     <span class="menu-icon"><i class="ti ti-calendar-star"></i></span>
                                     <span class="menu-text">Horoscope Approval</span>
                                 </span>
-                                @php $pendingHoroscopes = \Illuminate\Support\Facades\DB::table('jathagam_images')->where('status', 0)->count(); @endphp
+                                @php 
+                                    $pendingHoroscopes = \Illuminate\Support\Facades\DB::table('jathagam_images')
+                                        ->join('free_user', 'jathagam_images.userid', '=', 'free_user.id')
+                                        ->where('jathagam_images.status', 0)
+                                        ->count(); 
+                                @endphp
                                 @if($pendingHoroscopes > 0)
                                     <span class="badge bg-warning rounded-pill text-dark">{{ $pendingHoroscopes }}</span>
                                 @endif
@@ -120,6 +130,33 @@
                         <a href="{{ route('admin.expired_list') }}" class="side-nav-link {{ request()->routeIs('admin.expired_list') ? 'active' : '' }}">
                             <span class="menu-icon"><i class="ti ti-alert-triangle"></i></span>
                             <span class="menu-text">Expired List</span>
+                        </a>
+                    </li>
+
+                    <li class="side-nav-item {{ request()->routeIs('admin.interests.list') ? 'active' : '' }}">
+                        <a href="{{ route('admin.interests.list') }}" class="side-nav-link {{ request()->routeIs('admin.interests.list') ? 'active' : '' }}">
+                            <span class="menu-icon"><i class="ti ti-heart"></i></span>
+                            <span class="menu-text">Interests Management</span>
+                        </a>
+                    </li>
+
+                    <li class="side-nav-item {{ request()->routeIs('admin.contact_access_logs') ? 'active' : '' }}">
+                        <a href="{{ route('admin.contact_access_logs') }}" class="side-nav-link {{ request()->routeIs('admin.contact_access_logs') ? 'active' : '' }}">
+                            <span class="menu-icon"><i class="ti ti-history"></i></span>
+                            <span class="menu-text">Contact Reveal Logs</span>
+                        </a>
+                    </li>
+
+                    <li class="side-nav-item {{ request()->routeIs('admin.contact_messages.index') ? 'active' : '' }}">
+                        <a href="{{ route('admin.contact_messages.index') }}" class="side-nav-link d-flex align-items-center justify-content-between {{ request()->routeIs('admin.contact_messages.index') ? 'active' : '' }}">
+                            <span class="d-flex align-items-center gap-2">
+                                <span class="menu-icon"><i class="ti ti-mail"></i></span>
+                                <span class="menu-text">Contact Messages</span>
+                            </span>
+                            @php $pendingMessages = \App\Models\ContactMessage::where('status', 'Pending')->count(); @endphp
+                            @if($pendingMessages > 0)
+                                <span class="badge bg-danger rounded-pill">{{ $pendingMessages }}</span>
+                            @endif
                         </a>
                     </li>
                 @endif

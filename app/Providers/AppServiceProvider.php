@@ -21,6 +21,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        // Ensure helpers are loaded even if composer dump-autoload wasn't run on production
+        $helpersPath = app_path('helpers.php');
+        if (file_exists($helpersPath) && !function_exists('storage_url')) {
+            require_once $helpersPath;
+        }
     }
 }

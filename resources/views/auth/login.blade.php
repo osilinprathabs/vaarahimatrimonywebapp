@@ -127,8 +127,8 @@
     
     <div class="auth-card mx-auto">
         <div class="auth-brand text-center mb-3">
-            <div class="mb-2">
-                <img src="{{ asset('assets/images/logo/logo.png') }}" alt="Sri Vaarahi Matrimony" class="img-fluid" style="max-height: 55px; filter: drop-shadow(0 5px 15px rgba(0,0,0,0.1));">
+            <div class="d-flex justify-content-center mb-2">
+                <img src="{{ asset(\App\Models\Setting::get('logo', 'assets/images/logo/logo.png')) }}" alt="Sri Vaarahi Matrimony" class="img-fluid mx-auto d-block" style="max-height: 55px; filter: drop-shadow(0 5px 15px rgba(0,0,0,0.1));">
             </div>
             <h4 class="fw-bold mb-1">LET'S GET STARTED NOW!</h4>
             <p class="text-dark fw-bold mb-0" style="font-size:0.9rem;">Login and find your life partner</p>

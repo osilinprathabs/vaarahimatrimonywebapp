@@ -33,7 +33,41 @@
                     </div>
                 </div>
 
-                <!-- Premium Profiles -->
+                <!-- Membership & Plan Tracker Widget -->
+                @php
+                    $planAssign = $user->getPlanDetails();
+                    $usedInt = $planAssign->used_interests;
+                    $totalInt = $planAssign->total_interests;
+                    $remInt = max(0, $totalInt - $usedInt);
+                    $percent = $totalInt > 0 ? min(100, round(($usedInt / $totalInt) * 100)) : 0;
+                    $planName = \App\Models\Plan::find($planAssign->plan_id)->name ?? 'Free';
+                @endphp
+                <div class="card border-0 shadow-sm mb-5 p-4" style="border-radius: 15px; background: #fff;">
+                    <div class="row g-4 align-items-center">
+                        <div class="col-md-4 border-end">
+                            <span class="text-muted small text-uppercase fw-bold d-block mb-1">Active Plan</span>
+                            <h4 class="fw-bold mb-1" style="color: #ab0772;">{{ strtoupper($planName) }}</h4>
+                            <span class="text-muted small">Expires: {{ \Carbon\Carbon::parse($planAssign->plan_end_date)->format('d-m-Y') }}</span>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <span class="fw-bold text-dark">Interest Credits</span>
+                                <span class="text-primary fw-bold">{{ $usedInt }} / {{ $totalInt }} Used ({{ $remInt }} Remaining)</span>
+                            </div>
+                            <div class="progress mb-2 shadow-sm" style="height: 12px; border-radius: 6px;">
+                                <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: {{ $percent }}%; background: linear-gradient(90deg, #ab0772 0%, #e00c84 100%);" aria-valuenow="{{ $usedInt }}" aria-valuemin="0" aria-valuemax="{{ $totalInt }}"></div>
+                            </div>
+                            <span class="text-muted small"><i class="fa fa-info-circle me-1"></i> Send interest requests to potential matches to unlock full contact details!</span>
+                        </div>
+                    </div>
+                </div>
+
+                @php
+                    $isPremium = ($planAssign && !in_array($planAssign->plan_id, [1, 14]) && strtolower($planName) !== 'free' && strtolower($planName) !== 'free plan');
+                @endphp
+
+                @if($isPremium)
+                <!-- Premium Recommendations -->
                 <div class="d-flex justify-content-between align-items-center mb-1">
                     <h4 class="section-title">Premium Recommendations</h4>
                     <a href="#" class="text-primary fw-bold small">See All <i class="fa fa-arrow-right ms-1"></i></a>
@@ -78,6 +112,7 @@
                         </div>
                     @endforelse
                 </div>
+                @endif
 
                 <!-- New Matches -->
                 <div class="d-flex justify-content-between align-items-center mb-1">

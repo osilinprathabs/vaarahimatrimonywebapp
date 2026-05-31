@@ -83,6 +83,8 @@ class User extends Authenticatable
         'role',
         'branch_id',
         'username',
+        'plan',
+        'plan_validity',
     ];
 
 
@@ -253,5 +255,62 @@ class User extends Authenticatable
     public function getIsExpiredAttribute()
     {
         return $this->isExpired();
+    }
+
+    public function getPlanDetails()
+    {
+        $assign = $this->planAssign;
+        if (!$assign) {
+            // Ensure a default free plan is created/returned safely
+            // Free plan has 10 interests total
+            $assign = \App\Models\PlanAssign::firstOrCreate(
+                ['member_id' => $this->id],
+                [
+                    'plan_id' => 1,
+                    'plan_start_date' => now()->toDateString(),
+                    'plan_end_date' => now()->addYears(10)->toDateString(),
+                    'plan_status' => 'Active',
+                    'total_interests' => 10,
+                    'used_interests' => 0
+                ]
+            );
+        }
+        return $assign;
+    }
+
+    public function getMaskedMobileAttribute()
+    {
+        $mobile = $this->mobileno;
+        if (strlen($mobile) < 4) return '***';
+        return substr($mobile, 0, 2) . str_repeat('*', strlen($mobile) - 4) . substr($mobile, -2);
+    }
+
+    public function getMaskedEmailAttribute()
+    {
+        $email = $this->emailid;
+        if (!$email) return 'N/A';
+        $parts = explode('@', $email);
+        if (count($parts) < 2) return '***';
+        $name = $parts[0];
+        $domain = $parts[1];
+        if (strlen($name) < 3) return '***@' . $domain;
+        return substr($name, 0, 2) . str_repeat('*', strlen($name) - 3) . substr($name, -1) . '@' . $domain;
+    }
+
+    public function hasContactAccessTo(User $targetUser)
+    {
+        if ($this->role === 'admin') {
+            return true;
+        }
+
+        return \App\Models\Interest::where(function($q) use ($targetUser) {
+            $q->where(function($query) use ($targetUser) {
+                $query->where('from_member_id', $this->id)
+                      ->where('to_member_id', $targetUser->id);
+            })->orWhere(function($query) use ($targetUser) {
+                $query->where('from_member_id', $targetUser->id)
+                      ->where('to_member_id', $this->id);
+            });
+        })->where('status', 'Accepted')->exists();
     }
 }

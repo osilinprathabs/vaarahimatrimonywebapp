@@ -36,12 +36,17 @@ class RegisteredUserController extends Controller
             'mobileno' => ['required', 'string', 'max:10', 'unique:free_user,mobileno'],
             'onbehalf' => ['required'],
             'gender' => ['required'],
+            'password' => ['nullable', 'string', 'min:6'],
         ]);
 
-        // Generate password: first 4 letters of name + last 5 digits of mobile
-        $namePart = str_replace(' ', '', substr($request->name, 0, 4));
-        $mobilePart = substr($request->mobileno, -5);
-        $generatedPassword = $namePart . $mobilePart;
+        if ($request->filled('password')) {
+            $generatedPassword = $request->password;
+        } else {
+            // Generate password: first 4 letters of name + last 5 digits of mobile
+            $namePart = str_replace(' ', '', substr($request->name, 0, 4));
+            $mobilePart = substr($request->mobileno, -5);
+            $generatedPassword = $namePart . $mobilePart;
+        }
 
         $user = User::create([
             'userid' => User::generateUserId(),
