@@ -265,22 +265,28 @@
                     </li>
                 </ul>
 
-                @if($member->status == 0 || $member->status != 2)
                 <div class="mt-4 d-grid gap-2">
                     @if($member->status == 0)
-                        <form method="post" action="{{ route('admin.members.approve', $member->id) }}" class="d-inline w-100">
+                        <form method="post" action="{{ route('admin.members.approve', $member->id) }}" class="d-inline w-100 mb-2">
                             @csrf
                             <button type="submit" class="btn btn-success w-100 fw-bold py-2 shadow-sm rounded-pill"><i class="ti ti-circle-check me-1"></i> Approve Member Account</button>
                         </form>
                     @endif
                     @if($member->status != 2)
-                        <form method="post" action="{{ route('admin.members.suspend', $member->id) }}" class="d-inline w-100">
+                        <form method="post" action="{{ route('admin.members.suspend', $member->id) }}" class="d-inline w-100 mb-2">
                             @csrf
                             <button type="submit" class="btn btn-outline-danger w-100 py-2 rounded-pill"><i class="ti ti-ban me-1"></i> Suspend Account</button>
                         </form>
                     @endif
+                    <form method="post" action="{{ route('admin.members.delete', $member->id) }}" class="d-inline w-100">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-danger w-100 py-2 rounded-pill confirm-btn"
+                            data-title="Delete Member?" data-text="Are you sure you want to permanently delete this member?" data-confirm-btn="Yes, Delete" data-btn-class="btn-danger">
+                            <i class="ti ti-trash me-1"></i> Delete Member Account
+                        </button>
+                    </form>
                 </div>
-                @endif
             </div>
         </div>
     </div>

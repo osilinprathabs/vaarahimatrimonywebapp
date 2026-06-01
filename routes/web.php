@@ -161,16 +161,13 @@ Route::prefix('admin')->group(function () {
 
 // Storage Workaround for shared hosting (disabled symlink)
 Route::get('storage/{path}', function ($path) {
-    $path = storage_path('app/public/' . $path);
+    $filePath = storage_path('app/public/' . $path);
 
-    if (!file_exists($path)) {
+    if (!file_exists($filePath)) {
         abort(404);
     }
 
-    $file = file_get_contents($path);
-    $type = mime_content_type($path);
-
-    return response($file)->header('Content-Type', $type);
+    return response()->file($filePath);
 })->where('path', '.*');
 
 require __DIR__.'/auth.php';

@@ -133,7 +133,7 @@ class AdminController extends Controller
         $subcastes = DB::table('subcaste')->orderBy('subcaste')->get();
 
         if ($request->isMethod('post')) {
-            $query = User::query();
+            $query = User::query()->where('status', '!=', 3);
             
             if (session('role') === 'mediator') {
                 $query->where('branch_id', auth()->user()->branch_id);

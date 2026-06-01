@@ -17,7 +17,7 @@ class MemberManagementController extends Controller
      */
     public function allMembers(Request $request)
     {
-        $query = User::query();
+        $query = User::query()->where('status', '!=', 3);
         
         // Branch filtering for mediators/staff
         if (session('role') === 'mediator') {
@@ -76,7 +76,7 @@ class MemberManagementController extends Controller
      */
     public function premiumMembers(Request $request)
     {
-        $query = User::whereNotNull('plan')->where('plan', '!=', '')->where('plan', '!=', 'Free');
+        $query = User::whereNotNull('plan')->where('plan', '!=', '')->where('plan', '!=', 'Free')->where('status', '!=', 3);
         
         if (session('role') === 'mediator') {
             $query->where('branch_id', auth()->user()->branch_id);
@@ -182,8 +182,40 @@ class MemberManagementController extends Controller
         if (session('role') === 'mediator' && $member->branch_id != auth()->user()->branch_id) {
             abort(403);
         }
-        $member->update(['status' => 3]);
-        return back()->with('success', 'Member deleted.');
+
+        DB::transaction(function () use ($member, $id) {
+            // Delete related rows first to satisfy any foreign keys or cleanup dependencies
+            DB::table('profile_images')->where('userid', $id)->delete();
+            DB::table('jathagam_images')->where('userid', $id)->delete();
+            DB::table('aadhaar_image')->where('userid', $id)->delete();
+            DB::table('plan_assign')->where('member_id', $id)->delete();
+            DB::table('payments')->where('member_id', $id)->delete();
+            DB::table('member_horoscope')->where('member_id', $id)->delete();
+            if (!empty($member->username)) {
+                DB::table('profile')->where('user_name', $member->username)->delete();
+            }
+            DB::table('profiles')->where('user_id', $id)->delete();
+            
+            // Delete from interests where member is sender or receiver
+            DB::table('interests')->where('from_member_id', $id)->orWhere('to_member_id', $id)->delete();
+            
+            // Delete contact access logs related to this member
+            DB::table('contact_access_logs')->where('viewer_id', $id)->orWhere('profile_id', $id)->delete();
+
+            // Delete notifications for this member
+            DB::table('notifications')->where('user_id', $id)->delete();
+            
+            // Finally delete the member record
+            $member->delete();
+        });
+
+        // Smart UX: If deleted from details page, redirect to listing; otherwise return back
+        $referer = request()->headers->get('referer');
+        if ($referer && str_contains($referer, '/members/view/')) {
+            return redirect()->route('admin.members.all')->with('success', 'Member deleted permanently.');
+        }
+
+        return back()->with('success', 'Member deleted permanently.');
     }
 
     /**
@@ -297,6 +329,7 @@ class MemberManagementController extends Controller
         $allExpiredIds = $planExpiredIds->merge($expiredUserIds)->unique();
 
         $members = User::whereIn('id', $allExpiredIds)
+            ->where('status', '!=', 3)
             ->orderBy('id', 'desc')
             ->paginate(25);
 
@@ -352,7 +385,7 @@ class MemberManagementController extends Controller
      */
     public function exportMembers(Request $request)
     {
-        $query = User::query();
+        $query = User::query()->where('status', '!=', 3);
         
         if ($request->list_type === 'expired') {
             $planExpiredIds = DB::table('plan_assign')
