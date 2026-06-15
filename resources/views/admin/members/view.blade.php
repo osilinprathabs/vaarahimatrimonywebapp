@@ -231,6 +231,10 @@
                         <span class="text-muted"><i class="ti ti-mail me-2 text-primary"></i>Email</span>
                         <span class="fw-bold text-dark fs-13">{{ $member->emailid }}</span>
                     </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center px-0 py-2.5 border-light">
+                        <span class="text-muted"><i class="ti ti-key me-2 text-primary"></i>Login Password</span>
+                        <span class="fw-bold text-dark">{{ $member->temp_password ?? '(Decrypted password not available)' }}</span>
+                    </li>
                     @php
                         $planAssign = $member->planAssign;
                         $isPlanExpired = ($planAssign && $planAssign->plan_status === 'Expired') || $member->isExpired();
@@ -517,59 +521,87 @@
                         <!-- Horoscope Charts Section -->
                         <div class="mb-4 mt-5">
                             <h5 class="section-title-premium mb-4">Vedic Horoscope Grids</h5>
+                            @php
+                                if (!function_exists('formatHoroCell')) {
+                                    function formatHoroCell($horo, $cell, $type = 'rasi') {
+                                        if (!$horo) return '';
+                                        $field = ($type === 'rasi') ? "rasi_$cell" : "amsam_$cell";
+                                        $val = $horo->$field ?? '';
+                                        if (empty($val)) return '';
+                                        $planets = explode('||', $val);
+                                        $mapping = [
+                                            'Lagnam' => 'ல',
+                                            'Sun'    => 'சூரி',
+                                            'Moon'   => 'சந்',
+                                            'Mars'   => 'செவ்',
+                                            'Mercury'=> 'பு',
+                                            'Jupiter'=> 'குரு',
+                                            'Venus'  => 'சுக்',
+                                            'Saturn' => 'சனி',
+                                            'Rahu'   => 'ராகு',
+                                            'Kethu'  => 'கேது',
+                                            'Maandhi'=> 'மா',
+                                        ];
+                                        $mapped = array_map(function($p) use ($mapping) {
+                                            return $mapping[$p] ?? $p;
+                                        }, $planets);
+                                        return implode(', ', $mapped);
+                                    }
+                                }
+                            @endphp
                             <div class="row g-4">
                                 <div class="col-md-6">
                                     <div class="card border border-light shadow-none p-3 h-100 bg-light bg-opacity-50" style="border-radius: 16px;">
-                                        <h6 class="fw-extrabold text-center mb-3 text-dark uppercase tracking-wider fs-13"><i class="ti ti-compass me-1 text-warning"></i> Raasi Chart</h6>
+                                        <h6 class="fw-extrabold text-center mb-3 text-dark uppercase tracking-wider fs-13"><i class="ti ti-compass me-1 text-warning"></i> Raasi Chart / ராசி கட்டம்</h6>
                                         <table class="horoscope-table text-center">
                                             <tr>
-                                                <td style="width: 25%; height: 60px;">{{ $member->raasi_1 }}</td>
-                                                <td style="width: 25%; height: 60px;">{{ $member->raasi_2 }}</td>
-                                                <td style="width: 25%; height: 60px;">{{ $member->raasi_3 }}</td>
-                                                <td style="width: 25%; height: 60px;">{{ $member->raasi_4 }}</td>
+                                                <td style="width: 25%; height: 60px; font-weight: bold; font-size: 13px;">{!! formatHoroCell($horoscope, 12, 'rasi') !!}</td>
+                                                <td style="width: 25%; height: 60px; font-weight: bold; font-size: 13px;">{!! formatHoroCell($horoscope, 1, 'rasi') !!}</td>
+                                                <td style="width: 25%; height: 60px; font-weight: bold; font-size: 13px;">{!! formatHoroCell($horoscope, 2, 'rasi') !!}</td>
+                                                <td style="width: 25%; height: 60px; font-weight: bold; font-size: 13px;">{!! formatHoroCell($horoscope, 3, 'rasi') !!}</td>
                                             </tr>
                                             <tr>
-                                                <td style="height: 60px;">{{ $member->raasi_12 }}</td>
-                                                <td colspan="2" rowspan="2" class="horoscope-center align-middle">RAASI</td>
-                                                <td style="height: 60px;">{{ $member->raasi_5 }}</td>
+                                                <td style="height: 60px; font-weight: bold; font-size: 13px;">{!! formatHoroCell($horoscope, 11, 'rasi') !!}</td>
+                                                <td colspan="2" rowspan="2" class="horoscope-center align-middle" style="background-color: #ab0772; color: white; font-weight: bold; font-size: 14px;">ராசி</td>
+                                                <td style="height: 60px; font-weight: bold; font-size: 13px;">{!! formatHoroCell($horoscope, 4, 'rasi') !!}</td>
                                             </tr>
                                             <tr>
-                                                <td style="height: 60px;">{{ $member->raasi_11 }}</td>
-                                                <td style="height: 60px;">{{ $member->raasi_6 }}</td>
+                                                <td style="height: 60px; font-weight: bold; font-size: 13px;">{!! formatHoroCell($horoscope, 10, 'rasi') !!}</td>
+                                                <td style="height: 60px; font-weight: bold; font-size: 13px;">{!! formatHoroCell($horoscope, 5, 'rasi') !!}</td>
                                             </tr>
                                             <tr>
-                                                <td style="height: 60px;">{{ $member->raasi_10 }}</td>
-                                                <td style="height: 60px;">{{ $member->raasi_9 }}</td>
-                                                <td style="height: 60px;">{{ $member->raasi_8 }}</td>
-                                                <td style="height: 60px;">{{ $member->raasi_7 }}</td>
+                                                <td style="height: 60px; font-weight: bold; font-size: 13px;">{!! formatHoroCell($horoscope, 9, 'rasi') !!}</td>
+                                                <td style="height: 60px; font-weight: bold; font-size: 13px;">{!! formatHoroCell($horoscope, 8, 'rasi') !!}</td>
+                                                <td style="height: 60px; font-weight: bold; font-size: 13px;">{!! formatHoroCell($horoscope, 7, 'rasi') !!}</td>
+                                                <td style="height: 60px; font-weight: bold; font-size: 13px;">{!! formatHoroCell($horoscope, 6, 'rasi') !!}</td>
                                             </tr>
                                         </table>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="card border border-light shadow-none p-3 h-100 bg-light bg-opacity-50" style="border-radius: 16px;">
-                                        <h6 class="fw-extrabold text-center mb-3 text-dark uppercase tracking-wider fs-13"><i class="ti ti-compass me-1 text-warning"></i> Amsam Chart</h6>
+                                        <h6 class="fw-extrabold text-center mb-3 text-dark uppercase tracking-wider fs-13"><i class="ti ti-compass me-1 text-warning"></i> Amsam Chart / நவாம்சம்</h6>
                                         <table class="horoscope-table text-center">
                                             <tr>
-                                                <td style="width: 25%; height: 60px;">{{ $member->amsam_1 }}</td>
-                                                <td style="width: 25%; height: 60px;">{{ $member->amsam_2 }}</td>
-                                                <td style="width: 25%; height: 60px;">{{ $member->amsam_3 }}</td>
-                                                <td style="width: 25%; height: 60px;">{{ $member->amsam_4 }}</td>
+                                                <td style="width: 25%; height: 60px; font-weight: bold; font-size: 13px;">{!! formatHoroCell($horoscope, 12, 'amsam') !!}</td>
+                                                <td style="width: 25%; height: 60px; font-weight: bold; font-size: 13px;">{!! formatHoroCell($horoscope, 1, 'amsam') !!}</td>
+                                                <td style="width: 25%; height: 60px; font-weight: bold; font-size: 13px;">{!! formatHoroCell($horoscope, 2, 'amsam') !!}</td>
+                                                <td style="width: 25%; height: 60px; font-weight: bold; font-size: 13px;">{!! formatHoroCell($horoscope, 3, 'amsam') !!}</td>
                                             </tr>
                                             <tr>
-                                                <td style="height: 60px;">{{ $member->amsam_12 }}</td>
-                                                <td colspan="2" rowspan="2" class="horoscope-center align-middle">AMSAM</td>
-                                                <td style="height: 60px;">{{ $member->amsam_5 }}</td>
+                                                <td style="height: 60px; font-weight: bold; font-size: 13px;">{!! formatHoroCell($horoscope, 11, 'amsam') !!}</td>
+                                                <td colspan="2" rowspan="2" class="horoscope-center align-middle" style="background-color: #ab0772; color: white; font-weight: bold; font-size: 14px;">நவாம்சம்</td>
+                                                <td style="height: 60px; font-weight: bold; font-size: 13px;">{!! formatHoroCell($horoscope, 4, 'amsam') !!}</td>
                                             </tr>
                                             <tr>
-                                                <td style="height: 60px;">{{ $member->amsam_11 }}</td>
-                                                <td style="height: 60px;">{{ $member->amsam_6 }}</td>
+                                                <td style="height: 60px; font-weight: bold; font-size: 13px;">{!! formatHoroCell($horoscope, 10, 'amsam') !!}</td>
+                                                <td style="height: 60px; font-weight: bold; font-size: 13px;">{!! formatHoroCell($horoscope, 5, 'amsam') !!}</td>
                                             </tr>
                                             <tr>
-                                                <td style="height: 60px;">{{ $member->amsam_10 }}</td>
-                                                <td style="height: 60px;">{{ $member->amsam_9 }}</td>
-                                                <td style="height: 60px;">{{ $member->amsam_8 }}</td>
-                                                <td style="height: 60px;">{{ $member->amsam_7 }}</td>
+                                                <td style="height: 60px; font-weight: bold; font-size: 13px;">{!! formatHoroCell($horoscope, 9, 'amsam') !!}</td>
+                                                <td style="height: 60px; font-weight: bold; font-size: 13px;">{!! formatHoroCell($horoscope, 8, 'amsam') !!}</td>
+                                                <td style="height: 60px; font-weight: bold; font-size: 13px;">{!! formatHoroCell($horoscope, 7, 'amsam') !!}</td>
+                                                <td style="height: 60px; font-weight: bold; font-size: 13px;">{!! formatHoroCell($horoscope, 6, 'amsam') !!}</td>
                                             </tr>
                                         </table>
                                     </div>
@@ -577,21 +609,34 @@
                             </div>
                         </div>
 
+
                     </div>
                     
                     <!-- Photos Tab -->
                     <div id="photos" class="tab-pane fade" role="tabpanel">
+                        
+                        <!-- Profile Images Section -->
                         <h5 class="section-title-premium mb-4">Member Photo Gallery</h5>
-                        <div class="row g-3">
+                        <div class="row g-3 mb-5">
                             @forelse($images as $img)
                             <div class="col-md-6 col-xl-4">
-                                <div class="gallery-img-wrapper h-100">
-                                    <div class="position-absolute top-0 end-0 p-2" style="z-index: 3;">
-                                        <span class="badge bg-dark bg-opacity-75 rounded-pill px-2.5 py-1">{{ $img->type }}</span>
+                                <div class="gallery-img-wrapper h-100 bg-white shadow-sm d-flex flex-column" style="border-radius: 12px; overflow: hidden; border: 1px solid rgba(0, 0, 0, 0.08);">
+                                    <div class="position-relative" style="overflow: hidden;">
+                                        <div class="position-absolute top-0 end-0 p-2" style="z-index: 3;">
+                                            <span class="badge bg-dark bg-opacity-75 rounded-pill px-2.5 py-1">{{ $img->type }}</span>
+                                        </div>
+                                        <a href="{{ storage_url($img->image_name) }}" target="_blank">
+                                            <img src="{{ storage_url($img->image_name) }}" class="img-fluid w-100" style="height: 220px; object-fit: cover;" alt="Member Image">
+                                        </a>
                                     </div>
-                                    <a href="{{ storage_url($img->image_name) }}" target="_blank">
-                                        <img src="{{ storage_url($img->image_name) }}" class="img-fluid w-100" style="height: 220px; object-fit: cover;" alt="Member Image">
-                                    </a>
+                                    <div class="p-3 d-flex justify-content-between align-items-center mt-auto border-top bg-light bg-opacity-50">
+                                        <a href="{{ storage_url($img->image_name) }}" target="_blank" class="btn btn-sm btn-outline-secondary px-3 rounded-pill">
+                                            <i class="ti ti-eye me-1"></i> View
+                                        </a>
+                                        <a href="{{ storage_url($img->image_name) }}" download class="btn btn-sm btn-primary px-3 rounded-pill" style="background: linear-gradient(135deg, #e00c84 0%, #a90771 50%, #5d0156 100%) !important; border: none;">
+                                            <i class="ti ti-download me-1"></i> Download
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                             @empty
@@ -600,11 +645,88 @@
                                     <i class="ti ti-photo-off text-muted" style="font-size: 48px;"></i>
                                 </div>
                                 <h5 class="text-muted fw-bold">No gallery photos uploaded</h5>
-                                <p class="text-muted-50 small">There are currently no photos or horoscope images uploaded for this member.</p>
+                                <p class="text-muted-50 small">There are currently no photos uploaded for this member.</p>
                             </div>
                             @endforelse
                         </div>
+
+                        <!-- Verification & Proof Documents Section -->
+                        <h5 class="section-title-premium mb-4">Verification & Proof Documents</h5>
+                        <div class="row g-3">
+                            <!-- Aadhaar Card Document -->
+                            <div class="col-md-6">
+                                <div class="card border border-light-subtle shadow-sm h-100" style="border-radius: 12px; overflow: hidden;">
+                                    <div class="card-header bg-light py-3 d-flex align-items-center justify-content-between">
+                                        <h6 class="m-0 fw-bold text-dark"><i class="ti ti-id me-2 text-primary"></i>Aadhaar Card / ஆதார் அட்டை</h6>
+                                        @if($aadhaar)
+                                            <span class="badge bg-success-subtle text-success rounded-pill px-2.5">Uploaded</span>
+                                        @else
+                                            <span class="badge bg-secondary-subtle text-secondary rounded-pill px-2.5">Not Uploaded</span>
+                                        @endif
+                                    </div>
+                                    <div class="card-body d-flex flex-column align-items-center justify-content-center py-4 text-center">
+                                        @if($aadhaar)
+                                            <div class="gallery-img-wrapper mb-3" style="width: 100%; max-width: 320px; border-radius: 8px; overflow: hidden;">
+                                                <a href="{{ storage_url($aadhaar->image_name) }}" target="_blank">
+                                                    <img src="{{ storage_url($aadhaar->image_name) }}" class="img-fluid w-100" style="max-height: 180px; object-fit: contain;" alt="Aadhaar Card">
+                                                </a>
+                                            </div>
+                                            <div class="d-flex gap-2 mt-auto">
+                                                <a href="{{ storage_url($aadhaar->image_name) }}" target="_blank" class="btn btn-sm btn-outline-secondary px-3 rounded-pill">
+                                                    <i class="ti ti-eye me-1"></i> View Document
+                                                </a>
+                                                <a href="{{ storage_url($aadhaar->image_name) }}" download class="btn btn-sm btn-primary px-3 rounded-pill" style="background: linear-gradient(135deg, #e00c84 0%, #a90771 50%, #5d0156 100%) !important; border: none;">
+                                                    <i class="ti ti-download me-1"></i> Download
+                                                </a>
+                                            </div>
+                                        @else
+                                            <div class="py-4">
+                                                <i class="ti ti-id-off text-muted mb-2" style="font-size: 40px;"></i>
+                                                <p class="text-muted small mb-0">No Aadhaar Card document has been uploaded yet.</p>
+                                            </div>
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Horoscope / Jathagam Document -->
+                            <div class="col-md-6">
+                                <div class="card border border-light-subtle shadow-sm h-100" style="border-radius: 12px; overflow: hidden;">
+                                    <div class="card-header bg-light py-3 d-flex align-items-center justify-content-between">
+                                        <h6 class="m-0 fw-bold text-dark"><i class="ti ti-zodiac-signs me-2 text-primary"></i>Horoscope Image / ஜாதக படம்</h6>
+                                        @if($jathagam)
+                                            <span class="badge bg-success-subtle text-success rounded-pill px-2.5">Uploaded</span>
+                                        @else
+                                            <span class="badge bg-secondary-subtle text-secondary rounded-pill px-2.5">Not Uploaded</span>
+                                        @endif
+                                    </div>
+                                    <div class="card-body d-flex flex-column align-items-center justify-content-center py-4 text-center">
+                                        @if($jathagam)
+                                            <div class="gallery-img-wrapper mb-3" style="width: 100%; max-width: 320px; border-radius: 8px; overflow: hidden;">
+                                                <a href="{{ storage_url($jathagam->image_name) }}" target="_blank">
+                                                    <img src="{{ storage_url($jathagam->image_name) }}" class="img-fluid w-100" style="max-height: 180px; object-fit: contain;" alt="Horoscope Image">
+                                                </a>
+                                            </div>
+                                            <div class="d-flex gap-2 mt-auto">
+                                                <a href="{{ storage_url($jathagam->image_name) }}" target="_blank" class="btn btn-sm btn-outline-secondary px-3 rounded-pill">
+                                                    <i class="ti ti-eye me-1"></i> View Document
+                                                </a>
+                                                <a href="{{ storage_url($jathagam->image_name) }}" download class="btn btn-sm btn-primary px-3 rounded-pill" style="background: linear-gradient(135deg, #e00c84 0%, #a90771 50%, #5d0156 100%) !important; border: none;">
+                                                    <i class="ti ti-download me-1"></i> Download
+                                                </a>
+                                            </div>
+                                        @else
+                                            <div class="py-4">
+                                                <i class="ti ti-file-off text-muted mb-2" style="font-size: 40px;"></i>
+                                                <p class="text-muted small mb-0">No Horoscope image has been uploaded yet.</p>
+                                            </div>
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
+
 
                 </div>
             </div>

@@ -44,6 +44,8 @@ class PaymentController extends Controller
             $imageName = time() . '_' . $request->file('image')->getClientOriginalName();
             $request->file('image')->move(public_path('uploads'), $imageName);
             $data['image'] = $imageName;
+        } else {
+            $data['image'] = '';
         }
         $data['status'] = 1;
         Plan::create($data);

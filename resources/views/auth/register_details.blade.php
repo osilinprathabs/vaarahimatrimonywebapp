@@ -135,14 +135,13 @@
             <div class="row justify-content-center mt-0">
                 <div class="col-11 col-sm-11 col-md-10 col-lg-10 text-center p-0 mt-3 mb-2">
                     <div class="card shadow">
-                        <h2><strong>REGISTER NOW</strong></h2>
+                        <h2><strong>Complete the Registration</strong></h2>
                         <p>Fill all form fields to complete your profile</p>
                         <div class="row">
                             <div class="col-md-12 mx-0">
                                 @if(session('generated_password'))
                                     <div class="alert alert-success border-0 shadow-sm mx-4 mt-4 text-start">
-                                        <h4 class="alert-heading fw-bold"><i class="bi bi-shield-lock me-2"></i>Registration
-                                            Successful!</h4>
+                                        <h4 class="alert-heading fw-bold"><i class="bi bi-shield-lock me-2"></i>Registration is in progress!</h4>
                                         <p class="mb-0">Your account has been created. Your generated password is: <strong
                                                 class="fs-4 text-primary">{{ session('generated_password') }}</strong></p>
                                         <hr>
@@ -229,18 +228,22 @@
                                                             class="text-danger">*</span></label>
                                                     <select name="language" required>
                                                         <option value="">Select</option>
-                                                        <option value="Tamil / தமிழ்">Tamil / தமிழ்</option>
                                                         <option value="English / ஆங்கிலம்">English / ஆங்கிலம்</option>
-                                                        <option value="Telugu / தெலுங்கு">Telugu / தெலுங்கு</option>
+                                                        <option value="Hindi / இந்தி">Hindi / இந்தி</option>
                                                         <option value="Kannada / கன்னடம்">Kannada / கன்னடம்</option>
                                                         <option value="Malayalam / மலையாளம்">Malayalam / மலையாளம்</option>
-                                                        <option value="Hindi / இந்தி">Hindi / இந்தி</option>
+                                                        <option value="Tamil / தமிழ்">Tamil / தமிழ்</option>
+                                                        <option value="Telugu / தெலுங்கு">Telugu / தெலுங்கு</option>
                                                     </select>
                                                 </div>
                                                 <div class="col-lg-6">
-                                                    <label>Whatsapp Number <span class="text-danger">*</span></label>
+                                                    <label>Whatsapp Number / வாட்ஸ்அப் எண் <span class="text-danger">*</span></label>
                                                     <input name="whatsapp_no" type="text"
                                                         value="{{ old('whatsapp_no', $user->mobileno) }}" required>
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <label>Aadhaar Number / ஆதார் எண் <span class="text-danger">*</span></label>
+                                                    <input name="aadhaar_no" type="text" minlength="12" maxlength="12" pattern="[0-9]{12}" placeholder="Enter 12-digit Aadhaar Number" value="{{ old('aadhaar_no', $user->aadhaar_no) }}" required>
                                                 </div>
                                             </div>
                                         </div>
@@ -391,8 +394,8 @@
                                                     </select>
                                                 </div>
                                                 <div class="col-lg-6">
-                                                    <label>Subcaste / உட்பிரிவு <span class="text-danger">*</span></label>
-                                                    <select name="subcaste" id="subcaste" required>
+                                                    <label>Subcaste / உட்பிரிவு</label>
+                                                    <select name="subcaste" id="subcaste">
                                                         <option value="">Select Caste First</option>
                                                     </select>
                                                 </div>
@@ -401,16 +404,16 @@
                                                     <input name="gothram" type="text" placeholder="Gothram">
                                                 </div>
                                                 <div class="col-lg-6">
-                                                    <label>Father's Name / தந்தை பெயர்</label>
-                                                    <input name="father_name" type="text">
+                                                    <label>Father's Name / தந்தை பெயர் <span class="text-danger">*</span></label>
+                                                    <input name="father_name" type="text" required>
                                                 </div>
                                                 <div class="col-lg-6">
                                                     <label>Father's Occupation / தந்தை தொழில்</label>
                                                     <input name="father_occupation" type="text">
                                                 </div>
                                                 <div class="col-lg-6">
-                                                    <label>Mother's Name / தாய் பெயர்</label>
-                                                    <input name="mother_name" type="text">
+                                                    <label>Mother's Name / தாய் பெயர் <span class="text-danger">*</span></label>
+                                                    <input name="mother_name" type="text" required>
                                                 </div>
                                                 <div class="col-lg-6">
                                                     <label>Mother's Occupation / தாய் தொழில்</label>
@@ -463,169 +466,91 @@
                                                     </select>
                                                 </div>
                                                 <div class="col-lg-12 mt-3">
-                                                    <h4>Raasi Chart / ராசி கட்டம்</h4>
-                                                    <div class="table-responsive">
-                                                        <table class="table table-bordered text-center">
-                                                            <tr>
-                                                                <td><select name="raasi_1[]" class="form-control" multiple>
-                                                                        <option value="Lagnam">Lagnam (லக்கனம்)</option>
-                                                                        <option value="Sun">Sun (சூரியன்)</option>
-                                                                        <option value="Moon">Moon (சந்திரன்)</option>
-                                                                        <option value="Mars">Mars (செவ்வாய்)</option>
-                                                                        <option value="Mercury">Mercury (புதன்)</option>
-                                                                        <option value="Jupiter">Jupiter (குரு)</option>
-                                                                        <option value="Venus">Venus (சுக்கிரன்)</option>
-                                                                        <option value="Saturn">Saturn (சனி)</option>
-                                                                        <option value="Rahu">Rahu (ராகு)</option>
-                                                                        <option value="Kethu">Kethu (கேது)</option>
-                                                                    </select></td>
-                                                                <td>
-                                                                    <<select name="raasi_1[]" class="form-control" multiple>
-                                                                        <option value="Lagnam">Lagnam (லக்கனம்)</option>
-                                                                        <option value="Sun">Sun (சூரியன்)</option>
-                                                                        <option value="Moon">Moon (சந்திரன்)</option>
-                                                                        <option value="Mars">Mars (செவ்வாய்)</option>
-                                                                        <option value="Mercury">Mercury (புதன்)</option>
-                                                                        <option value="Jupiter">Jupiter (குரு)</option>
-                                                                        <option value="Venus">Venus (சுக்கிரன்)</option>
-                                                                        <option value="Saturn">Saturn (சனி)</option>
-                                                                        <option value="Rahu">Rahu (ராகு)</option>
-                                                                        <option value="Kethu">Kethu (கேது)</option>
-                                                                        </select>
-                                                                </td>
-                                                                <td><select name="raasi_1[]" class="form-control" multiple>
-                                                                        <option value="Lagnam">Lagnam (லக்கனம்)</option>
-                                                                        <option value="Sun">Sun (சூரியன்)</option>
-                                                                        <option value="Moon">Moon (சந்திரன்)</option>
-                                                                        <option value="Mars">Mars (செவ்வாய்)</option>
-                                                                        <option value="Mercury">Mercury (புதன்)</option>
-                                                                        <option value="Jupiter">Jupiter (குரு)</option>
-                                                                        <option value="Venus">Venus (சுக்கிரன்)</option>
-                                                                        <option value="Saturn">Saturn (சனி)</option>
-                                                                        <option value="Rahu">Rahu (ராகு)</option>
-                                                                        <option value="Kethu">Kethu (கேது)</option>
-                                                                    </select></td>
-                                                                <td><select name="raasi_1[]" class="form-control" multiple>
-                                                                        <option value="Lagnam">Lagnam (லக்கனம்)</option>
-                                                                        <option value="Sun">Sun (சூரியன்)</option>
-                                                                        <option value="Moon">Moon (சந்திரன்)</option>
-                                                                        <option value="Mars">Mars (செவ்வாய்)</option>
-                                                                        <option value="Mercury">Mercury (புதன்)</option>
-                                                                        <option value="Jupiter">Jupiter (குரு)</option>
-                                                                        <option value="Venus">Venus (சுக்கிரன்)</option>
-                                                                        <option value="Saturn">Saturn (சனி)</option>
-                                                                        <option value="Rahu">Rahu (ராகு)</option>
-                                                                        <option value="Kethu">Kethu (கேது)</option>
-                                                                    </select></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td><select name="raasi_1[]" class="form-control" multiple>
-                                                                        <option value="Lagnam">Lagnam (லக்கனம்)</option>
-                                                                        <option value="Sun">Sun (சூரியன்)</option>
-                                                                        <option value="Moon">Moon (சந்திரன்)</option>
-                                                                        <option value="Mars">Mars (செவ்வாய்)</option>
-                                                                        <option value="Mercury">Mercury (புதன்)</option>
-                                                                        <option value="Jupiter">Jupiter (குரு)</option>
-                                                                        <option value="Venus">Venus (சுக்கிரன்)</option>
-                                                                        <option value="Saturn">Saturn (சனி)</option>
-                                                                        <option value="Rahu">Rahu (ராகு)</option>
-                                                                        <option value="Kethu">Kethu (கேது)</option>
-                                                                    </select></td>
-                                                                <td colspan="2" rowspan="2" class="align-middle">
-                                                                    <h4>ராசி</h4>
-                                                                </td>
-                                                                <td><select name="raasi_1[]" class="form-control" multiple>
-                                                                        <option value="Lagnam">Lagnam (லக்கனம்)</option>
-                                                                        <option value="Sun">Sun (சூரியன்)</option>
-                                                                        <option value="Moon">Moon (சந்திரன்)</option>
-                                                                        <option value="Mars">Mars (செவ்வாய்)</option>
-                                                                        <option value="Mercury">Mercury (புதன்)</option>
-                                                                        <option value="Jupiter">Jupiter (குரு)</option>
-                                                                        <option value="Venus">Venus (சுக்கிரன்)</option>
-                                                                        <option value="Saturn">Saturn (சனி)</option>
-                                                                        <option value="Rahu">Rahu (ராகு)</option>
-                                                                        <option value="Kethu">Kethu (கேது)</option>
-                                                                    </select></td>
+                                                    @php
+                                                        $planetsTamil = [
+                                                            'ல' => '//ல',
+                                                            'சூரி' => 'சூரி',
+                                                            'சந்' => 'சந்',
+                                                            'செவ்' => 'செவ்',
+                                                            'பு' => 'பு',
+                                                            'குரு' => 'குரு',
+                                                            'சுக்' => 'சுக்',
+                                                            'சனி' => 'சனி',
+                                                            'ராகு' => 'ராகு',
+                                                            'கேது' => 'கேது',
+                                                            'மா' => 'மா'
+                                                        ];
+                                                        if (!function_exists('renderRegisterHoroSelect')) {
+                                                            function renderRegisterHoroSelect($name, $options) {
+                                                                $html = '<select name="'.$name.'" class="form-control" multiple>';
+                                                                foreach ($options as $val => $lbl) {
+                                                                    $html .= '<option value="'.$val.'">'.$lbl.'</option>';
+                                                                }
+                                                                $html .= '</select>';
+                                                                return $html;
+                                                            }
+                                                        }
+                                                    @endphp
+                                                    <div class="row">
+                                                        {{-- Rasi Chart --}}
+                                                        <div class="col-md-6 mt-3">
+                                                            <h4 class="fw-bold mb-3" style="color: #ab0772;">Raasi Chart / ராசி கட்டம்</h4>
+                                                            <div class="table-responsive">
+                                                                <table class="table table-bordered text-center" style="border: 2px solid #ab0772;">
+                                                                    <tr>
+                                                                        <td style="width: 25%;">{!! renderRegisterHoroSelect('raasi_12[]', $planetsTamil) !!}</td>
+                                                                        <td style="width: 25%;">{!! renderRegisterHoroSelect('raasi_1[]', $planetsTamil) !!}</td>
+                                                                        <td style="width: 25%;">{!! renderRegisterHoroSelect('raasi_2[]', $planetsTamil) !!}</td>
+                                                                        <td style="width: 25%;">{!! renderRegisterHoroSelect('raasi_3[]', $planetsTamil) !!}</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>{!! renderRegisterHoroSelect('raasi_11[]', $planetsTamil) !!}</td>
+                                                                        <td colspan="2" rowspan="2" class="align-middle bg-white fw-bold text-primary" style="font-size: 18px; color: #ab0772 !important;">ராசி</td>
+                                                                        <td>{!! renderRegisterHoroSelect('raasi_4[]', $planetsTamil) !!}</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>{!! renderRegisterHoroSelect('raasi_10[]', $planetsTamil) !!}</td>
+                                                                        <td>{!! renderRegisterHoroSelect('raasi_5[]', $planetsTamil) !!}</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>{!! renderRegisterHoroSelect('raasi_9[]', $planetsTamil) !!}</td>
+                                                                        <td>{!! renderRegisterHoroSelect('raasi_8[]', $planetsTamil) !!}</td>
+                                                                        <td>{!! renderRegisterHoroSelect('raasi_7[]', $planetsTamil) !!}</td>
+                                                                        <td>{!! renderRegisterHoroSelect('raasi_6[]', $planetsTamil) !!}</td>
+                                                                    </tr>
+                                                                </table>
+                                                            </div>
+                                                        </div>
 
-                                                            </tr>
-                                                            <tr>
-                                                                <td><select name="raasi_1[]" class="form-control" multiple>
-                                                                        <option value="Lagnam">Lagnam (லக்கனம்)</option>
-                                                                        <option value="Sun">Sun (சூரியன்)</option>
-                                                                        <option value="Moon">Moon (சந்திரன்)</option>
-                                                                        <option value="Mars">Mars (செவ்வாய்)</option>
-                                                                        <option value="Mercury">Mercury (புதன்)</option>
-                                                                        <option value="Jupiter">Jupiter (குரு)</option>
-                                                                        <option value="Venus">Venus (சுக்கிரன்)</option>
-                                                                        <option value="Saturn">Saturn (சனி)</option>
-                                                                        <option value="Rahu">Rahu (ராகு)</option>
-                                                                        <option value="Kethu">Kethu (கேது)</option>
-                                                                    </select></td>
-                                                                <td><select name="raasi_1[]" class="form-control" multiple>
-                                                                        <option value="Lagnam">Lagnam (லக்கனம்)</option>
-                                                                        <option value="Sun">Sun (சூரியன்)</option>
-                                                                        <option value="Moon">Moon (சந்திரன்)</option>
-                                                                        <option value="Mars">Mars (செவ்வாய்)</option>
-                                                                        <option value="Mercury">Mercury (புதன்)</option>
-                                                                        <option value="Jupiter">Jupiter (குரு)</option>
-                                                                        <option value="Venus">Venus (சுக்கிரன்)</option>
-                                                                        <option value="Saturn">Saturn (சனி)</option>
-                                                                        <option value="Rahu">Rahu (ராகு)</option>
-                                                                        <option value="Kethu">Kethu (கேது)</option>
-                                                                    </select></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td><select name="raasi_1[]" class="form-control" multiple>
-                                                                        <option value="Lagnam">Lagnam (லக்கனம்)</option>
-                                                                        <option value="Sun">Sun (சூரியன்)</option>
-                                                                        <option value="Moon">Moon (சந்திரன்)</option>
-                                                                        <option value="Mars">Mars (செவ்வாய்)</option>
-                                                                        <option value="Mercury">Mercury (புதன்)</option>
-                                                                        <option value="Jupiter">Jupiter (குரு)</option>
-                                                                        <option value="Venus">Venus (சுக்கிரன்)</option>
-                                                                        <option value="Saturn">Saturn (சனி)</option>
-                                                                        <option value="Rahu">Rahu (ராகு)</option>
-                                                                        <option value="Kethu">Kethu (கேது)</option>
-                                                                    </select></td>
-                                                                <td><select name="raasi_1[]" class="form-control" multiple>
-                                                                        <option value="Lagnam">Lagnam (லக்கனம்)</option>
-                                                                        <option value="Sun">Sun (சூரியன்)</option>
-                                                                        <option value="Moon">Moon (சந்திரன்)</option>
-                                                                        <option value="Mars">Mars (செவ்வாய்)</option>
-                                                                        <option value="Mercury">Mercury (புதன்)</option>
-                                                                        <option value="Jupiter">Jupiter (குரு)</option>
-                                                                        <option value="Venus">Venus (சுக்கிரன்)</option>
-                                                                        <option value="Saturn">Saturn (சனி)</option>
-                                                                        <option value="Rahu">Rahu (ராகு)</option>
-                                                                        <option value="Kethu">Kethu (கேது)</option>
-                                                                    </select></td>
-                                                                <td><select name="raasi_1[]" class="form-control" multiple>
-                                                                        <option value="Lagnam">Lagnam (லக்கனம்)</option>
-                                                                        <option value="Sun">Sun (சூரியன்)</option>
-                                                                        <option value="Moon">Moon (சந்திரன்)</option>
-                                                                        <option value="Mars">Mars (செவ்வாய்)</option>
-                                                                        <option value="Mercury">Mercury (புதன்)</option>
-                                                                        <option value="Jupiter">Jupiter (குரு)</option>
-                                                                        <option value="Venus">Venus (சுக்கிரன்)</option>
-                                                                        <option value="Saturn">Saturn (சனி)</option>
-                                                                        <option value="Rahu">Rahu (ராகு)</option>
-                                                                        <option value="Kethu">Kethu (கேது)</option>
-                                                                    </select> </td>
-                                                                <td><select name="raasi_1[]" class="form-control" multiple>
-                                                                        <option value="Lagnam">Lagnam (லக்கனம்)</option>
-                                                                        <option value="Sun">Sun (சூரியன்)</option>
-                                                                        <option value="Moon">Moon (சந்திரன்)</option>
-                                                                        <option value="Mars">Mars (செவ்வாய்)</option>
-                                                                        <option value="Mercury">Mercury (புதன்)</option>
-                                                                        <option value="Jupiter">Jupiter (குரு)</option>
-                                                                        <option value="Venus">Venus (சுக்கிரன்)</option>
-                                                                        <option value="Saturn">Saturn (சனி)</option>
-                                                                        <option value="Rahu">Rahu (ராகு)</option>
-                                                                        <option value="Kethu">Kethu (கேது)</option>
-                                                                    </select></td>
-
-                                                            </tr>
-                                                        </table>
+                                                        {{-- Amsam Chart --}}
+                                                        <div class="col-md-6 mt-3">
+                                                            <h4 class="fw-bold mb-3" style="color: #ab0772;">Navaamsam Chart / நவாம்சம் கட்டம்</h4>
+                                                            <div class="table-responsive">
+                                                                <table class="table table-bordered text-center" style="border: 2px solid #ab0772;">
+                                                                    <tr>
+                                                                        <td style="width: 25%;">{!! renderRegisterHoroSelect('amsam_12[]', $planetsTamil) !!}</td>
+                                                                        <td style="width: 25%;">{!! renderRegisterHoroSelect('amsam_1[]', $planetsTamil) !!}</td>
+                                                                        <td style="width: 25%;">{!! renderRegisterHoroSelect('amsam_2[]', $planetsTamil) !!}</td>
+                                                                        <td style="width: 25%;">{!! renderRegisterHoroSelect('amsam_3[]', $planetsTamil) !!}</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>{!! renderRegisterHoroSelect('amsam_11[]', $planetsTamil) !!}</td>
+                                                                        <td colspan="2" rowspan="2" class="align-middle bg-white fw-bold text-primary" style="font-size: 18px; color: #ab0772 !important;">நவாம்சம்</td>
+                                                                        <td>{!! renderRegisterHoroSelect('amsam_4[]', $planetsTamil) !!}</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>{!! renderRegisterHoroSelect('amsam_10[]', $planetsTamil) !!}</td>
+                                                                        <td>{!! renderRegisterHoroSelect('amsam_5[]', $planetsTamil) !!}</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>{!! renderRegisterHoroSelect('amsam_9[]', $planetsTamil) !!}</td>
+                                                                        <td>{!! renderRegisterHoroSelect('amsam_8[]', $planetsTamil) !!}</td>
+                                                                        <td>{!! renderRegisterHoroSelect('amsam_7[]', $planetsTamil) !!}</td>
+                                                                        <td>{!! renderRegisterHoroSelect('amsam_6[]', $planetsTamil) !!}</td>
+                                                                    </tr>
+                                                                </table>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-6">
@@ -635,6 +560,10 @@
                                                 <div class="col-lg-6">
                                                     <label>Gold Details / பவுன் விவரங்கள்</label>
                                                     <input name="gold_details" type="text" placeholder="e.g. 50 Sovereigns">
+                                                </div>
+                                                <div class="col-lg-6">
+                                                    <label>About Me / என்னைப் பற்றி <span class="text-danger">*</span></label>
+                                                    <textarea name="about_me" rows="3" placeholder="Tell us something about yourself, your family and background..." required></textarea>
                                                 </div>
                                             </div>
                                         </div>
@@ -702,6 +631,103 @@
 @section('scripts')
     <script>
         $(document).ready(function () {
+            // ============================================================
+            // Horoscope planet exclusion: when a planet is selected in one
+            // cell, disable it in all other cells of the same chart group.
+            // ============================================================
+            function updateHoroExclusions(chartPrefix) {
+                // Collect all selected values across the entire chart
+                var allSelected = {};
+                $('select[name^="' + chartPrefix + '_"]').each(function () {
+                    var $sel = $(this);
+                    var myName = $sel.attr('name');
+                    $sel.find('option:selected').each(function () {
+                        var val = $(this).val();
+                        if (!allSelected[val]) allSelected[val] = [];
+                        allSelected[val].push(myName);
+                    });
+                });
+
+                // For each select, disable options selected in OTHER selects
+                $('select[name^="' + chartPrefix + '_"]').each(function () {
+                    var $sel = $(this);
+                    var myName = $sel.attr('name');
+                    $sel.find('option').each(function () {
+                        var val = $(this).val();
+                        var selectedInOther = allSelected[val] &&
+                            !(allSelected[val].length === 1 && allSelected[val][0] === myName) &&
+                            !$(this).is(':selected');
+                        $(this).prop('disabled', selectedInOther);
+                        // Visual cue: strikethrough + grey for disabled
+                        $(this).css(selectedInOther
+                            ? { 'color': '#ccc', 'font-style': 'italic' }
+                            : { 'color': '', 'font-style': '' }
+                        );
+                    });
+                });
+            }
+
+            // Run exclusion on any change inside the chart tables
+            $(document).on('change', 'select[name^="raasi_"]', function () {
+                updateHoroExclusions('raasi');
+            });
+            $(document).on('change', 'select[name^="amsam_"]', function () {
+                updateHoroExclusions('amsam');
+            });
+
+            // Run on page load so pre-selected values are excluded from start
+            updateHoroExclusions('raasi');
+            updateHoroExclusions('amsam');
+
+            function sortDropdownOptions($select) {
+                var name = $select.attr('name') || '';
+                var id = $select.attr('id') || '';
+                if (name.indexOf('height') !== -1 || 
+                    name.indexOf('weight') !== -1 || 
+                    name.indexOf('raasi_') !== -1 || 
+                    name.indexOf('amsam_') !== -1 ||
+                    name.indexOf('dob') !== -1 ||
+                    name.indexOf('age') !== -1 ||
+                    id.indexOf('raasi_') !== -1 || 
+                    id.indexOf('amsam_') !== -1) {
+                    return;
+                }
+                
+                var $options = $select.find('option');
+                if ($options.length <= 1) return;
+                
+                var selectedVal = $select.val();
+                var firstOption = null;
+                var startIdx = 0;
+                
+                if ($options.eq(0).val() === '' || $options.eq(0).text().toLowerCase().indexOf('select') > -1) {
+                    firstOption = $options.eq(0);
+                    startIdx = 1;
+                }
+                
+                var optionsArr = $options.slice(startIdx).get();
+                optionsArr.sort(function(a, b) {
+                    var textA = $(a).text().trim().toLowerCase();
+                    var textB = $(b).text().trim().toLowerCase();
+                    return textA.localeCompare(textB, undefined, {numeric: true, sensitivity: 'base'});
+                });
+                
+                $select.empty();
+                if (firstOption) {
+                    $select.append(firstOption);
+                }
+                $.each(optionsArr, function(index, option) {
+                    $select.append(option);
+                });
+                
+                $select.val(selectedVal);
+            }
+
+            // Initial sort for all dropdowns
+            $('select').each(function() {
+                sortDropdownOptions($(this));
+            });
+
             var current_fs, next_fs, previous_fs;
 
             $(".next").click(function () {
@@ -755,6 +781,9 @@
                                     $('#subcaste').val(formData.subcaste);
                                 }
                             }
+                            
+                            // Sort subcaste dropdown alphabetically
+                            sortDropdownOptions($('#subcaste'));
                         }
                     });
                 }
@@ -781,6 +810,9 @@
                                     $('#star').val(formData.star);
                                 }
                             }
+
+                            // Sort star dropdown alphabetically
+                            sortDropdownOptions($('#star'));
                         }
                     });
                 }

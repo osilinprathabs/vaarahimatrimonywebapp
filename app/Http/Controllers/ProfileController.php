@@ -46,18 +46,18 @@ class ProfileController extends Controller
         
         $data = [
             'user' => $user,
-            'onbehalfs' => Onbehalf::all(),
-            'marital_statuses' => MaritalStatus::all(),
-            'educations' => Education::all(),
-            'employments' => Employment::all(),
-            'occupations' => Occupation::all(),
+            'onbehalfs' => Onbehalf::orderBy('onbehalf', 'asc')->get(),
+            'marital_statuses' => MaritalStatus::orderBy('marital_status', 'asc')->get(),
+            'educations' => Education::orderBy('education', 'asc')->get(),
+            'employments' => Employment::orderBy('employment', 'asc')->get(),
+            'occupations' => Occupation::orderBy('occupation', 'asc')->get(),
             'currency_values' => CurrencyValue::all(),
-            'countries' => Country::orderBy('position', 'desc')->get(),
+            'countries' => Country::orderBy('country', 'asc')->get(),
             'heights' => Height::all(),
-            'castes' => Caste::where('status', 1)->get(),
-            'gotharams' => Gothram::all(),
-            'raasis' => Raasi::where('status', 1)->get(),
-            'doshams' => Dosham::where('status', 1)->get(),
+            'castes' => Caste::where('status', 1)->orderBy('caste', 'asc')->get(),
+            'gotharams' => Gothram::orderBy('gotharam', 'asc')->get(),
+            'raasis' => Raasi::where('status', 1)->orderBy('name', 'asc')->get(),
+            'doshams' => Dosham::where('status', 1)->orderBy('dosham', 'asc')->get(),
         ];
 
         return view('auth.register_details', $data);
@@ -65,17 +65,48 @@ class ProfileController extends Controller
 
     public function storeDetails(Request $request): RedirectResponse
     {
+        $request->validate([
+            'father_name' => 'required|string|max:255',
+            'mother_name' => 'required|string|max:255',
+            'aadhaar_no' => 'required|string|size:12|regex:/^[0-9]{12}$/',
+            'about_me' => 'required|string|min:10',
+        ]);
+
         $user = $request->user();
-        
+
+        // Generate SVM Matrimony ID if not already assigned
+        $midToAssign = null;
+        if (empty($user->mid) || !str_starts_with((string)$user->mid, 'SVM')) {
+            $gender = $request->input('gender', $user->gender ?? 'Male');
+            $genderCode = strtoupper(substr($gender, 0, 1)); // 'F' or 'M'
+            $prefix = 'SVM' . $genderCode;
+
+            $lastEntry = \DB::table('free_user')
+                ->where('mid', 'LIKE', $prefix . '%')
+                ->orderByRaw('CAST(SUBSTR(mid, ' . (strlen($prefix) + 1) . ') AS UNSIGNED) DESC')
+                ->value('mid');
+
+            $nextNum = 1;
+            if ($lastEntry) {
+                $lastNum = (int) substr($lastEntry, strlen($prefix));
+                $nextNum = $lastNum + 1;
+            }
+            $midToAssign = $prefix . str_pad($nextNum, 5, '0', STR_PAD_LEFT);
+        }
+
         // Update User (free_user table)
         $userData = $request->except([
-            '_token', 'profile_img', 'aadhaar', 'jathagam', 
-            'raasi_1', 'raasi_2', 'raasi_3', 'raasi_4', 'raasi_5', 'raasi_6', 
-            'raasi_7', 'raasi_8', 'raasi_9', 'raasi_10', 'raasi_11', 'raasi_12', 
-            'amsam_1', 'amsam_2', 'amsam_3', 'amsam_4', 'amsam_5', 'amsam_6', 
+            '_token', 'profile_img', 'aadhaar', 'jathagam',
+            'raasi_1', 'raasi_2', 'raasi_3', 'raasi_4', 'raasi_5', 'raasi_6',
+            'raasi_7', 'raasi_8', 'raasi_9', 'raasi_10', 'raasi_11', 'raasi_12',
+            'amsam_1', 'amsam_2', 'amsam_3', 'amsam_4', 'amsam_5', 'amsam_6',
             'amsam_7', 'amsam_8', 'amsam_9', 'amsam_10', 'amsam_11', 'amsam_12'
         ]);
-        
+
+        if ($midToAssign) {
+            $userData['mid'] = $midToAssign;
+        }
+
         // Map dob to date_of_birth and calculate age
         if ($request->has('dob')) {
             $userData['date_of_birth'] = $request->dob;
@@ -95,6 +126,7 @@ class ProfileController extends Controller
         }
 
         $user->update($userData);
+        $user->refresh(); // reload saved mid
 
         // Handle File Uploads
         if ($request->hasFile('profile_img')) {
@@ -162,7 +194,13 @@ class ProfileController extends Controller
             );
         }
 
-        return redirect()->route('dashboard')->with('status', 'Registration completed successfully!');
+        return redirect()->route('dashboard')->with([
+            'registration_success' => true,
+            'reg_name'             => $user->name,
+            'reg_email'            => $user->emailid,
+            'reg_password'         => $user->temp_password ?? '(as set during sign-up)',
+            'reg_matrimony_id'     => $user->mid,
+        ]);
     }
 
     /**
@@ -195,27 +233,27 @@ class ProfileController extends Controller
     // AJAX Handlers
     public function getStates($country_id)
     {
-        return response()->json(State::where('countryid', $country_id)->get());
+        return response()->json(State::where('countryid', $country_id)->orderBy('state', 'asc')->get());
     }
 
     public function getCities($state_id)
     {
-        return response()->json(City::where('stateid', $state_id)->get());
+        return response()->json(City::where('stateid', $state_id)->orderBy('city', 'asc')->get());
     }
 
     public function getSubcastes($caste_id)
     {
-        return response()->json(Subcaste::where('caste', $caste_id)->get());
+        return response()->json(Subcaste::where('caste', $caste_id)->orderBy('subcaste', 'asc')->get());
     }
 
     public function getGotharams($caste_id)
     {
-        return response()->json(Gothram::where('caste', $caste_id)->get());
+        return response()->json(Gothram::where('caste', $caste_id)->orderBy('gotharam', 'asc')->get());
     }
 
     public function getStars($raasi_id)
     {
-        return response()->json(Star::where('rashi', $raasi_id)->get());
+        return response()->json(Star::where('rashi', $raasi_id)->orderBy('name', 'asc')->get());
     }
 
     /**
@@ -227,20 +265,20 @@ class ProfileController extends Controller
         
         $data = [
             'user' => $user,
-            'onbehalfs' => Onbehalf::all(),
-            'marital_statuses' => MaritalStatus::all(),
-            'educations' => Education::all(),
-            'employments' => Employment::all(),
-            'occupations' => Occupation::all(),
+            'onbehalfs' => Onbehalf::orderBy('onbehalf', 'asc')->get(),
+            'marital_statuses' => MaritalStatus::orderBy('marital_status', 'asc')->get(),
+            'educations' => Education::orderBy('education', 'asc')->get(),
+            'employments' => Employment::orderBy('employment', 'asc')->get(),
+            'occupations' => Occupation::orderBy('occupation', 'asc')->get(),
             'currency_values' => CurrencyValue::all(),
-            'countries' => Country::orderBy('position', 'desc')->get(),
+            'countries' => Country::orderBy('country', 'asc')->get(),
             'heights' => Height::all(),
-            'castes' => Caste::where('status', 1)->get(),
-            'gotharams' => Gothram::all(),
-            'raasis' => Raasi::where('status', 1)->get(),
-            'doshams' => Dosham::where('status', 1)->get(),
-            'subcastes' => $user->caste ? Subcaste::where('caste', $user->caste)->get() : collect(),
-            'stars' => $user->raasi ? Star::where('rashi', $user->raasi)->get() : collect(),
+            'castes' => Caste::where('status', 1)->orderBy('caste', 'asc')->get(),
+            'gotharams' => Gothram::orderBy('gotharam', 'asc')->get(),
+            'raasis' => Raasi::where('status', 1)->orderBy('name', 'asc')->get(),
+            'doshams' => Dosham::where('status', 1)->orderBy('dosham', 'asc')->get(),
+            'subcastes' => $user->caste ? Subcaste::where('caste', $user->caste)->orderBy('subcaste', 'asc')->get() : collect(),
+            'stars' => $user->raasi ? Star::where('rashi', $user->raasi)->orderBy('name', 'asc')->get() : collect(),
             'horoscope' => MemberHoroscope::where('member_id', $user->id)->first(),
         ];
 
@@ -270,10 +308,12 @@ class ProfileController extends Controller
             'height' => ['required'],
             'weight' => ['required'],
             'caste' => ['required'],
-            'subcaste' => ['required'],
+            'subcaste' => ['nullable'],
             'raasi' => ['required'],
             'star' => ['required'],
             'address' => ['required', 'string'],
+            'about_me' => ['required', 'string', 'min:10'],
+            'aadhaar_no' => ['required', 'string', 'size:12', 'regex:/^[0-9]{12}$/'],
         ]);
         
         // Update User (free_user table)

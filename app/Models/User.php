@@ -65,7 +65,7 @@ class User extends Authenticatable
         'raasi_7', 'raasi_8', 'raasi_9', 'raasi_10', 'raasi_11', 'raasi_12',
         'amsam_1', 'amsam_2', 'amsam_3', 'amsam_4', 'amsam_5', 'amsam_6',
         'amsam_7', 'amsam_8', 'amsam_9', 'amsam_10', 'amsam_11', 'amsam_12',
-        'latitude', 'longitude', 'no_of_child', 'mobileno2', 'whatsapp_no',
+        'latitude', 'longitude', 'no_of_child', 'mobileno2', 'whatsapp_no', 'aadhaar_no',
         'education_detail', 'company_name', 'work_location', 'work_state', 'work_city',
         'body_type', 'complexion', 'disability',
         'father_status', 'mother_status', 'mother_caste', 'mother_subcaste', 'mother_gothram',
@@ -85,6 +85,7 @@ class User extends Authenticatable
         'username',
         'plan',
         'plan_validity',
+        'temp_password',
     ];
 
 

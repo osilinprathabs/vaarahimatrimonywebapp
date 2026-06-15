@@ -40,9 +40,11 @@ class CheckoutController extends Controller
             }
         }
 
-        if (!empty($keyId) && !empty($keySecret)) {
-            $this->razorpayKeyId = $keyId;
-            $this->api = new Api($keyId, $keySecret);
+        if (class_exists('\Razorpay\Api\Api')) {
+            if (!empty($keyId) && !empty($keySecret)) {
+                $this->razorpayKeyId = $keyId;
+                $this->api = new \Razorpay\Api\Api($keyId, $keySecret);
+            }
         }
     }
 

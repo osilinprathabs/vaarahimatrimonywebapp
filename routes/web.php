@@ -27,12 +27,12 @@ Route::post('/contact-us', [HomeController::class, 'storeContactUs'])->name('con
 Route::get('/privacy-policy', [HomeController::class, 'privacyPolicy'])->name('privacy');
 Route::get('/terms-and-conditions', [HomeController::class, 'terms'])->name('terms');
 
-    Route::get('/dashboard', [HomeController::class, 'dashboard'])->middleware(['auth', 'verified'])->name('dashboard');
+    Route::get('/dashboard', [HomeController::class, 'dashboard'])->middleware(['auth', 'customer.approved'])->name('dashboard');
     Route::match(['get', 'post'], '/search-id', [HomeController::class, 'idSearch'])->name('search.id');
     Route::match(['get', 'post'], '/search-advanced', [HomeController::class, 'advancedSearch'])->name('search.advanced');
     Route::get('/profile/{id}', [HomeController::class, 'profileView'])->name('profile.view');
     
-    Route::middleware('auth')->group(function () {
+    Route::middleware(['auth', 'customer.approved'])->group(function () {
     Route::get('/register-details', [ProfileController::class, 'createDetails'])->name('register.details');
     Route::post('/register-details', [ProfileController::class, 'storeDetails'])->name('register.details.store');
 

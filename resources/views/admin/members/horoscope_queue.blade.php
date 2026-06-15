@@ -64,8 +64,14 @@
                                                 <span class="badge bg-secondary-subtle text-secondary fw-semibold">MID No: {{ $horoscope->m_userid }}</span>
                                             </div>
                                             
-                                            <div class="position-relative d-inline-block rounded-3 shadow-sm border border-light p-2 bg-white mb-4">
+                                             <div class="position-relative d-inline-block rounded-3 shadow-sm border border-light p-2 bg-white mb-3">
                                                 <img src="{{ asset('storage/' . $horoscope->image) }}" onerror="this.src='{{ asset('uploads/jathagam/' . $horoscope->image) }}'; this.onerror=function(){ this.src='{{ asset('uploads/horoscopes/' . $horoscope->image) }}'; this.onerror=function(){ this.src='/images/users/user-1.jpg'; }; };" class="img-fluid rounded" style="max-height: 380px; object-fit: contain; min-width: 250px;">
+                                            </div>
+
+                                            <div class="mb-3">
+                                                <a href="{{ asset('storage/' . $horoscope->image) }}" download class="btn btn-sm btn-outline-secondary px-3 rounded-pill">
+                                                    <i class="ti ti-download me-1"></i> Download Horoscope
+                                                </a>
                                             </div>
 
                                             <div class="d-flex justify-content-center gap-3">

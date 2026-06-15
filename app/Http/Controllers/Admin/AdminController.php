@@ -18,7 +18,7 @@ class AdminController extends Controller
      */
     public function dashboard()
     {
-        $query = User::query();
+        $query = User::query()->where('status', '!=', 3)->where('role', '!=', 'admin');
         $isMediator = session('role') === 'mediator';
         $branchId = auth()->user()->branch_id;
 
@@ -57,10 +57,11 @@ class AdminController extends Controller
         $rejected_interests = Interest::where('status', 'Rejected')->count();
         $pending_interests = Interest::where('status', 'Pending')->count();
 
-        // Top Premium Members
         $top_premium_members = User::whereNotNull('plan')
             ->where('plan', '!=', '')
             ->where('plan', '!=', 'Free')
+            ->where('status', '!=', 3)
+            ->where('role', '!=', 'admin')
             ->limit(5)
             ->get();
 
@@ -133,7 +134,7 @@ class AdminController extends Controller
         $subcastes = DB::table('subcaste')->orderBy('subcaste')->get();
 
         if ($request->isMethod('post')) {
-            $query = User::query()->where('status', '!=', 3);
+            $query = User::query()->where('status', '!=', 3)->where('role', '!=', 'admin');
             
             if (session('role') === 'mediator') {
                 $query->where('branch_id', auth()->user()->branch_id);

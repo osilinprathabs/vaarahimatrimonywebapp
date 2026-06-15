@@ -19,7 +19,7 @@ class RegisteredUserController extends Controller
      */
     public function create(): View
     {
-        $onbehalfs = \App\Models\Onbehalf::all();
+        $onbehalfs = \App\Models\Onbehalf::orderBy('onbehalf', 'asc')->get();
         return view('auth.register', compact('onbehalfs'));
     }
 
@@ -59,7 +59,7 @@ class RegisteredUserController extends Controller
             'mobileno' => $request->mobileno,
             'onbehalf' => $request->onbehalf,
             'gender' => $request->gender,
-            'status' => 1,
+            'status' => 0,
             'date' => date('Y-m-d'),
             'age' => 0,
             'date_of_birth' => '',

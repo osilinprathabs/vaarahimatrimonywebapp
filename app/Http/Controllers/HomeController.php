@@ -12,7 +12,7 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $onbehalfs = \App\Models\Onbehalf::all();
+        $onbehalfs = \App\Models\Onbehalf::orderBy('onbehalf', 'asc')->get();
         return view('home', compact('onbehalfs'));
     }
 
@@ -90,9 +90,9 @@ class HomeController extends Controller
 
         $data = [
             'user' => $user,
-            'marital_statuses' => \App\Models\MaritalStatus::all(),
-            'stars' => \App\Models\Star::all(),
-            'doshams' => \App\Models\Dosham::all(),
+            'marital_statuses' => \App\Models\MaritalStatus::orderBy('marital_status', 'asc')->get(),
+            'stars' => \App\Models\Star::orderBy('name', 'asc')->get(),
+            'doshams' => \App\Models\Dosham::where('status', 1)->orderBy('dosham', 'asc')->get(),
         ];
         return view('search.advanced', $data);
     }
@@ -107,12 +107,15 @@ class HomeController extends Controller
             return redirect()->route('dashboard')->with('error', 'You cannot view profiles of the same gender.');
         }
 
-        // Check if there is an interest sent or received between them
-        $interest = \App\Models\Interest::where(function($q) use ($user, $targetUser) {
-            $q->where('from_member_id', $user->id)->where('to_member_id', $targetUser->id);
-        })->orWhere(function($q) use ($user, $targetUser) {
-            $q->where('from_member_id', $targetUser->id)->where('to_member_id', $user->id);
-        })->first();
+        // Check if there is an interest sent or received between them (if logged in)
+        $interest = null;
+        if ($user) {
+            $interest = \App\Models\Interest::where(function($q) use ($user, $targetUser) {
+                $q->where('from_member_id', $user->id)->where('to_member_id', $targetUser->id);
+            })->orWhere(function($q) use ($user, $targetUser) {
+                $q->where('from_member_id', $targetUser->id)->where('to_member_id', $user->id);
+            })->first();
+        }
         
         // Load related info
         $data = [

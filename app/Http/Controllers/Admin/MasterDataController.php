@@ -111,8 +111,15 @@ class MasterDataController extends Controller
         $fields = [$nameField => $validated['name']];
         
         if (isset($validated['parent_id'])) {
-            if ($type == 'caste') $fields['religion'] = $validated['parent_id'];
-            if ($type == 'subcaste') $fields['caste'] = $validated['parent_id'];
+            if ($type == 'caste') {
+                $fields['religion'] = $validated['parent_id'];
+            }
+            if ($type == 'subcaste') {
+                $fields['caste'] = $validated['parent_id'];
+                // Propagate parent caste's religion to subcaste
+                $caste = Caste::find($validated['parent_id']);
+                $fields['religion'] = $caste ? $caste->religion : 1;
+            }
         }
         
         return $fields;

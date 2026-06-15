@@ -17,7 +17,7 @@ class MemberManagementController extends Controller
      */
     public function allMembers(Request $request)
     {
-        $query = User::query()->where('status', '!=', 3);
+        $query = User::query()->where('status', '!=', 3)->where('role', '!=', 'admin');
         
         // Branch filtering for mediators/staff
         if (session('role') === 'mediator') {
@@ -76,7 +76,7 @@ class MemberManagementController extends Controller
      */
     public function premiumMembers(Request $request)
     {
-        $query = User::whereNotNull('plan')->where('plan', '!=', '')->where('plan', '!=', 'Free')->where('status', '!=', 3);
+        $query = User::whereNotNull('plan')->where('plan', '!=', '')->where('plan', '!=', 'Free')->where('status', '!=', 3)->where('role', '!=', 'admin');
         
         if (session('role') === 'mediator') {
             $query->where('branch_id', auth()->user()->branch_id);
@@ -94,7 +94,7 @@ class MemberManagementController extends Controller
     {
         $query = User::where(function($q) {
             $q->whereNull('plan')->orWhere('plan', '')->orWhere('plan', 'Free');
-        })->where('status', '!=', 3);
+        })->where('status', '!=', 3)->where('role', '!=', 'admin');
         
         if (session('role') === 'mediator') {
             $query->where('branch_id', auth()->user()->branch_id);
@@ -123,7 +123,7 @@ class MemberManagementController extends Controller
      */
     public function pendingMembers()
     {
-        $query = User::where('status', 0);
+        $query = User::where('status', 0)->where('role', '!=', 'admin');
         if (session('role') === 'mediator') {
             $query->where('branch_id', auth()->user()->branch_id);
         }
@@ -144,7 +144,10 @@ class MemberManagementController extends Controller
         }
 
         $images  = DB::table('profile_images')->where('userid', $id)->get();
-        return view('admin.members.view', compact('member', 'images'));
+        $aadhaar = DB::table('aadhaar_image')->where('userid', $id)->first();
+        $jathagam = DB::table('jathagam_images')->where('userid', $id)->first();
+        $horoscope = DB::table('member_horoscope')->where('member_id', $id)->first();
+        return view('admin.members.view', compact('member', 'images', 'aadhaar', 'jathagam', 'horoscope'));
     }
 
     /**
@@ -330,6 +333,7 @@ class MemberManagementController extends Controller
 
         $members = User::whereIn('id', $allExpiredIds)
             ->where('status', '!=', 3)
+            ->where('role', '!=', 'admin')
             ->orderBy('id', 'desc')
             ->paginate(25);
 
@@ -385,7 +389,7 @@ class MemberManagementController extends Controller
      */
     public function exportMembers(Request $request)
     {
-        $query = User::query()->where('status', '!=', 3);
+        $query = User::query()->where('status', '!=', 3)->where('role', '!=', 'admin');
         
         if ($request->list_type === 'expired') {
             $planExpiredIds = DB::table('plan_assign')
