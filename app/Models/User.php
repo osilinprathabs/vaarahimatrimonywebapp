@@ -74,6 +74,7 @@ class User extends Authenticatable
         'religion', 'languages_known', 'gothram', 'laknam', 'dasa',
         'birth_year', 'birth_month', 'birth_date', 'mother_tongue', 'dhosam', 'dhosam_type',
         'expected_raasi', 'expected_star', 'about_me', 'expectation',
+        'expected_min_age', 'expected_max_age', 'expected_marital_status', 'expected_caste', 'expected_education', 'expected_monthly_income',
         'branch_id', 'branch_name', 'branch_address', 'branch_contactno',
         'living_state', 'living_country', 'living_city', 'living_address',
         'register_id',

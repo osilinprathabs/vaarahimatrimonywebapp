@@ -10,5 +10,5 @@ class Star extends Model
     use HasFactory;
     protected $table = 'star';
     public $timestamps = false;
-    protected $fillable = ['name'];
+    protected $fillable = ['name', 'rashi'];
 }

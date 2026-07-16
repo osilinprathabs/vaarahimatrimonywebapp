@@ -72,8 +72,11 @@
                 <a href="{{ route('search.id') }}" class="list-group-item list-group-item-action border-0 px-4 py-3 text-muted">
                     <i class="fa fa-search me-3"></i> ID Search
                 </a>
-                <a href="{{ route('search.advanced') }}" class="list-group-item list-group-item-action border-0 px-4 py-3 text-muted">
+                <a href="{{ route('search.advanced') }}" class="list-group-item list-group-item-action border-0 px-4 py-3 {{ request()->routeIs('search.advanced') ? 'bg-light text-primary fw-bold' : 'text-muted' }}">
                     <i class="fa fa-filter me-3"></i> Match Finder
+                </a>
+                <a href="{{ route('my.matches') }}" class="list-group-item list-group-item-action border-0 px-4 py-3 {{ request()->routeIs('my.matches') ? 'bg-light text-primary fw-bold' : 'text-muted' }}">
+                    <i class="fa fa-users me-3"></i> My Matches
                 </a>
                 <a href="{{ route('my.interests') }}" class="list-group-item list-group-item-action border-0 px-4 py-3 {{ request()->routeIs('my.interests') ? 'bg-light text-primary fw-bold' : 'text-muted' }}">
                     <i class="fa fa-heart me-3"></i> My Interests

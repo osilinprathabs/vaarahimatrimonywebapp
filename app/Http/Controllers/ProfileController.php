@@ -279,6 +279,7 @@ class ProfileController extends Controller
             'doshams' => Dosham::where('status', 1)->orderBy('dosham', 'asc')->get(),
             'subcastes' => $user->caste ? Subcaste::where('caste', $user->caste)->orderBy('subcaste', 'asc')->get() : collect(),
             'stars' => $user->raasi ? Star::where('rashi', $user->raasi)->orderBy('name', 'asc')->get() : collect(),
+            'all_stars' => Star::orderBy('name', 'asc')->get(),
             'horoscope' => MemberHoroscope::where('member_id', $user->id)->first(),
         ];
 
@@ -313,12 +314,22 @@ class ProfileController extends Controller
             'star' => ['required'],
             'address' => ['required', 'string'],
             'about_me' => ['required', 'string', 'min:10'],
-            'aadhaar_no' => ['required', 'string', 'size:12', 'regex:/^[0-9]{12}$/'],
+            'expected_min_age' => ['nullable', 'integer', 'min:18', 'max:100'],
+            'expected_max_age' => ['nullable', 'integer', 'min:18', 'max:100'],
+            'expected_marital_status' => ['nullable', 'string'],
+            'expected_caste' => ['nullable', 'integer'],
+            'expected_education' => ['nullable', 'string'],
+            'expected_monthly_income' => ['nullable', 'string'],
+            'expected_raasi' => ['nullable', 'integer'],
+            'expected_star' => ['nullable', 'integer'],
+            'expectation' => ['nullable', 'string'],
         ]);
         
         // Update User (free_user table)
         $userData = $request->except([
             '_token', '_method', 'profile_img', 'aadhaar', 'jathagam', 'current_password', 'new_password', 'new_password_confirmation',
+            'star_display',
+            'aadhaar_no',
             'raasi_1', 'raasi_2', 'raasi_3', 'raasi_4', 'raasi_5', 'raasi_6', 
             'raasi_7', 'raasi_8', 'raasi_9', 'raasi_10', 'raasi_11', 'raasi_12', 
             'amsam_1', 'amsam_2', 'amsam_3', 'amsam_4', 'amsam_5', 'amsam_6', 
@@ -338,7 +349,50 @@ class ProfileController extends Controller
             unset($userData['indian_currency_value']);
         }
 
+        // Handle custom subcaste entry: if user typed a new subcaste (non-numeric ID),
+        // create a new Subcaste record tied to the selected caste and use its ID.
+        if (!empty($userData['subcaste']) && !is_numeric($userData['subcaste'])) {
+            $casteId = $request->input('caste');
+            $customSubcasteName = trim($userData['subcaste']);
+            // Check if already exists for this caste (case-insensitive)
+            $existingSub = Subcaste::where('caste', $casteId)
+                ->whereRaw('LOWER(subcaste) = ?', [strtolower($customSubcasteName)])
+                ->first();
+            if ($existingSub) {
+                $userData['subcaste'] = $existingSub->id;
+            } else {
+                $parentCaste = \App\Models\Caste::find($casteId);
+                $newSub = Subcaste::create([
+                    'subcaste' => $customSubcasteName,
+                    'caste'    => $casteId,
+                    'religion' => $parentCaste ? $parentCaste->religion : 1,
+                ]);
+                $userData['subcaste'] = $newSub->id;
+            }
+        }
+
+        // Handle custom star entry: if user typed a new star (non-numeric ID),
+        // create a new Star record tied to the selected raasi and use its ID.
+        if (!empty($userData['star']) && !is_numeric($userData['star'])) {
+            $raasiId = $request->input('raasi');
+            $customStarName = trim($userData['star']);
+            // Check if already exists for this raasi (case-insensitive)
+            $existingStar = Star::where('rashi', $raasiId)
+                ->whereRaw('LOWER(name) = ?', [strtolower($customStarName)])
+                ->first();
+            if ($existingStar) {
+                $userData['star'] = $existingStar->id;
+            } else {
+                $newStar = Star::create([
+                    'name'  => $customStarName,
+                    'rashi' => $raasiId,
+                ]);
+                $userData['star'] = $newStar->id;
+            }
+        }
+
         $user->update($userData);
+
 
         // Handle File Uploads
         if ($request->hasFile('profile_img')) {

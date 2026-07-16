@@ -82,7 +82,15 @@ class HomeController extends Controller
             if ($request->marital_status) {
                 $query->where('maritalstatus', $request->marital_status);
             }
-            // Add other filters as needed...
+            if ($request->caste) {
+                $query->where('caste', $request->caste);
+            }
+            if ($request->education) {
+                $query->where('education', $request->education);
+            }
+            if ($request->monthly_income) {
+                $query->where('currency_value', $request->monthly_income);
+            }
 
             $results = $query->limit(20)->get();
             return view('search.results', compact('user', 'results'));
@@ -93,8 +101,61 @@ class HomeController extends Controller
             'marital_statuses' => \App\Models\MaritalStatus::orderBy('marital_status', 'asc')->get(),
             'stars' => \App\Models\Star::orderBy('name', 'asc')->get(),
             'doshams' => \App\Models\Dosham::where('status', 1)->orderBy('dosham', 'asc')->get(),
+            'castes' => \App\Models\Caste::where('status', 1)->orderBy('caste', 'asc')->get(),
+            'educations' => \App\Models\Education::orderBy('education', 'asc')->get(),
+            'currency_values' => \App\Models\CurrencyValue::all(),
         ];
         return view('search.advanced', $data);
+    }
+
+    public function myMatches(Request $request)
+    {
+        $user = auth()->user();
+        if (!$user) {
+            return redirect()->route('login');
+        }
+
+        $targetGender = ($user->gender == 'Male') ? 'Female' : 'Male';
+        $query = User::where('gender', $targetGender)->where('status', 1);
+
+        $hasPreferences = false;
+
+        if ($user->expected_min_age) {
+            $query->where('age', '>=', $user->expected_min_age);
+            $hasPreferences = true;
+        }
+        if ($user->expected_max_age) {
+            $query->where('age', '<=', $user->expected_max_age);
+            $hasPreferences = true;
+        }
+        if ($user->expected_marital_status) {
+            $query->where('maritalstatus', $user->expected_marital_status);
+            $hasPreferences = true;
+        }
+        if ($user->expected_caste) {
+            $query->where('caste', $user->expected_caste);
+            $hasPreferences = true;
+        }
+        if ($user->expected_education) {
+            $query->where('education', $user->expected_education);
+            $hasPreferences = true;
+        }
+        if ($user->expected_monthly_income) {
+            $query->where('currency_value', $user->expected_monthly_income);
+            $hasPreferences = true;
+        }
+        if ($user->expected_raasi) {
+            $query->where('raasi', $user->expected_raasi);
+            $hasPreferences = true;
+        }
+        if ($user->expected_star) {
+            $query->where('star', $user->expected_star);
+            $hasPreferences = true;
+        }
+
+        $results = $query->orderBy('id', 'desc')->limit(50)->get();
+
+        return view('search.matches', compact('user', 'results', 'hasPreferences'));
     }
 
     public function profileView($id)

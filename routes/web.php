@@ -33,6 +33,7 @@ Route::get('/terms-and-conditions', [HomeController::class, 'terms'])->name('ter
     Route::get('/profile/{id}', [HomeController::class, 'profileView'])->name('profile.view');
     
     Route::middleware(['auth', 'customer.approved'])->group(function () {
+    Route::get('/my-matches', [HomeController::class, 'myMatches'])->name('my.matches');
     Route::get('/register-details', [ProfileController::class, 'createDetails'])->name('register.details');
     Route::post('/register-details', [ProfileController::class, 'storeDetails'])->name('register.details.store');
 

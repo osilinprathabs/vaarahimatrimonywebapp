@@ -167,6 +167,13 @@
                                     </button>
                                 </li>
                                 <li class="nav-item" role="presentation">
+                                    <button class="nav-link edit-tab-btn" id="partner-tab" data-bs-toggle="tab"
+                                        data-bs-target="#partner" data-toggle="tab" data-target="#partner" type="button"
+                                        role="tab">
+                                        <i class="fa fa-heart me-2"></i>Partner Preference
+                                    </button>
+                                </li>
+                                <li class="nav-item" role="presentation">
                                     <button class="nav-link edit-tab-btn" id="security-tab" data-bs-toggle="tab"
                                         data-bs-target="#security" data-toggle="tab" data-target="#security" type="button"
                                         role="tab">
@@ -346,13 +353,24 @@
                                                 </select>
                                             </div>
                                             <div class="col-md-6">
-                                                <label>Subcaste / உட்பிரிவு</label>
-                                                <select name="subcaste" id="subcaste" class="form-select">
+                                                <label>Subcaste / உட்பிரிவு
+                                                    <small class="text-muted fw-normal ms-1">(Select or type to add new)</small>
+                                                </label>
+                                                @php
+                                                    $currentSubcaste = old('subcaste', $user->subcaste);
+                                                    $currentSubcasteObj = $currentSubcaste ? $subcastes->firstWhere('id', $currentSubcaste) : null;
+                                                @endphp
+                                                <select name="subcaste" id="subcaste" class="form-select subcaste-tags-select" style="width:100%;">
+                                                    <option value="">-- Select or type subcaste --</option>
                                                     @foreach($subcastes as $sub)
-                                                        <option value="{{ $sub->id }}" {{ old('subcaste', $user->subcaste) == $sub->id ? 'selected' : '' }}>{{ $sub->subcaste }}
-                                                        </option>
+                                                        <option value="{{ $sub->id }}" {{ $currentSubcaste == $sub->id ? 'selected' : '' }}>{{ $sub->subcaste }}</option>
                                                     @endforeach
+                                                    {{-- If saved subcaste not in list (custom text), add it --}}
+                                                    @if($currentSubcaste && !$currentSubcasteObj && !is_numeric($currentSubcaste))
+                                                        <option value="{{ $currentSubcaste }}" selected>{{ $currentSubcaste }}</option>
+                                                    @endif
                                                 </select>
+                                                <small class="text-info mt-1 d-block"><i class="fa fa-info-circle me-1"></i>If your subcaste is not listed, simply type it and press Enter to add it.</small>
                                             </div>
                                             <div class="col-md-6">
                                                 <label>Raasi / ராசி <span class="text-danger">*</span></label>
@@ -363,12 +381,24 @@
                                                 </select>
                                             </div>
                                             <div class="col-md-6">
-                                                <label>Star / நட்சத்திரம் <span class="text-danger">*</span></label>
-                                                <select name="star" id="star" class="form-select" required>
+                                                <label>Star / நட்சத்திரம் <span class="text-danger">*</span>
+                                                    <small class="text-muted fw-normal ms-1">(Select or type to add new)</small>
+                                                </label>
+                                                @php
+                                                    $currentStar = old('star', $user->star);
+                                                    $currentStarObj = $currentStar ? $stars->firstWhere('id', $currentStar) : null;
+                                                @endphp
+                                                <select name="star" id="star" class="form-select" style="width:100%;" required>
+                                                    <option value="">-- Select or type star --</option>
                                                     @foreach($stars as $s)
-                                                        <option value="{{ $s->id }}" {{ old('star', $user->star) == $s->id ? 'selected' : '' }}>{{ $s->name }}</option>
+                                                        <option value="{{ $s->id }}" {{ $currentStar == $s->id ? 'selected' : '' }}>{{ $s->name }}</option>
                                                     @endforeach
+                                                    {{-- If saved star not in list (custom text), add it --}}
+                                                    @if($currentStar && !$currentStarObj && !is_numeric($currentStar))
+                                                        <option value="{{ $currentStar }}" selected>{{ $currentStar }}</option>
+                                                    @endif
                                                 </select>
+                                                <small class="text-info mt-1 d-block"><i class="fa fa-info-circle me-1"></i>If your star is not listed, simply type it and press Enter to add it.</small>
                                             </div>
                                             <div class="col-md-6">
                                                 <label>Gothram / கோத்திரம்</label>
@@ -382,8 +412,7 @@
 
                                                     {{-- Rasi Grid --}}
                                                     <div class="col-md-6">
-                                                        <h5 class="fw-bold mb-3" style="color: #ab0772;">Raasi Chart / ராசி
-                                                            கட்டம்</h5>
+                                                        <h5 class="fw-bold mb-3" style="color: #ab0772;">Raasi Chart / ராசி கட்டம்</h5>
                                                         <div class="table-responsive">
                                                             <table class="table table-bordered table-horoscope text-center">
                                                                 @php
@@ -467,8 +496,7 @@
 
                                                     {{-- Amsam Grid --}}
                                                     <div class="col-md-6">
-                                                        <h5 class="fw-bold mb-3" style="color: #ab0772;">Amsam Chart /
-                                                            அம்சம் கட்டம்</h5>
+                                                        <h5 class="fw-bold mb-3" style="color: #ab0772;">Amsam Chart / அம்சம்</h5>
                                                         <div class="table-responsive">
                                                             <table class="table table-bordered table-horoscope text-center">
                                                                 @php
@@ -702,6 +730,95 @@
                                             </div>
                                         </div>
                                     </div>
+                                    
+                                    {{-- Tab 6: Partner Preference --}}
+                                    <div class="tab-pane fade" id="partner" role="tabpanel">
+                                        <div class="row g-3">
+                                            <div class="col-lg-12">
+                                                <h5 class="fw-bold mb-3" style="color: #ab0772;"><i class="fa fa-heart me-2"></i>Partner Expectations / வரன் எதிர்பார்ப்பு</h5>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label>Expected Min Age / குறைந்தபட்ச வயது</label>
+                                                <input name="expected_min_age" type="number" class="form-control"
+                                                    value="{{ old('expected_min_age', $user->expected_min_age) }}" placeholder="e.g. 18">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label>Expected Max Age / அதிகபட்ச வயது</label>
+                                                <input name="expected_max_age" type="number" class="form-control"
+                                                    value="{{ old('expected_max_age', $user->expected_max_age) }}" placeholder="e.g. 60">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label>Expected Marital Status / திருமண நிலை</label>
+                                                <select name="expected_marital_status" class="form-select">
+                                                    <option value="">Any / கவலை இல்லை</option>
+                                                    @foreach($marital_statuses as $mar)
+                                                        <option value="{{ $mar->marital_status }}" {{ old('expected_marital_status', $user->expected_marital_status) == $mar->marital_status ? 'selected' : '' }}>
+                                                            {{ $mar->marital_status }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label>Expected Caste / ஜாதி</label>
+                                                <select name="expected_caste" class="form-select">
+                                                    <option value="">Any / கவலை இல்லை</option>
+                                                    @foreach($castes as $caste)
+                                                        <option value="{{ $caste->id }}" {{ old('expected_caste', $user->expected_caste) == $caste->id ? 'selected' : '' }}>
+                                                            {{ $caste->caste }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label>Expected Education / கல்வி தகுதி</label>
+                                                <select name="expected_education" class="form-select">
+                                                    <option value="">Any / கவலை இல்லை</option>
+                                                    @foreach($educations as $edu)
+                                                        <option value="{{ $edu->education }}" {{ old('expected_education', $user->expected_education) == $edu->education ? 'selected' : '' }}>
+                                                            {{ $edu->education }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label>Expected Monthly Income / மாத வருமானம்</label>
+                                                <select name="expected_monthly_income" class="form-select">
+                                                    <option value="">Any / கவலை இல்லை</option>
+                                                    @foreach($currency_values as $cv)
+                                                        <option value="{{ $cv->currency_value }}" {{ old('expected_monthly_income', $user->expected_monthly_income) == $cv->currency_value ? 'selected' : '' }}>
+                                                            {{ $cv->currency_value }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label>Expected Raasi / ராசி</label>
+                                                <select name="expected_raasi" class="form-select">
+                                                    <option value="">Any / கவலை இல்லை</option>
+                                                    @foreach($raasis as $r)
+                                                        <option value="{{ $r->id }}" {{ old('expected_raasi', $user->expected_raasi) == $r->id ? 'selected' : '' }}>
+                                                            {{ $r->name }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label>Expected Star / நட்சத்திரம்</label>
+                                                <select name="expected_star" class="form-select">
+                                                    <option value="">Any / கவலை இல்லை</option>
+                                                    @foreach($all_stars as $s)
+                                                        <option value="{{ $s->id }}" {{ old('expected_star', $user->expected_star) == $s->id ? 'selected' : '' }}>
+                                                            {{ $s->name }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <label>Partner Expectation Details / வரன் எதிர்பார்ப்பு விவரங்கள்</label>
+                                                <textarea name="expectation" rows="4" class="form-control" style="height: auto;" placeholder="Describe what you are looking for in a partner...">{{ old('expectation', $user->expectation) }}</textarea>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
 
                                 {{-- Submit Button --}}
@@ -749,14 +866,34 @@
                             !(allSelected[val].length === 1 && allSelected[val][0] === myName) &&
                             !$(this).is(':selected');
                         $(this).prop('disabled', selectedInOther);
-                        // Visual cue: strikethrough + grey for disabled
-                        $(this).css(selectedInOther
-                            ? { 'color': '#ccc', 'font-style': 'italic' }
-                            : { 'color': '', 'font-style': '' }
-                        );
                     });
+                    // Refresh Select2 so it re-renders updated disabled states
+                    if ($sel.data('select2')) {
+                        $sel.trigger('change.select2');
+                    }
                 });
             }
+
+            // Initialize Select2 on all horoscope grid cells (keeps dropdown open for multi-select)
+            function initHoroSelect2() {
+                $('.select2-simple').each(function () {
+                    if (!$(this).data('select2')) {
+                        $(this).select2({
+                            placeholder: 'Add planet...',
+                            allowClear: true,
+                            closeOnSelect: false,
+                            width: '100%',
+                            templateResult: function(data) {
+                                if (data.disabled) {
+                                    return $('<span style="color:#bbb;text-decoration:line-through;">' + data.text + '</span>');
+                                }
+                                return data.text;
+                            }
+                        });
+                    }
+                });
+            }
+            initHoroSelect2();
 
             // Run exclusion on any change inside the chart tables
             $(document).on('change', 'select[name^="raasi_"]', function () {
@@ -830,6 +967,36 @@
                 $(targetSelector).addClass('show active');
             });
 
+            // Initialize Select2 with tags on subcaste
+            function initSubcasteSelect2() {
+                if ($('#subcaste').data('select2')) {
+                    $('#subcaste').select2('destroy');
+                }
+                $('#subcaste').select2({
+                    placeholder: '-- Select or type to add new subcaste --',
+                    allowClear: true,
+                    tags: true,
+                    createTag: function(params) {
+                        var term = $.trim(params.term);
+                        if (term === '') return null;
+                        return {
+                            id: term,
+                            text: term + ' (New)',
+                            newOption: true
+                        };
+                    },
+                    templateResult: function(data) {
+                        var $result = $('<span></span>');
+                        $result.text(data.text);
+                        if (data.newOption) {
+                            $result.append(' <span class="badge bg-success ms-1" style="font-size:10px;">New</span>');
+                        }
+                        return $result;
+                    }
+                });
+            }
+            initSubcasteSelect2();
+
             // Dynamic Subcaste loading
             $('#caste').change(function () {
                 var caste_id = $(this).val();
@@ -838,17 +1005,49 @@
                         url: '/api/subcastes/' + caste_id,
                         type: 'GET',
                         success: function (data) {
-                            $('#subcaste').empty().append('<option value="">Select Subcaste</option>');
+                            $('#subcaste').empty().append('<option value="">-- Select or type subcaste --</option>');
                             $.each(data, function (index, sub) {
                                 $('#subcaste').append('<option value="' + sub.id + '">' + sub.subcaste + '</option>');
                             });
-
-                            // Sort subcaste dropdown alphabetically
-                            sortDropdownOptions($('#subcaste'));
+                            // Re-initialize Select2 after options reload
+                            initSubcasteSelect2();
                         }
                     });
+                } else {
+                    $('#subcaste').empty().append('<option value="">-- Select or type subcaste --</option>');
+                    initSubcasteSelect2();
                 }
             });
+
+            // Initialize Select2 with tags on star
+            function initStarSelect2() {
+                if ($('#star').data('select2')) {
+                    $('#star').select2('destroy');
+                }
+                $('#star').select2({
+                    placeholder: '-- Select or type to add new star --',
+                    allowClear: true,
+                    tags: true,
+                    createTag: function(params) {
+                        var term = $.trim(params.term);
+                        if (term === '') return null;
+                        return {
+                            id: term,
+                            text: term + ' (New)',
+                            newOption: true
+                        };
+                    },
+                    templateResult: function(data) {
+                        var $result = $('<span></span>');
+                        $result.text(data.text);
+                        if (data.newOption) {
+                            $result.append(' <span class="badge bg-success ms-1" style="font-size:10px;">New</span>');
+                        }
+                        return $result;
+                    }
+                });
+            }
+            initStarSelect2();
 
             // Dynamic Star loading
             $('#raasi').change(function () {
@@ -858,15 +1057,17 @@
                         url: '/api/stars/' + raasi_id,
                         type: 'GET',
                         success: function (data) {
-                            $('#star').empty().append('<option value="">Select Star</option>');
+                            $('#star').empty().append('<option value="">-- Select or type star --</option>');
                             $.each(data, function (index, star) {
                                 $('#star').append('<option value="' + star.id + '">' + star.name + '</option>');
                             });
-
-                            // Sort star dropdown alphabetically
-                            sortDropdownOptions($('#star'));
+                            // Re-initialize Select2 after options reload
+                            initStarSelect2();
                         }
                     });
+                } else {
+                    $('#star').empty().append('<option value="">-- Select or type star --</option>');
+                    initStarSelect2();
                 }
             });
         });

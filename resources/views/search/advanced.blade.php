@@ -28,6 +28,33 @@
                                     @endforeach
                                 </select>
                             </div>
+                            <div class="col-md-12 mb-3">
+                                <label class="form-label">Caste / ஜாதி</label>
+                                <select name="caste" class="form-control">
+                                    <option value="">Any / கவலை இல்லை</option>
+                                    @foreach($castes as $c)
+                                        <option value="{{ $c->id }}">{{ $c->caste }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-md-12 mb-3">
+                                <label class="form-label">Education / கல்வி தகுதி</label>
+                                <select name="education" class="form-control">
+                                    <option value="">Any / கவலை இல்லை</option>
+                                    @foreach($educations as $e)
+                                        <option value="{{ $e->education }}">{{ $e->education }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-md-12 mb-3">
+                                <label class="form-label">Monthly Income / மாத வருமானம்</label>
+                                <select name="monthly_income" class="form-control">
+                                    <option value="">Any / கவலை இல்லை</option>
+                                    @foreach($currency_values as $cv)
+                                        <option value="{{ $cv->currency_value }}">{{ $cv->currency_value }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
                         </div>
                         <button class="btn btn-primary w-100" style="background: linear-gradient(135deg, #e00c84 0%, #a90771 50%, #5d0156 100%); border: none;" type="submit">SEARCH</button>
                     </form>
